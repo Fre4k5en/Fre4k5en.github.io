@@ -21,31 +21,30 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"fre4k5en.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Today when I wanna deploy some new files on my git, I found this error:  It says Git just no longer support password authentication anymore, so we need to transfer anthentication type to Token Auth or">
+<meta name="description" content="Install serjs&#x2F;go-socks5-proxy from Docker1docker run -d --name socks5 -p 1080:1080 -e PROXY_USER&#x3D;&lt;PROXY_USER&gt; -e PROXY_PASSWORD&#x3D;&lt;PROXY_PASSWORD&gt; serjs&#x2F;go-socks5-proxy  Test proxy server co">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Github Removed Password Authentication">
-<meta property="og:url" content="https://fre4k5en.com/2021/11/04/Github-Removed-Password-Authentication/index.html">
+<meta property="og:title" content="Socks5+Proxifier搭建代理">
+<meta property="og:url" content="https://fre4k5en.com/2021/12/03/Socks5-Proxifier%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86/index.html">
 <meta property="og:site_name" content="最后的家">
-<meta property="og:description" content="Today when I wanna deploy some new files on my git, I found this error:  It says Git just no longer support password authentication anymore, so we need to transfer anthentication type to Token Auth or">
+<meta property="og:description" content="Install serjs&#x2F;go-socks5-proxy from Docker1docker run -d --name socks5 -p 1080:1080 -e PROXY_USER&#x3D;&lt;PROXY_USER&gt; -e PROXY_PASSWORD&#x3D;&lt;PROXY_PASSWORD&gt; serjs&#x2F;go-socks5-proxy  Test proxy server co">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtl39zo9xrj617m0g8wgb02.jpg">
-<meta property="article:published_time" content="2021-11-04T08:05:03.000Z">
-<meta property="article:modified_time" content="2021-11-04T09:38:33.314Z">
+<meta property="og:image" content="https://i.loli.net/2021/12/03/7klGZU89QM2WYFC.png">
+<meta property="og:image" content="https://i.loli.net/2021/12/03/hyIQR14teWcfJnM.png">
+<meta property="article:published_time" content="2021-12-03T03:24:08.000Z">
+<meta property="article:modified_time" content="2021-12-03T04:41:19.129Z">
 <meta property="article:author" content="Fre4k5en">
-<meta property="article:tag" content="Others">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg">
+<meta name="twitter:image" content="https://i.loli.net/2021/12/03/7klGZU89QM2WYFC.png">
 
 
-<link rel="canonical" href="https://fre4k5en.com/2021/11/04/Github-Removed-Password-Authentication/">
+<link rel="canonical" href="https://fre4k5en.com/2021/12/03/Socks5-Proxifier%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://fre4k5en.com/2021/11/04/Github-Removed-Password-Authentication/","path":"2021/11/04/Github-Removed-Password-Authentication/","title":"Github Removed Password Authentication"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://fre4k5en.com/2021/12/03/Socks5-Proxifier%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86/","path":"2021/12/03/Socks5-Proxifier搭建代理/","title":"Socks5+Proxifier搭建代理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Github Removed Password Authentication | 最后的家</title>
+<title>Socks5+Proxifier搭建代理 | 最后的家</title>
   
 
 
@@ -152,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Token-Auth"><span class="nav-text">Token Auth</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSH-Auth"><span class="nav-text">SSH Auth</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Install-serjs-go-socks5-proxy-from-Docker"><span class="nav-text">Install serjs&#x2F;go-socks5-proxy from Docker</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Test-proxy-server-connection"><span class="nav-text">Test proxy server connection</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Config-Proxifier"><span class="nav-text">Config Proxifier</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/Github-Removed-Password-Authentication/">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/12/03/Socks5-Proxifier%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
@@ -233,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Github Removed Password Authentication
+          Socks5+Proxifier搭建代理
         </h1>
 
         <div class="post-meta-container">
@@ -245,7 +244,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-11-04 16:05:03 / Modified: 17:38:33" itemprop="dateCreated datePublished" datetime="2021-11-04T16:05:03+08:00">2021-11-04</time>
+      <time title="Created: 2021-12-03 11:24:08 / Modified: 12:41:19" itemprop="dateCreated datePublished" datetime="2021-12-03T11:24:08+08:00">2021-12-03</time>
     </span>
 
   
@@ -258,19 +257,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Today when I wanna deploy some new files on my git, I found this error:</p>
-<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg" alt="image-20210818165525245"></a></p>
-<p>It says Git just no longer support password authentication anymore, so we need to transfer anthentication type to Token Auth or SSH Auth.</p>
-<span id="more"></span>
+        <h5 id="Install-serjs-go-socks5-proxy-from-Docker"><a href="#Install-serjs-go-socks5-proxy-from-Docker" class="headerlink" title="Install serjs/go-socks5-proxy from Docker"></a>Install serjs/go-socks5-proxy from Docker</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="builtin-name">run</span> -d --name socks5 -p 1080:1080 -e <span class="attribute">PROXY_USER</span>=&lt;PROXY_USER&gt; -e <span class="attribute">PROXY_PASSWORD</span>=&lt;PROXY_PASSWORD&gt; serjs/go-socks5-proxy</span><br></pre></td></tr></table></figure>
 
-<h4 id="Token-Auth"><a href="#Token-Auth" class="headerlink" title="Token Auth"></a>Token Auth</h4><p>Go to Git-Settings-Developer settings-Personal access tokens-Generate new token</p>
-<p>![image-20210818170141703](/Users/fre4k5en/Library/Application Support/typora-user-images/image-20210818170141703.png)</p>
-<p>then we fill in form about the token and copy&amp;paste to config file</p>
-<h4 id="SSH-Auth"><a href="#SSH-Auth" class="headerlink" title="SSH Auth"></a>SSH Auth</h4><p>Generate a ssh-keygen</p>
-<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ssh-keygen -<span class="built_in">t</span> rsa -C <span class="string">&quot;email@github.com&quot;</span></span><br></pre></td></tr></table></figure>
+<h5 id="Test-proxy-server-connection"><a href="#Test-proxy-server-connection" class="headerlink" title="Test proxy server connection"></a>Test proxy server connection</h5><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --socks<span class="number">5</span> <span class="keyword">x</span>.<span class="keyword">x</span>.<span class="keyword">x</span>.<span class="keyword">x</span>:<span class="number">1080</span> https://www.baidu.com -U &lt;PROXY_USER&gt;:&lt;PROXY_PASSWORD&gt;</span><br></pre></td></tr></table></figure>
 
-<p>add the public key to github-Settings-SSH keys</p>
-<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008i3skNgy1gtl39zo9xrj617m0g8wgb02.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtl39zo9xrj617m0g8wgb02.jpg" alt="image-20210818175227424"></a></p>
+<h5 id="Config-Proxifier"><a href="#Config-Proxifier" class="headerlink" title="Config Proxifier"></a>Config Proxifier</h5><p><img src="https://i.loli.net/2021/12/03/7klGZU89QM2WYFC.png" alt="image-20211203124010000"></p>
+<p>Then we have a stable network connection access HTB machines</p>
+<p><img src="https://i.loli.net/2021/12/03/hyIQR14teWcfJnM.png" alt="image-20211203124109015"></p>
 
     </div>
 
@@ -279,21 +272,18 @@
     
 
     <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Others/" rel="tag"># Others</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/11/04/HackTheBox-Previse/" rel="prev" title="HackTheBox--Previse">
-                  <i class="fa fa-chevron-left"></i> HackTheBox--Previse
+                <a href="/2021/11/24/Testing%20Hardware/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/11/04/%E5%BE%AE%E4%BF%A1-Chrome-RCE%E5%A4%8D%E7%8E%B0/" rel="next" title="微信+Chrome RCE复现">
-                  微信+Chrome RCE复现 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/12/07/HackTheBox-Driver/" rel="next" title="HackTheBox-Driver">
+                  HackTheBox-Driver <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

