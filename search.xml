@@ -1056,6 +1056,8 @@ sudo composer --working-dir=$TF run-script x
     <url>/2021/12/07/HackTheBox-Driver/</url>
     <content><![CDATA[<p>![image-20211209192725384](/Users/fre4k5en/Library/Application Support/typora-user-images/image-20211209192725384.png)</p>
 <h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><p><img src="https://s2.loli.net/2021/12/09/PnN9TEv613QDLxH.png" alt="image-20211209160701979"></p>
+<span id="more"></span>
+
 <h4 id="Find-User-Flag"><a href="#Find-User-Flag" class="headerlink" title="Find User Flag"></a>Find User Flag</h4><p>We can access website with admin:admin on port 80, there is a firmware update function, we can upload file with it, but I didn’t find any path made me access my reverse php shell</p>
 <p>After many enumerating testing and searching, my friend told me it was <a href="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/">SMB share .scf file attacks</a> which I’ve never heard before.</p>
 <p>Shout out to my bro</p>
@@ -1113,6 +1115,8 @@ sudo composer --working-dir=$TF run-script x
     <title>HackTheBox-Hancliffe</title>
     <url>/2021/12/13/HackTheBox-Hancliffe/</url>
     <content><![CDATA[<h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><p><img src="https://s2.loli.net/2021/12/13/IKjvmi8WlTJtY4E.png" alt="image-20211213112132094"></p>
+<span id="more"></span>
+
 <p>Check 80, nothing was found</p>
 <p><img src="https://s2.loli.net/2021/12/14/KP61vGDgSdeBRkb.png" alt="image-20211214131311124"></p>
 <p>Check 8000, there is a website which could generate a complicated password by input basic information. And with the same input of information, website will always return the same password.</p>
