@@ -440,7 +440,7 @@ sudo composer --working-dir=$TF run-script x
   <entry>
     <title>HackTheBox-Forest</title>
     <url>/2021/11/04/HackTheBox-Forest/</url>
-    <content><![CDATA[<h3 id="Gathering-information"><a href="#Gathering-information" class="headerlink" title="Gathering information"></a>Gathering information</h3><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">Nmap -<span class="keyword">sC</span> -sV -p- <span class="keyword">forest</span>.htb</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h3 id="Gathering-information"><a href="#Gathering-information" class="headerlink" title="Gathering information"></a>Gathering information</h3><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">Nmap -<span class="keyword">sC</span> -sV -p- <span class="keyword">forest</span>.htb</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg"><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnitjnp35j31350u0aln.jpg" alt="image-20201214173846004"></a></p>
 <p>53端口开放了DNS服务，445端口开放了SMB服务，5985端口windows远程管理服务，域名为htb.local</p>
@@ -1054,7 +1054,7 @@ sudo composer --working-dir=$TF run-script x
   <entry>
     <title>HackTheBox-Driver</title>
     <url>/2021/12/07/HackTheBox-Driver/</url>
-    <content><![CDATA[<p>![image-20211209192725384](/Users/fre4k5en/Library/Application Support/typora-user-images/image-20211209192725384.png)</p>
+    <content><![CDATA[<p><img src="https://s2.loli.net/2021/12/15/AUB9ExoJMV7gekO.png" alt="image-20211209192725384"></p>
 <h4 id="Information-Gathering"><a href="#Information-Gathering" class="headerlink" title="Information Gathering"></a>Information Gathering</h4><p><img src="https://s2.loli.net/2021/12/09/PnN9TEv613QDLxH.png" alt="image-20211209160701979"></p>
 <span id="more"></span>
 
